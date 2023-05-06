@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignIn</title>
+    <link rel="stylesheet" href="../../styles/styles.pcss">
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+</head>
+<body>
+    <main class="page">
+        <div class="content-wrap">
+            <h1 class="content-title title">
+                Регистрация
+            </h1>
+            <form action="" method="post" class="content-form">
+                {{> input/input name="email" label="Почта" value="pochta@yandex.ru"}}
+                {{> input/input name="login" label="Логин" value="ivanivanov"}}
+                {{> input/input name="first_name" label="Имя" value="Иван"}}
+                {{> input/input name="second_name" label="Фамилия" value="Иванов"}}
+                {{> input/input name="phone" label="Телефон" value="+7 (909) 967 30 30"}}
+                {{> input/input name="password" label="Пароль" isPassword=true value="ivanivanov" mode="error"}}
+                {{> input/input name="password_2" label="Пароль (ещё раз)" isPassword=true error-msg="Пароли не совпадают" value="ivanivanof" mode="error"}}
+            </form>
+            <div class="content-footer form-action-buttons">
+                {{> button/button text="Зарегистрироваться" submit=true mode="primary"}}
+                <a href="../login/login.hbs" class="button button_secondary" tabindex="0">Войти</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Page</title>
+    <link rel="stylesheet" href="./styles/styles.pcss">
+</head>
+<body>
+    <!--THIS PAGE IS TEMPORARY -->
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        li {
+            display: block;
+            height: 30px;
+            width: 200px;
+            line-height: 30px;
+            margin-bottom: 2px;
+            text-align: center;
+            border-radius: 5px;
+            background: #000;
+            color: #FFF;
+        }
+
+        li a {
+            display: block;
+            text-decoration: none;
+            color: #FFF;
+            font-size: 10px;
+        }
+    </style>
+    <ul>
+        <li><a href="./pages/login/login.hbs">LogIn</a></li>
+        <li><a href="./pages/signin/signin.hbs">SignIn</a></li>
+        <li><a href="./pages/error/404.hbs">404</a></li>
+        <li><a href="./pages/error/500.hbs">500</a></li>
+        <li><a href="./pages/chat/chat.hbs">Chat</a></li>
+        <li><a href="./pages/profile/profile.hbs">Profile</a></li>
+        <li><a href="./pages/edit-profile/edit-profile.hbs">Edit Profile</a></li>
+        <li><a href="./pages/change-password/change-password.hbs">Change Password</a></li>
+    </ul>
+</body>
+</html>
