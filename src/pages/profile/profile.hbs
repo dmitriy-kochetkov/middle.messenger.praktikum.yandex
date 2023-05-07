@@ -1,52 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
-    <link rel="stylesheet" href="../../styles/styles.pcss">
-    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
-</head>
-<body>
-    {{> back-panel/back-panel backURL="../chat/chat.hbs" }}
-    <main class="page">
-        <div class="profile-wrap">
-            <div class="profile-header">
-                <div class="profile-image-wrap">
-                    <div class="profile-image">
-                        <div class="change-image-msg">
-                            Поменять аватар
-                        </div>
-                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M36 2H4C2.89543 2 2 2.89543 2 4V25.2667L14.6547 22.3139C15.5486 22.1053 16.4635 22 17.3814 22H22.6186C23.5365 22 24.4514 22.1053 25.3453 22.3139L38 25.2667V4C38 2.89543 37.1046 2 36 2ZM4 0C1.79086 0 0 1.79086 0 4V36C0 38.2091 1.79086 40 4 40H36C38.2091 40 40 38.2091 40 36V4C40 1.79086 38.2091 0 36 0H4ZM10.9091 14.5455C12.9174 14.5455 14.5455 12.9174 14.5455 10.9091C14.5455 8.90079 12.9174 7.27273 10.9091 7.27273C8.90082 7.27273 7.27276 8.90079 7.27276 10.9091C7.27276 12.9174 8.90082 14.5455 10.9091 14.5455Z" fill="#CDCDCD"/>
-                        </svg>
+---
+title: Профиль
+---
+
+{{!< default}}
+
+{{> back-panel/back-panel backURL="../chat/chat.hbs" }}
+<main class="page">
+    <div class="profile-wrap">
+        <div class="profile-header">
+            <div class="profile-image-wrap">
+                <div class="profile-image">
+                    <div class="change-image-msg">
+                        Поменять аватар
                     </div>
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M36 2H4C2.89543 2 2 2.89543 2 4V25.2667L14.6547 22.3139C15.5486 22.1053 16.4635 22 17.3814 22H22.6186C23.5365 22 24.4514 22.1053 25.3453 22.3139L38 25.2667V4C38 2.89543 37.1046 2 36 2ZM4 0C1.79086 0 0 1.79086 0 4V36C0 38.2091 1.79086 40 4 40H36C38.2091 40 40 38.2091 40 36V4C40 1.79086 38.2091 0 36 0H4ZM10.9091 14.5455C12.9174 14.5455 14.5455 12.9174 14.5455 10.9091C14.5455 8.90079 12.9174 7.27273 10.9091 7.27273C8.90082 7.27273 7.27276 8.90079 7.27276 10.9091C7.27276 12.9174 8.90082 14.5455 10.9091 14.5455Z" fill="#CDCDCD"/>
+                    </svg>
                 </div>
-                <div class="profile-name">Иван</div>
             </div>
+            <div class="profile-name">Иван</div>
+        </div>
 
-            <div class="profile-data lined">
-                {{> input/input name="email" label="Почта" value="pochta@yandex.ru" disabled=true}}
-                {{> input/input name="login" label="Логин" value="ivanivanov" disabled=true}}
-                {{> input/input name="first_name" label="Имя" value="Иван" disabled=true}}
-                {{> input/input name="second_name" label="Фамилия" value="Иванов" disabled=true}}
-                {{> input/input name="display_name" label="Имя в чате" value="Иван" disabled=true}}
-                {{> input/input name="phone" label="Телефон" value="+7 (909) 967 30 30" disabled=true}}
+        <div class="profile-data lined">
+            {{> input/input name="email" label="Почта" value="pochta@yandex.ru" disabled=true}}
+            {{> input/input name="login" label="Логин" value="ivanivanov" disabled=true}}
+            {{> input/input name="first_name" label="Имя" value="Иван" disabled=true}}
+            {{> input/input name="second_name" label="Фамилия" value="Иванов" disabled=true}}
+            {{> input/input name="display_name" label="Имя в чате" value="Иван" disabled=true}}
+            {{> input/input name="phone" label="Телефон" value="+7 (909) 967 30 30" disabled=true}}
+        </div>
+
+        <div class="profile-footer lined">
+            <div class="profile-action-link">
+                <a href="../edit-profile/edit-profile.hbs" class="button button_secondary" tabindex="0">Изменить данные</a>
             </div>
-
-            <div class="profile-footer lined">
-                <div class="profile-action-link">
-                    <a href="../edit-profile/edit-profile.hbs" class="button button_secondary" tabindex="0">Изменить данные</a>
-                </div>
-                <div class="profile-action-link">
-                    <a href="../change-password/change-password.hbs" class="button button_secondary" tabindex="1">Изменить пароль</a>
-                </div>
-                <div class="profile-action-link">
-                    <a href="../login/login.hbs" class="button button_dangerous" tabindex="2">Выйти</a>
-                </div>
+            <div class="profile-action-link">
+                <a href="../change-password/change-password.hbs" class="button button_secondary" tabindex="1">Изменить пароль</a>
+            </div>
+            <div class="profile-action-link">
+                <a href="../login/login.hbs" class="button button_dangerous" tabindex="2">Выйти</a>
             </div>
         </div>
-    </main>
-</body>
-</html>
+    </div>
+</main>

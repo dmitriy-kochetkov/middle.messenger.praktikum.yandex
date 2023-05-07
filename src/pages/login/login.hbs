@@ -1,32 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogIn</title>
-    <link rel="stylesheet" href="../../styles/styles.pcss">
-    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
-</head>
-<body>
-    <main class="page">
-        <div class="content-wrap">
-            <h1 class="content-title title">
-                Вход
-            </h1>
-            <form action="" method="post" class="form content-form">
-                {{> input/input name="login" label="Логин" value="ivanivanov"}}
-                {{> input/input name="password" label="Пароль" isPassword=true}}
+---
+title: Вход
+---
 
-                <div class="content-form__button">
-                    {{> button/button text="Авторизоваться" submit=true mode="primary"}}
-                </div>
-            </form>
-            <div class="content-footer">
-                
-                <a href="../signin/signin.hbs" class="button button_secondary" tabindex="0">Нет аккаунта?</a>
+{{!< default}}
+<main class="page">
+    <div class="content-wrap">
+        <h1 class="content-title title">
+            Вход
+        </h1>
+        <form action="" method="post" class="form content-form">
+            {{> input/input name="login" label="Логин" value="ivanivanov"}}
+            {{> input/input name="password" label="Пароль" isPassword=true}}
+
+            <div class="content-form__button">
+                {{> button/button text="Авторизоваться" submit=true mode="primary"}}
             </div>
+        </form>
+        <div class="content-footer">
+            
+            <a href="../signin/signin.hbs" class="button button_secondary" tabindex="0">Нет аккаунта?</a>
         </div>
-    </main>
-</body>
-</html>
+    </div>
+</main>
