@@ -25,20 +25,19 @@
                 </div>
             </div>
 
-            <form action="" method="post" class="profile-data lined">
-                {{> input/input name="email" label="Почта" value="pochta@yandex.ru"}}
-                {{> input/input name="login" label="Логин" value="ivanivanov"}}
-                {{> input/input name="first_name" label="Имя" value="Иван"}}
-                {{> input/input name="second_name" label="Фамилия" value="Иванов"}}
-                {{> input/input name="display_name" label="Имя в чате" value="Иван"}}
-                {{> input/input name="phone" label="Телефон" value="+7 (909) 967 30 30"}}
-            </form>
-
-            <div class="profile-footer">
-                <div class="profile-action-button">
+            <form action="" method="post" class="form profile-data">
+                <div class="lined">
+                    {{> input/input name="email" label="Почта" value="pochta@yandex.ru"}}
+                    {{> input/input name="login" label="Логин" value="ivanivanov"}}
+                    {{> input/input name="first_name" label="Имя" value="Иван"}}
+                    {{> input/input name="second_name" label="Фамилия" value="Иванов"}}
+                    {{> input/input name="display_name" label="Имя в чате" value="Иван"}}
+                    {{> input/input name="phone" label="Телефон" value="+7 (909) 967 30 30"}}
+                </div>
+                <div class="profile-form__button">
                     {{> button/button submit=true text="Сохранить" mode="primary"}}
                 </div>
-            </div>
+            </form>
         </div>
     </main>
 </body>
