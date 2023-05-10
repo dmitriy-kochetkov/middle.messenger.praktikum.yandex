@@ -1,0 +1,58 @@
+@import "./variables.pcss";
+@import "../partials/input/input.pcss";
+@import "../partials/button/button.pcss";
+@import "../partials/chat-item/chat-item.pcss";
+@import "../partials/back-panel/back-panel.pcss";
+@import "./fonts.pcss";
+
+@import "../pages/login/login.pcss";
+@import "../pages/error/error.pcss";
+@import "../pages/chat/chat.pcss";
+@import "../pages/profile/profile.pcss";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-regular);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.link-list {
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link-item {
+  display: block;
+  height: 30px;
+  width: 200px;
+  line-height: 30px;
+  margin-bottom: 2px;
+  text-align: center;
+  border-radius: 5px;
+  background: var(--black);
+}
+
+.nav-link {
+  display: block;
+  text-decoration: none;
+  color: var(--white);
+  font-size: 10px;
+}

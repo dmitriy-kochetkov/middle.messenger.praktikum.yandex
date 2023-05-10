@@ -1,0 +1,71 @@
+:root {
+  --window-shadow: 0px 0px 6px rgba(0, 0, 0, 0.14);
+}
+
+.page {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+.content-wrap {
+    min-width: 340px;
+    min-height: 450px;
+    border-radius: var(--widnow-border-radius);
+    box-shadow: var(--window-shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.content-title {
+    text-align: center;
+    padding: 50px 30px 0px 30px;
+    margin: 0px;
+    flex-grow: 0;
+}
+
+.content-form {
+    padding: 40px 30px 0px 30px;
+    flex-grow: 1;
+}
+
+.content-form .input-label {
+    padding: 3px 0;
+}
+
+.content-form .input-field {
+    width: 100%;
+    border-bottom: 1px solid var(--blue-1);
+    outline: none;
+}
+
+.content-form .input-validation-message {
+    padding: 7px 0 0;
+}
+
+.content-form__button {
+    flex-grow: 1;
+    display: flex;
+    align-items: flex-end;
+    padding-top: 40px;
+}
+
+.content-form__button .button{
+    width: 100%;
+    padding: 12px 0;
+}
+
+.content-footer {
+    padding: 2px 30px 16px;
+    flex-grow: 0;
+}
+
+.content-footer .button{
+    margin-bottom: 2px;
+    width: 100%;
+    text-align: center;
+    padding: 12px 0;
+}

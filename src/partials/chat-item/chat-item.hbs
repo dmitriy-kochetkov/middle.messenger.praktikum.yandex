@@ -1,0 +1,23 @@
+<div class="chat-item">
+    <div class="item-avatar">
+        <div class="avatar-wrap">
+            {{#if avatarURL}}
+            <img class="avatar-picture" src="{{avatarURL}}" alt="avatar"/>
+            {{/if}}
+        </div>
+    </div>
+    <div class="item-content">
+        <div class="item-header">
+            <span class="chat-name">{{chatName}}</span>
+            <span class="last-activity-date">{{lastActivity}}</span>
+        </div>
+        <div class="item-footer">
+            <div class="last-message-fragment">{{#if isMine}}<span class="my-message">Вы:</span>{{/if}} {{previewText}}</div>
+            <div class="counter-wrap">
+                {{#if newMessageCounter}}
+                <div class="new-messages-counter">{{newMessageCounter}}</div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</div>
