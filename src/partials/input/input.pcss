@@ -1,10 +1,14 @@
+.input-wrap {
+    flex-grow: 0;
+}
+
 .input-label {
   display: block;
 }
 
 .input-field {
   display: block;
-  border: 1px solid var(--white-1);
+  border: 1px solid var(--white);
   height: 32px;
   padding: 4px 5px;
 }
@@ -15,7 +19,7 @@
 
 .input-field[disabled] {
     color: var(--grey-2);
-    background: var(--white-1);
+    background: var(--white);
 }
 
 .input-validation-message {
@@ -24,5 +28,5 @@
 }
 
 .input_mode_error .input-field {
-  color: var(--red-1);
+  color: var(--red);
 }
