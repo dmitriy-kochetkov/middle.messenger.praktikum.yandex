@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "parcel --no-cache ./src/index.hbs --open",
     "build": "parcel build ./src/index.hbs",
-    "start": "npm run build && node server.js"
+    "start": "npm run build && node server.js",
+    "eslint": "eslint"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,10 @@
   "devDependencies": {
     "@anikin/parcel-transformer-handlebars": "^1.0.9",
     "@anikin/parcel-transformer-handlebars-precompile": "^1.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.7",
+    "@typescript-eslint/parser": "^5.59.7",
+    "eslint": "^8.41.0",
+    "eslint-config-airbnb": "^19.0.4",
     "parcel": "^2.8.3",
     "postcss-nested": "^6.0.1",
     "typescript": "^5.0.4"
