@@ -6,7 +6,8 @@
     "dev": "parcel --no-cache ./src/index.hbs --open",
     "build": "parcel build ./src/index.hbs",
     "start": "npm run build && node server.js",
-    "eslint": "eslint"
+    "eslint": "eslint",
+    "stylelint": "stylelint src/**/*.{pcss,css}"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,8 @@
     "eslint-config-airbnb": "^19.0.4",
     "parcel": "^2.8.3",
     "postcss-nested": "^6.0.1",
+    "stylelint": "^15.6.2",
+    "stylelint-config-standard": "^33.0.0",
     "typescript": "^5.0.4"
   },
   "dependencies": {
