@@ -1,0 +1,111 @@
+.conversation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 100vh;
+    padding: 0px 20px;
+    color: var(--grey-2);
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 10px 0px;
+        border-bottom: 1px solid var(--grey-5);
+    }
+
+    &__avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        overflow: hidden;
+        flex: 0 0 auto;
+
+        &_image {
+          width: 34px;
+          height: 34px;
+        }
+    }
+
+    &__name {
+        flex: auto;
+        font-size: 13px;
+        color: var(--grey-1);
+        padding-left: 10px;
+    }
+
+    &__options-button {
+        width: 25px;
+        height: 25px;
+        background: url("../../../static/options.svg") 11px 4px no-repeat;
+        border: none;
+        border-radius: 50%;
+        box-sizing: border-box;
+
+        &:hover {
+          background: var(--blue-2) url("../../../static/options-hover.svg") 11px 4px no-repeat;
+        }
+    }
+
+    &__content {
+        height: calc(100vh - 108px);
+        width: 100%;
+        overflow: scroll;
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 10px 0px;
+        border-top: 1px solid var(--grey-5);
+    }
+
+    &__send-message {
+      flex-grow: 1;
+      display: flex;
+      justify-content: space-between;
+    }
+
+}
+
+.send-message-form {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+
+    &__attach-button {
+      width: 32px;
+      height: 32px;
+      background: url("../../../static/attach.svg") 0px 0px no-repeat;
+      border: none;
+      box-sizing: border-box;
+
+      &:hover {
+        background: url("../../../static/attach-hover.svg") 0px 0px no-repeat;
+      }
+    }
+
+    &__message-input {
+      flex-grow: 1;
+      height: 32px;
+      border-radius: 16px;
+      border: none;
+      background: var(--grey-4);
+      padding: 0px 20px;
+    }
+
+    &__send-button {
+      background: var(--blue-1) url("../../../static/arrow-1.svg") 8px 8px no-repeat;
+      width: 28px;
+      height: 28px;
+      border-radius:14px;
+      border: none;
+      box-sizing: border-box;
+    }
+}
