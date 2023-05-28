@@ -4,11 +4,11 @@
     {{~^~}}
         default
     {{~/if~}}">
-    
+
     <label class="input-label" for="{{name}}">
         {{label}}
     </label>
-    
+
     <input class="input-field input" type="
     {{~#if isPassword~}}
         password
@@ -18,8 +18,8 @@
     {{~#if disabled~}}
         disabled
     {{~/if~}} />
-    
+
     <span class="input-validation-message error-message">
-        {{error-msg}}
+        {{errorMessage}}
     </span>
 </div>

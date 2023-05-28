@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "**Vanilla JS chat web-application**",
   "scripts": {
-    "dev": "parcel --no-cache ./src/index.hbs",
-    "build": "parcel build ./src/index.hbs",
+    "dev": "parcel --no-cache ./src/index.html",
+    "build": "parcel build ./src/index.html",
     "start": "npm run build && node server.js",
     "eslint": "eslint",
     "stylelint": "stylelint src/**/*.{pcss,css}"
