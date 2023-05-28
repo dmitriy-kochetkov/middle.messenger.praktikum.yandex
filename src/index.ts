@@ -1,4 +1,5 @@
 import { NavigationPage } from "./pages/navigation";
+import { LoginPage } from "./pages/login";
 import renderDom from "./utils/renderDom";
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -14,31 +15,39 @@ window.addEventListener('DOMContentLoaded', () => {
   ]
 
   const navigationPage = new NavigationPage({ pages });
+  const loginPage = new LoginPage({});
 
   switch (window.location.pathname) {
     case '/login':
-        console.log('go to LogIn page');
+        renderDom(loginPage);
         break;
     case '/signin':
           console.log('go to SignIn page');
+          renderDom(navigationPage);
           break;
     case '/404':
           console.log('go to 404 Error page');
+          renderDom(navigationPage);
           break;
     case '/500':
           console.log('go to 500 Error page');
+          renderDom(navigationPage);
           break;
     case '/chat':
         console.log('go to Chat page');
+        renderDom(navigationPage);
         break;
     case '/profile':
           console.log('go to Profile page');
+          renderDom(navigationPage);
           break;
     case '/edit-profile':
           console.log('go to Edit Profile page');
+          renderDom(navigationPage);
           break;
     case '/change-password':
           console.log('go to Change Password page');
+          renderDom(navigationPage);
           break;
     default:
         renderDom(navigationPage);

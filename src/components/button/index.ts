@@ -6,9 +6,9 @@ type ButtonMode = 'primary' | 'secondary';
 interface IButtonProps {
   label: string,
   submit: boolean,
-  mode: ButtonMode
+  mode: ButtonMode,
   events: {
-      click: (evt: PointerEvent) => void,
+      click: (evt: PointerEvent) => void
   }
 }
 

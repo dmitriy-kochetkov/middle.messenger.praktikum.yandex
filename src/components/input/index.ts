@@ -3,16 +3,17 @@ import template from './input.hbs';
 
 type InputMode = 'default' | 'error';
 
-interface IInputProps {
+export interface IInputProps {
   mode: InputMode,
   name: string,
   label: string,
   isPassword: boolean,
   value: string,
   disabled: boolean,
-  errorMessage: string
+  errorMessage: string,
   events: {
-    click: (evt: PointerEvent) => void,
+      focusin: (evt: FocusEvent) => void,
+      focusout: (evt: FocusEvent) => void
   }
 }
 
