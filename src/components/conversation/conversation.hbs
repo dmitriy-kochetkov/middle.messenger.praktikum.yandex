@@ -17,13 +17,13 @@
   </div>
 
   <div class="conversation__content">
-    {{> chat-feed/chat-feed data=data}}
+    {{> chat-feed/chat-feed data=conversation.data}}
   </div>
 
   <div class="conversation__footer">
     <form class="send-message-form">
       <button class="send-message-form__attach-button"></button>
-      <input class="send-message-form__message-input" name="message" type={{type}} value="{{value}}" placeholder="Сообщение"/>
+      <input class="send-message-form__message-input" name="message" type="text" value="{{value}}" placeholder="Сообщение"/>
       <button class="send-message-form__send-button" type="submit"></button>
     </form>
   </div>
