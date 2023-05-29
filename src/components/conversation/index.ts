@@ -1,17 +1,12 @@
 import Block from "../../utils/Block";
-import { TChatFeedData } from "../chat-feed";
 import template from './conversation.hbs';
-import { ChatFeed } from "../chat-feed";
+import { ChatFeed, IChatFeedProps } from "../chat-feed";
 
 export interface IConversation {
-  visible: boolean,
-  name: string,
-  avatarURL?: string
+  name?: string,
+  avatarURL?: string,
+  chatFeed: IChatFeedProps
 }
-
-// export interface IConversation {
-//   convData: IConversationData
-// }
 
 export class Conversation extends Block {
   constructor(props: IConversation) {
@@ -19,7 +14,7 @@ export class Conversation extends Block {
   }
 
   protected init(): void {
-    //this.children.chatFeed = new ChatFeed(this.props.data);
+    this.children.chatFeed = new ChatFeed(this.props.chatFeed);
   }
 
   render() {

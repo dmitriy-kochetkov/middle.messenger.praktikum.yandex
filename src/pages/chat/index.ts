@@ -6,6 +6,7 @@ import template from './chat.hbs'
 
 interface IChat {
   chatItems: IChatItemProps[],
+  conversation: IConversation,
 }
 
 export class ChatPage extends Block {
@@ -14,43 +15,8 @@ export class ChatPage extends Block {
   }
 
   protected init(): void {
-    /*this.children.dialog = new Conversation({
-      convData: {
-        name: "Вадим",
-        avatarURL: "../../../static/cat.jpeg",
-        data: [
-          {
-            date: '15:44',
-            messages: [
-              {
-                type: 'text',
-                time: '12:01',
-                isMine: false,
-                content: {
-                  text: 'Hello'
-                }
-              },
-              {
-                type: 'text',
-                time: '12:00',
-                isMine: true,
-                content: {
-                  text: 'Hello'
-                }
-              }
-            ]
-          }
-        ]
-      }
-     });*/
-
-    this.children.dialog = new Conversation({
-        visible: true,
-        name: "Вадим",
-        avatarURL: "../static/cat.jpeg"
-    });
-
     this.children.chats = this.props.chatItems.map((props: IChatItemProps) => new ChatItem(props));
+    this.children.conversation = new Conversation(this.props.conversation as IConversation);
   }
 
   render() {

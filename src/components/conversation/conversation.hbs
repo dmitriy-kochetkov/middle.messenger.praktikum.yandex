@@ -1,5 +1,5 @@
 <div class="conversation">
-  {{#if visible}}
+    {{#if name}}
     <div class="conversation__header">
         <div class="conversation__avatar">
             {{#if avatarURL}}
@@ -10,25 +10,24 @@
         </div>
 
         <div class="conversation__name">
-          {{name}}
+            {{name}}
         </div>
 
         <button class="conversation__options-button"></button>
     </div>
 
     <div class="conversation__content">
-      <!--[[> chat-feed/chat-feed data=conversation.data]]-->
-      [[[chatFeed]]]
+        {{{chatFeed}}}
     </div>
 
     <div class="conversation__footer">
         <form class="send-message-form">
-          <button class="send-message-form__attach-button"></button>
-          <input class="send-message-form__message-input" name="message" type="text" value="{{value}}" placeholder="Сообщение"/>
-          <button class="send-message-form__send-button" type="submit"></button>
+            <button class="send-message-form__attach-button"></button>
+            <input class="send-message-form__message-input" name="message" type="text" value="{{value}}" placeholder="Сообщение"/>
+            <button class="send-message-form__send-button" type="submit"></button>
         </form>
     </div>
-  {{else}}
+    {{else}}
     <span>Выберите чат чтобы отправить сообщение</span>
-  {{/if}}
+    {{/if}}
 </div>

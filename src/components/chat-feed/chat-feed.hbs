@@ -1,33 +1,5 @@
 <div class="chat-feed">
-
-  {{#each data}}
-    <div class="chat-feed__date-delimeter">{{this.date}}</div>
-
-
-    {{#each this.messages}}
-
-    <div class="message {{#if this.isMine}}message-mine{{/if}}">
-
-      <div class="message__row">
-        {{#if this.isText}}
-            <div class="message__text">{{this.content.text}}</div>
-          {{else if this.isImage}}
-            <img class="message__image" src="{{this.content.url}}" width="{{this.content.width}}" height="{{this.content.height}}" alt="attached image"/>
-          {{/if}}
-      </div>
-
-      <div class="message__footer">
-        <div class="message__info{{#if this.isImage}}-cover{{/if}} message__info{{#if this.isImage}}-cover{{/if}}{{#if this.isMine}}-mine{{/if}}">
-          {{#if this.isMine}}
-            <div class="message__status message__status-{{#if this.content.readed}}readed{{else}}sended{{/if}}"></div>
-          {{/if}}
-            <div {{#if this.isMine}}class="message__info_colored"{{/if}}> {{this.time}} </div>
-          </div>
-      </div>
-
-    </div>
-
+    {{#each messages}}
+        {{{this}}}
     {{/each}}
-
-  {{/each}}
 </div>

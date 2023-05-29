@@ -7,7 +7,9 @@ import renderDom from "./utils/renderDom";
 import { EditProfilePage } from "./pages/edit-profile";
 import { ChangePasswordPage } from "./pages/change-password";
 import { ChatPage } from "./pages/chat";
-import { IConversation } from "./components/conversation";
+import { Conversation, IConversation } from "./components/conversation";
+import { ChatFeed } from "./components/chat-feed";
+import { Message } from "./components/message";
 
 window.addEventListener('DOMContentLoaded', () => {
   const pages = [
@@ -41,25 +43,74 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   const chatPage = new ChatPage({
-    /*conversation: ({
-      name: "Вадим",
-      avatarURL: "../../../static/cat.jpeg",
-      data: [
-        date: string,
-        messages: [
-          type: 'text',
-          time: '12:01',
-          isMine: false,
-          content: {
-            text: 'Hello',
-            url: null,
-            width: null,
-            height: null
-          }
-        ]
-      ]
-    }) as IConversation*/
-    // convData: {},
+    conversation: {
+        name: 'Вадим',
+        avatarURL: '../../dsd.png',
+        chatFeed: {
+            messages: [
+                {
+                    isText: true,
+                    time: '11:55',
+                    text: 'Привет!',
+                    url: '../../image.png',
+                    width: '320',
+                    height: '240',
+                    isMine: false,
+                    readed: true
+                },
+                {
+                    isText: true,
+                    time: '12:05',
+                    text: 'Привет!',
+                    url: '../../image.png',
+                    width: '320',
+                    height: '240',
+                    isMine: true,
+                    readed: true
+                },
+                {
+                    isText: true,
+                    time: '12:06',
+                    text: 'Hello!!!',
+                    url: '../../image.png',
+                    width: '320',
+                    height: '240',
+                    isMine: false,
+                    readed: true
+                },
+                {
+                    isText: true,
+                    time: '12:07',
+                    text: 'Hello, my friend!',
+                    url: '../../image.png',
+                    width: '320',
+                    height: '240',
+                    isMine: true,
+                    readed: true
+                },
+                {
+                    isText: true,
+                    time: '12:17',
+                    text: 'Hello!!!',
+                    url: '../../image.png',
+                    width: '320',
+                    height: '240',
+                    isMine: false,
+                    readed: true
+                },
+                {
+                    isText: true,
+                    time: '12:05',
+                    text: 'Hello, my friend!',
+                    url: '../../image.png',
+                    width: '320',
+                    height: '240',
+                    isMine: true,
+                    readed: true
+                }
+            ]
+        }
+    },
     chatItems: [
       {
         name: 'чат 1',

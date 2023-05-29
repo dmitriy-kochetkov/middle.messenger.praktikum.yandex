@@ -1,5 +1,24 @@
 import Block from '../../utils/Block';
+import { IMessage, Message } from '../message';
 import template from './chat-feed.hbs'
+
+export interface IChatFeedProps {
+    messages: IMessage[],
+}
+
+export class ChatFeed extends Block {
+  constructor(props: IChatFeedProps) {
+    super(props)
+  }
+
+  protected init(): void {
+    this.children.messages = this.props.messages.map((props: IMessage) => new Message(props));
+  }
+
+  render() {
+    return this.compile(template, this.props);
+  }
+}
 
 /*
 {
@@ -30,38 +49,3 @@ import template from './chat-feed.hbs'
   ]
 }
 */
-
-type MessageType = 'text' | 'image';
-
-type MessageContent = {
-  text?: string,
-  url?: string,
-  width?: string,
-  height?: string
-};
-
-type TMessage = {
-  type: MessageType,
-  time: string,
-  isMine: boolean,
-  content: MessageContent
-}
-
-export type TChatFeedData = {
-  date: string,
-  messages: TMessage[]
-}
-
-interface IChatFeedProps {
-  data: TChatFeedData[]
-}
-
-export class ChatFeed extends Block {
-  constructor(props: IChatFeedProps) {
-    super(props)
-  }
-
-  render() {
-    return this.compile(template, this.props);
-  }
-}
