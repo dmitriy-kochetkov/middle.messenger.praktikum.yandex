@@ -3,7 +3,7 @@
         {{#if avatarURL}}
         <img class="chat-item__image" src="{{avatarURL}}" alt="avatar for {{name}}"/>
         {{else}}
-        <img class="chat-item__image" src="../../../static/default-avatar.svg" alt="no image avatar"/>
+        <img class="chat-item__image" src="../static/default-avatar.svg" alt="no image avatar"/>
         {{/if}}
     </div>
     <div class="chat-item__info">
@@ -13,7 +13,7 @@
         </div>
         <div class="chat-item__row chat-item__footer">
             <div class="chat-item__text">
-                {{#if isMine}}<span class="chat-item__my-message">Вы:</span>{{/if}} 
+                {{#if isMine}}<span class="chat-item__my-message">Вы:</span>{{/if}}
                 {{text}}
             </div>
             {{#if counter}}

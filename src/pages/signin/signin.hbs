@@ -2,27 +2,25 @@
 title: Регистрация
 ---
 
-{{!< default}}
-
 <main class="page">
     <div class="content-wrap">
         <h1 class="content-title title">
             Регистрация
         </h1>
         <form action="" method="post" class="form content-form">
-            {{> input/input name="email" label="Почта" value="pochta@yandex.ru"}}
-            {{> input/input name="login" label="Логин" value="ivanivanov"}}
-            {{> input/input name="first_name" label="Имя" value="Иван"}}
-            {{> input/input name="second_name" label="Фамилия" value="Иванов"}}
-            {{> input/input name="phone" label="Телефон" value="+7 (909) 967 30 30"}}
-            {{> input/input name="password" label="Пароль" isPassword=true value="ivanivanov" mode="error"}}
-            {{> input/input name="password_2" label="Пароль (ещё раз)" isPassword=true errorMessage="Пароли не совпадают" value="ivanivanof" mode="error"}}
+            {{{inputEmail}}}
+            {{{inputLogin}}}
+            {{{inputFirstName}}}
+            {{{inputSecondName}}}
+            {{{inputPhone}}}
+            {{{inputPassword}}}
+            {{{inputPasswordRepeat}}}
             <div class="content-form__button">
-                {{> button/button label="Зарегистрироваться" submit=true mode="primary"}}
+                {{{button}}}
             </div>
         </form>
         <div class="content-footer">
-            <a href="../login/login.hbs" class="button button_secondary" tabindex="0">Войти</a>
+            <a href="../login" class="button button_secondary" tabindex="0">Войти</a>
         </div>
     </div>
 </main>

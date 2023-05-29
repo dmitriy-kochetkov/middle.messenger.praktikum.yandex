@@ -34,10 +34,10 @@ import template from './chat-feed.hbs'
 type MessageType = 'text' | 'image';
 
 type MessageContent = {
-  text: string | null,
-  url: string | null,
-  width: string | null,
-  height: string | null
+  text?: string,
+  url?: string,
+  width?: string,
+  height?: string
 };
 
 type TMessage = {
@@ -47,13 +47,13 @@ type TMessage = {
   content: MessageContent
 }
 
-type TChatFeedData = {
+export type TChatFeedData = {
   date: string,
   messages: TMessage[]
 }
 
 interface IChatFeedProps {
-  data: TChatFeedData
+  data: TChatFeedData[]
 }
 
 export class ChatFeed extends Block {
