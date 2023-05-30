@@ -14,12 +14,12 @@ export class LoginPage extends Block {
   }
 
   protected init(): void {
-    this.children.inputLogin = new Input({
+    /*this.children.inputLogin = new Input({
       mode: 'default',
       name: 'login',
       label: 'Логин',
       value: 'ivanivanov',
-      errorMessage: '',
+      errorMessage: '++++',
       disabled: false,
       isPassword: false,
       events: {
@@ -31,24 +31,36 @@ export class LoginPage extends Block {
           this.validate(evt, this.children.inputLogin);
         }
       }
+    });*/
+
+    this.children.inputLogin = new Input({
+        label: "Логин",
+        name: "login",
+        type: 'text',
+        value: "ivanivanov",
+        disabled: false,
+        danger: false,
+        enableErrorMessage: true,
+        errorMessage: "",
+        events: {
+            focusin: (evt: FocusEvent) => {},
+            focusout: (evt: FocusEvent) => {}
+        }
     });
 
     this.children.inputPassword = new Input({
-      mode: 'default',
-      name: 'password',
-      label: 'Пароль',
-      value: 'userPassword',
-      errorMessage: '',
-      disabled: false,
-      isPassword: true,
-      events: {
-          focusin: (evt: FocusEvent) => {
-            this.eventCheck(evt);
-          },
-          focusout: (evt: FocusEvent) => {
-            this.validate(evt, this.children.inputPassword);
-          }
-      }
+        label: "Пароль",
+        name: "password",
+        type: 'password',
+        value: "ivanivanov",
+        disabled: false,
+        danger: false,
+        enableErrorMessage: true,
+        errorMessage: "",
+        events: {
+            focusin: (evt: FocusEvent) => {},
+            focusout: (evt: FocusEvent) => {}
+        }
     });
 
     this.children.button = new Button({

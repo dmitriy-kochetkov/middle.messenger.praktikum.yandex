@@ -18,54 +18,48 @@ export class ChangePasswordPage extends Block {
     this.children.backPanel = new BackPanel({ backURL: '../profile'});
 
     this.children.inputOldPassword = new Input({
-      mode: 'default',
-      name: 'oldPassword',
-      label: 'Старый пароль',
-      value: 'pochta@yandex.ru',
-      errorMessage: '',
-      disabled: false,
-      isPassword: true,
-      events: {
-        focusin: (evt: FocusEvent) => {
-        },
-        focusout: (evt: FocusEvent) => {
-          this.validate(evt, this.children.inputOldPassword);
+        label: "Старый пароль",
+        name: "oldPassword",
+        type: 'password',
+        value: "string",
+        disabled: false,
+        danger: false,
+        enableErrorMessage: true,
+        errorMessage: "",
+        events: {
+            focusin: (evt: FocusEvent) => {},
+            focusout: (evt: FocusEvent) => {}
         }
-      }
     });
 
     this.children.inputNewPassword = new Input({
-      mode: 'default',
-      name: 'newPassword',
-      label: 'Новый пароль',
-      value: 'ivanivanov',
-      errorMessage: '',
-      disabled: false,
-      isPassword: true,
-      events: {
-        focusin: (evt: FocusEvent) => {
-        },
-        focusout: (evt: FocusEvent) => {
-          this.validate(evt, this.children.inputNewPassword);
+        label: "Новый пароль",
+        name: "newPassword",
+        type: 'password',
+        value: "ivanivanov__",
+        disabled: false,
+        danger: false,
+        enableErrorMessage: true,
+        errorMessage: "",
+        events: {
+            focusin: (evt: FocusEvent) => {},
+            focusout: (evt: FocusEvent) => {}
         }
-      }
     });
 
     this.children.inputNewPasswordRepeat = new Input({
-      mode: 'default',
-      name: 'newPassword2',
-      label: 'Повторите новый пароль',
-      value: 'Иван',
-      errorMessage: '',
-      disabled: false,
-      isPassword: true,
-      events: {
-        focusin: (evt: FocusEvent) => {
-        },
-        focusout: (evt: FocusEvent) => {
-          this.validate(evt, this.children.inputNewPasswordRepeat);
+        label: "Повторите новый пароль",
+        name: "newPassword2",
+        type: 'password',
+        value: "ivanivanov__",
+        disabled: false,
+        danger: false,
+        enableErrorMessage: true,
+        errorMessage: "Пароли не совпадают",
+        events: {
+            focusin: (evt: FocusEvent) => {},
+            focusout: (evt: FocusEvent) => {}
         }
-      }
     });
 
     this.children.button = new Button({

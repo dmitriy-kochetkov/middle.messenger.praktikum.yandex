@@ -1,18 +1,16 @@
+import renderDom from "./utils/renderDom";
 import { NavigationPage } from "./pages/navigation";
 import { LoginPage } from "./pages/login";
 import { SigninPage } from "./pages/signin";
 import { ErrorPage } from "./pages/error";
 import { ProfilePage } from "./pages/profile";
-import renderDom from "./utils/renderDom";
 import { EditProfilePage } from "./pages/edit-profile";
 import { ChangePasswordPage } from "./pages/change-password";
 import { ChatPage } from "./pages/chat";
-import { Conversation, IConversation } from "./components/conversation";
-import { ChatFeed } from "./components/chat-feed";
-import { Message } from "./components/message";
 
 window.addEventListener('DOMContentLoaded', () => {
-  const pages = [
+
+    const pages = [
     {link: '/login', label: 'LogIn'},
     {link: '/signin', label: 'SignIn'},
     {link: '/404', label: '404'},
@@ -24,17 +22,24 @@ window.addEventListener('DOMContentLoaded', () => {
   ]
 
   const navigationPage = new NavigationPage({ pages });
+
   const loginPage = new LoginPage({inputs: []});
+
   const signinPage = new SigninPage({inputs: []});
+
   const profilePage = new ProfilePage({userName: "Иван", inputs: []});
+
   const editProfilePage = new EditProfilePage({inputs: []});
+
   const changePasswordPage = new ChangePasswordPage({inputs: []});
+
   const errorPage404 = new ErrorPage({
     errorCode: "404",
     messageText: "Не туда попали",
     link: "../signin",
     linkLabel: "Ещё не зарегистрированы?",
   });
+
   const errorPage500 = new ErrorPage({
     errorCode: "500",
     messageText: "Мы уже фиксим",
@@ -72,19 +77,12 @@ window.addEventListener('DOMContentLoaded', () => {
                     isText: true,
                     time: '12:06',
                     text: 'Hello!!!',
-                    url: '../../image.png',
-                    width: '320',
-                    height: '240',
-                    isMine: false,
-                    readed: true
+                    isMine: false
                 },
                 {
                     isText: true,
                     time: '12:07',
                     text: 'Hello, my friend!',
-                    url: '../../image.png',
-                    width: '320',
-                    height: '240',
                     isMine: true,
                     readed: true
                 },
@@ -92,19 +90,12 @@ window.addEventListener('DOMContentLoaded', () => {
                     isText: true,
                     time: '12:17',
                     text: 'Hello!!!',
-                    url: '../../image.png',
-                    width: '320',
-                    height: '240',
-                    isMine: false,
-                    readed: true
+                    isMine: false
                 },
                 {
                     isText: true,
                     time: '12:05',
                     text: 'Hello, my friend!',
-                    url: '../../image.png',
-                    width: '320',
-                    height: '240',
                     isMine: true,
                     readed: true
                 }
@@ -113,24 +104,24 @@ window.addEventListener('DOMContentLoaded', () => {
     },
     chatItems: [
       {
-        name: 'чат 1',
-        lastActivity: '20:55',
+        name: 'HELLO_WORLD_BOT',
+        lastActivity: '20:17',
         isMine: false,
-        text: 'Hello world...',
-        counter: '1'
+        text: 'Hello world!',
+        counter: '10'
       },
       {
-        name: 'чат 2',
-        lastActivity: '20:45',
-        isMine: true,
+        name: 'Марина',
+        lastActivity: 'Вт',
+        isMine: false,
         text: 'Oh my gosh!'
       },
       {
-        name: 'чат 3',
-        lastActivity: '20:35',
-        isMine: false,
-        text: "It's alive!",
-        counter: '3'
+        name: 'Вадим',
+        avatarURL: '',
+        lastActivity: '19 июня',
+        isMine: true,
+        text: "Hello, my friend!"
       }
     ]
   })

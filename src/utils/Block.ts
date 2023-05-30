@@ -10,16 +10,11 @@ class Block {
   protected children: Record<string, Block>;
   private eventBus: () => EventBus;
   private _element: HTMLElement | null = null;
-  //private _meta: {props: TProps};
 
   constructor(propsWithChildren: TProps) {
     const eventBus = new EventBus();
 
     const { props, children } = this._getChildrenAndProps(propsWithChildren);
-
-    // this._meta = {
-    //   props
-    // };
 
     this.children = children;
     this.id = uuidv4();
@@ -111,7 +106,7 @@ class Block {
     }
   }
 
-  protected componentDidUpdate(oldProps: TProps, newProps: TProps) {
+  protected componentDidUpdate(oldProps: TProps, newProps: TProps): boolean {
     // TODO: deepEquals
     return true;
   }
@@ -214,7 +209,6 @@ class Block {
   }
 
   _createDocumentElement(tagName: string) {
-    // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
     return document.createElement(tagName);
   }
 

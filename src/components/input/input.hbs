@@ -1,25 +1,13 @@
-<div class="input-wrap input_mode_
-    {{~#if mode}}
-        {{~mode}}
-    {{~^~}}
-        default
-    {{~/if~}}">
-
-    <label class="input-label" for="{{name}}">
+<div class="input">
+    {{#if label}}
+    <label class="input__label" for="{{name}}">
         {{label}}
     </label>
-
-    <input class="input-field input" type="
-    {{~#if isPassword~}}
-        password
-    {{~^~}}
-        text
-    {{~/if~}}" name="{{name}}" id="{{name}}" value="{{value}}"
-    {{~#if disabled~}}
-        disabled
-    {{~/if~}} />
-
-    <span class="input-validation-message error-message">
+    {{/if}}
+    <input class="input__field {{#if danger}}input__field_danger{{/if}}" type="{{type}}" name="{{name}}" id="{{name}}" value="{{value}}" {{#if disabled}}disabled{{/if}}/>
+    {{#if enableErrorMessage}}
+    <span class="input__error-message">
         {{errorMessage}}
     </span>
+    {{/if}}
 </div>

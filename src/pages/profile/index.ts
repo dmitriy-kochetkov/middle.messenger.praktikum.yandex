@@ -16,7 +16,7 @@ export class ProfilePage extends Block {
   protected init(): void {
     this.children.backPanel = new BackPanel({ backURL: '../chat'});
 
-    this.children.inputEmail = new Input({
+    /*this.children.inputEmail = new Input({
       mode: 'default',
       name: 'email',
       label: 'Почта',
@@ -30,86 +30,96 @@ export class ProfilePage extends Block {
         focusout: (evt: FocusEvent) => {
         }
       }
+    });*/
+
+    this.children.inputEmail = new Input({
+        label: "Почта",
+        name: "email",
+        type: 'text',
+        value: "pochta@yandex.ru",
+        disabled: true,
+        danger: false,
+        enableErrorMessage: true,
+        errorMessage: "",
+        events: {
+            focusin: (evt: FocusEvent) => {},
+            focusout: (evt: FocusEvent) => {}
+        }
     });
 
     this.children.inputLogin = new Input({
-      mode: 'default',
-      name: 'login',
-      label: 'Логин',
-      value: 'ivanivanov',
-      errorMessage: '',
-      disabled: true,
-      isPassword: false,
-      events: {
-        focusin: (evt: FocusEvent) => {
-        },
-        focusout: (evt: FocusEvent) => {
+        label: "Логин",
+        name: "login",
+        type: 'text',
+        value: "ivanivanov",
+        disabled: true,
+        danger: false,
+        enableErrorMessage: true,
+        errorMessage: "",
+        events: {
+            focusin: (evt: FocusEvent) => {},
+            focusout: (evt: FocusEvent) => {}
         }
-      }
     });
 
     this.children.inputFirstName = new Input({
-      mode: 'default',
-      name: 'first_name',
-      label: 'Имя',
-      value: 'Иван',
-      errorMessage: '',
-      disabled: true,
-      isPassword: false,
-      events: {
-        focusin: (evt: FocusEvent) => {
-        },
-        focusout: (evt: FocusEvent) => {
+        label: "Имя",
+        name: "first_name",
+        type: 'text',
+        value: "Иван",
+        disabled: true,
+        danger: false,
+        enableErrorMessage: true,
+        errorMessage: "",
+        events: {
+            focusin: (evt: FocusEvent) => {},
+            focusout: (evt: FocusEvent) => {}
         }
-      }
     });
 
     this.children.inputSecondName = new Input({
-      mode: 'default',
-      name: 'second_name',
-      label: 'Фамилия',
-      value: 'Иванов',
-      errorMessage: '',
-      disabled: true,
-      isPassword: false,
-      events: {
-        focusin: (evt: FocusEvent) => {
-        },
-        focusout: (evt: FocusEvent) => {
+        label: "Фамилия",
+        name: "second_name",
+        type: 'text',
+        value: "Иванов",
+        disabled: true,
+        danger: false,
+        enableErrorMessage: true,
+        errorMessage: "",
+        events: {
+            focusin: (evt: FocusEvent) => {},
+            focusout: (evt: FocusEvent) => {}
         }
-      }
     });
 
     this.children.inputDisplayName = new Input({
-      mode: 'default',
-      name: 'display_name',
-      label: 'Имя в чате',
-      value: 'Иван',
-      errorMessage: '',
-      disabled: true,
-      isPassword: false,
-      events: {
-        focusin: (evt: FocusEvent) => {
-        },
-        focusout: (evt: FocusEvent) => {
+        label: "Имя в чате",
+        name: "display_name",
+        type: 'text',
+        value: "Иван",
+        disabled: true,
+        danger: false,
+        enableErrorMessage: true,
+        errorMessage: "",
+        events: {
+            focusin: (evt: FocusEvent) => {},
+            focusout: (evt: FocusEvent) => {}
         }
-      }
     });
 
     this.children.inputPhone = new Input({
-      mode: 'default',
-      name: 'phone',
-      label: 'Телефон',
-      value: '+7 (909) 967 30 30',
-      errorMessage: '',
-      disabled: true,
-      isPassword: false,
-      events: {
-        focusin: (evt: FocusEvent) => {
-        },
-        focusout: (evt: FocusEvent) => {
+        label: "Телефон",
+        name: "phone",
+        type: 'text',
+        value: "+7 (909) 967 30 30",
+        disabled: true,
+        danger: false,
+        enableErrorMessage: true,
+        errorMessage: "",
+        events: {
+            focusin: (evt: FocusEvent) => {},
+            focusout: (evt: FocusEvent) => {}
         }
-      }
     });
   }
 

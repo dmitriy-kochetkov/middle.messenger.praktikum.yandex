@@ -18,104 +18,93 @@ export class EditProfilePage extends Block {
     this.children.backPanel = new BackPanel({ backURL: '../profile'});
 
     this.children.inputEmail = new Input({
-      mode: 'default',
-      name: 'email',
-      label: 'Почта',
-      value: 'pochta@yandex.ru',
-      errorMessage: '',
-      disabled: false,
-      isPassword: false,
-      events: {
-        focusin: (evt: FocusEvent) => {
-        },
-        focusout: (evt: FocusEvent) => {
-          this.validate(evt, this.children.inputEmail);
+        label: "Почта",
+        name: "email",
+        type: 'text',
+        value: "pochta@yandex.ru",
+        disabled: false,
+        danger: false,
+        enableErrorMessage: true,
+        errorMessage: "",
+        events: {
+            focusin: (evt: FocusEvent) => {},
+            focusout: (evt: FocusEvent) => {}
         }
-      }
     });
 
     this.children.inputLogin = new Input({
-      mode: 'default',
-      name: 'login',
-      label: 'Логин',
-      value: 'ivanivanov',
-      errorMessage: '',
-      disabled: false,
-      isPassword: false,
-      events: {
-        focusin: (evt: FocusEvent) => {
-        },
-        focusout: (evt: FocusEvent) => {
-          this.validate(evt, this.children.inputLogin);
+        label: "Логин",
+        name: "login",
+        type: 'text',
+        value: "ivanivanov",
+        disabled: false,
+        danger: false,
+        enableErrorMessage: true,
+        errorMessage: "",
+        events: {
+            focusin: (evt: FocusEvent) => {},
+            focusout: (evt: FocusEvent) => {}
         }
-      }
     });
 
     this.children.inputFirstName = new Input({
-      mode: 'default',
-      name: 'first_name',
-      label: 'Имя',
-      value: 'Иван',
-      errorMessage: '',
-      disabled: false,
-      isPassword: false,
-      events: {
-        focusin: (evt: FocusEvent) => {
-        },
-        focusout: (evt: FocusEvent) => {
-          this.validate(evt, this.children.inputFirstName);
+        label: "Имя",
+        name: "first_name",
+        type: 'text',
+        value: "Иван",
+        disabled: false,
+        danger: false,
+        enableErrorMessage: true,
+        errorMessage: "",
+        events: {
+            focusin: (evt: FocusEvent) => {},
+            focusout: (evt: FocusEvent) => {}
         }
-      }
     });
 
     this.children.inputSecondName = new Input({
-      mode: 'default',
-      name: 'second_name',
-      label: 'Фамилия',
-      value: 'Иванов',
-      errorMessage: '',
-      disabled: false,
-      isPassword: false,
-      events: {
-        focusin: (evt: FocusEvent) => {
-        },
-        focusout: (evt: FocusEvent) => {
-          this.validate(evt, this.children.inputSecondName);
+        label: "Фамилия",
+        name: "second_name",
+        type: 'text',
+        value: "Иванов",
+        disabled: false,
+        danger: false,
+        enableErrorMessage: true,
+        errorMessage: "",
+        events: {
+            focusin: (evt: FocusEvent) => {},
+            focusout: (evt: FocusEvent) => {}
         }
-      }
     });
 
     this.children.inputDisplayName = new Input({
-      mode: 'default',
-      name: 'display_name',
-      label: 'Имя в чате',
-      value: 'Иван',
-      errorMessage: '',
-      disabled: false,
-      isPassword: false,
-      events: {
-        focusin: (evt: FocusEvent) => {
-        },
-        focusout: (evt: FocusEvent) => {
+        label: "Имя в чате",
+        name: "display_name",
+        type: 'text',
+        value: "Иван",
+        disabled: false,
+        danger: false,
+        enableErrorMessage: true,
+        errorMessage: "",
+        events: {
+            focusin: (evt: FocusEvent) => {},
+            focusout: (evt: FocusEvent) => {}
         }
-      }
     });
 
     this.children.inputPhone = new Input({
-      mode: 'default',
-      name: 'phone',
-      label: 'Телефон',
-      value: '+7 (909) 967 30 30',
-      errorMessage: '',
-      disabled: false,
-      isPassword: false,
-      events: {
-        focusin: (evt: FocusEvent) => {
-        },
-        focusout: (evt: FocusEvent) => {
-          this.validate(evt, this.children.inputPhone);
+        label: "Телефон",
+        name: "phone",
+        type: 'text',
+        value: "+7 (909) 967 30 30",
+        disabled: false,
+        danger: false,
+        enableErrorMessage: true,
+        errorMessage: "",
+        events: {
+            focusin: (evt: FocusEvent) => {},
+            focusout: (evt: FocusEvent) => {}
         }
-      }
     });
 
     this.children.button = new Button({
