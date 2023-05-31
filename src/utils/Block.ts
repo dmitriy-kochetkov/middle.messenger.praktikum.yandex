@@ -3,13 +3,23 @@ import { v4 as uuidv4 } from 'uuid';
 import { TProps } from './types';
 import { EVENTS } from './constants';
 
+/*
+type ChildrenComponents = Record<string, any>;
+type EventListenersForEvent = Record<string, (...args: any) => void>;
+
+interface IComponentProps {
+    [key: string]: any;
+    children?: ChildrenComponents;
+    events?: EventListenersForEvent;
+}*/
+
 
 class Block {
   private id: string;
   protected props: TProps;
   protected children: Record<string, Block>;
   private eventBus: () => EventBus;
-  private _element: HTMLElement | null = null;
+  private _element!: HTMLElement;
 
   constructor(propsWithChildren: TProps) {
     const eventBus = new EventBus();
@@ -28,7 +38,7 @@ class Block {
   }
 
   private _getChildrenAndProps(childrenAndProps: TProps) {
-    const props: TProps = {};
+    const props: TProps = {} as TProps;
     const children: Record<string, Block> = {};
 
     Object.entries(childrenAndProps).forEach(([key, value]) => {

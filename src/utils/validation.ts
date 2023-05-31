@@ -43,3 +43,23 @@ export const validateInput = (inputName: string, inputValue: string) => {
 
     return result;
 }
+
+export const minLength =
+  (length: number) =>
+  (inputValue: string): string => {
+    const testingValue = inputValue || '';
+    if (testingValue.length < length) {
+      return `Минимальная длина: ${length} символа(ов)`;
+    }
+    return '';
+  };
+
+  export const maxLength =
+  (length: number) =>
+  (inputValue: string): string => {
+    const testingValue = inputValue || '';
+    if (testingValue.length > length) {
+      return `Максимальная длина: ${length} символа(ов)`;
+    }
+    return '';
+  };

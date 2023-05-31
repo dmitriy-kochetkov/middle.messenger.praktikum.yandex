@@ -14,23 +14,7 @@ export class SigninPage extends Block {
   }
 
   protected init(): void {
-    /*this.children.inputEmail = new Input({
-      mode: 'default',
-      name: 'email',
-      label: 'Почта',
-      value: 'pochta@yandex.ru',
-      errorMessage: '',
-      disabled: false,
-      isPassword: false,
-      events: {
-        focusin: (evt: FocusEvent) => {
-        },
-        focusout: (evt: FocusEvent) => {
-          this.validate(evt, this.children.inputEmail);
-        }
-      }
-    });*/
-
+    // латиница, может включать цифры и спецсимволы вроде дефиса, обязательно должна быть «собака» (@) и точка после неё, но перед точкой обязательно должны быть буквы.
     this.children.inputEmail = new Input({
         label: "Почта",
         name: "email",
@@ -46,6 +30,7 @@ export class SigninPage extends Block {
         }
     });
 
+    // от 3 до 20 символов, латиница, может содержать цифры, но не состоять из них, без пробелов, без спецсимволов (допустимы дефис и нижнее подчёркивание).
     this.children.inputLogin = new Input({
         label: "Логин",
         name: "login",
@@ -61,6 +46,7 @@ export class SigninPage extends Block {
         }
     });
 
+    // латиница или кириллица, первая буква должна быть заглавной, без пробелов и без цифр, нет спецсимволов (допустим только дефис).
     this.children.inputFirstName = new Input({
         label: "Имя",
         name: "first_name",
@@ -76,6 +62,7 @@ export class SigninPage extends Block {
         }
     });
 
+    // латиница или кириллица, первая буква должна быть заглавной, без пробелов и без цифр, нет спецсимволов (допустим только дефис).
     this.children.inputSecondName = new Input({
         label: "Фамилия",
         name: "second_name",
@@ -91,6 +78,7 @@ export class SigninPage extends Block {
         }
     });
 
+    // от 10 до 15 символов, состоит из цифр, может начинается с плюса.
     this.children.inputPhone = new Input({
         label: "Телефон",
         name: "phone",
@@ -106,6 +94,7 @@ export class SigninPage extends Block {
         }
     });
 
+    // от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра.
     this.children.inputPassword = new Input({
         label: "Пароль",
         name: "password",
@@ -121,6 +110,7 @@ export class SigninPage extends Block {
         }
     });
 
+    // от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра.
     this.children.inputPasswordRepeat = new Input({
         label: "Пароль (ещё раз)",
         name: "password_2",

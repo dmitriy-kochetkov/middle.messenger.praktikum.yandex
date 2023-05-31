@@ -8,6 +8,9 @@ import { EditProfilePage } from "./pages/edit-profile";
 import { ChangePasswordPage } from "./pages/change-password";
 import { ChatPage } from "./pages/chat";
 
+import defaultAvatar from '../static/default-avatar.svg';
+import catAvatar from '../static/cat.jpeg'
+
 window.addEventListener('DOMContentLoaded', () => {
 
     const pages = [
@@ -50,7 +53,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const chatPage = new ChatPage({
     conversation: {
         name: 'Вадим',
-        avatarURL: '../../dsd.png',
+        defualtAvatarURL: defaultAvatar,
         chatFeed: {
             messages: [
                 {
@@ -108,20 +111,23 @@ window.addEventListener('DOMContentLoaded', () => {
         lastActivity: '20:17',
         isMine: false,
         text: 'Hello world!',
-        counter: '10'
+        counter: '10',
+        defualtAvatarURL: defaultAvatar
       },
       {
         name: 'Марина',
+        avatarURL: catAvatar,
         lastActivity: 'Вт',
         isMine: false,
-        text: 'Oh my gosh!'
+        text: 'Oh my gosh!',
+        defualtAvatarURL: defaultAvatar
       },
       {
         name: 'Вадим',
-        avatarURL: '',
         lastActivity: '19 июня',
         isMine: true,
-        text: "Hello, my friend!"
+        text: "Hello, my friend!",
+        defualtAvatarURL: defaultAvatar
       }
     ]
   })

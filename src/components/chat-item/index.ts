@@ -3,6 +3,7 @@ import template from './chat-item.hbs'
 
 export interface IChatItemProps {
   avatarURL?: string,
+  defualtAvatarURL: string,
   name: string,
   lastActivity: string,
   isMine: boolean,
@@ -11,11 +12,12 @@ export interface IChatItemProps {
 }
 
 export class ChatItem extends Block {
-  constructor(props: IChatItemProps) {
-    super(props)
-  }
 
-  render() {
-    return this.compile(template, this.props);
-  }
-}
+    constructor(props: IChatItemProps) {
+        super(props)
+    }
+
+    render() {
+        return this.compile(template, this.props);
+    }
+    }

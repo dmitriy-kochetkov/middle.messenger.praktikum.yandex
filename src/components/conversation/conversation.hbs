@@ -5,7 +5,7 @@
             {{#if avatarURL}}
             <img class="conversation__avatar_image" src="{{avatarURL}}" alt="avatar for {{name}}"/>
             {{else}}
-            <img class="conversation__avatar_image" src="../../../static/default-avatar.svg" alt="no image avatar"/>
+            <img class="conversation__avatar_image" src="{{defualtAvatarURL}}" alt="no image avatar"/>
             {{/if}}
         </div>
 
@@ -21,11 +21,7 @@
     </div>
 
     <div class="conversation__footer">
-        <form class="send-message-form">
-            <button class="send-message-form__attach-button"></button>
-            <input class="send-message-form__message-input" name="message" type="text" value="{{value}}" placeholder="Сообщение"/>
-            <button class="send-message-form__send-button" type="submit"></button>
-        </form>
+        {{{sendMessageForm}}}
     </div>
     {{else}}
     <span>Выберите чат чтобы отправить сообщение</span>
