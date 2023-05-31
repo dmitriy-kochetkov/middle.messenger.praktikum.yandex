@@ -129,7 +129,7 @@ export class SigninPage extends Block {
     this.children.button = new Button({
       label: 'Зарегистрироваться',
       submit: true,
-      mode: 'primary',
+      className: 'button button_primary',
       events: {
           click: (evt: PointerEvent) => {
             evt.preventDefault();

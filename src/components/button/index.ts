@@ -1,12 +1,10 @@
 import Block from '../../utils/Block';
 import template from './button.hbs';
 
-type ButtonMode = 'primary' | 'secondary';
-
 interface IButtonProps {
-  label: string,
+  label?: string,
   submit: boolean,
-  mode: ButtonMode,
+  className: string,
   events: {
       click: (evt: PointerEvent) => void
   }

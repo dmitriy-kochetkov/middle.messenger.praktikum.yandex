@@ -2,6 +2,7 @@ import Block from "../../utils/Block";
 import template from './conversation.hbs';
 import { ChatFeed, IChatFeedProps } from "../chat-feed";
 import { SendMessageForm } from "../send-message-form";
+import { Button } from "../button";
 
 export interface IConversation {
   name?: string,
@@ -16,6 +17,16 @@ export class Conversation extends Block {
   }
 
   protected init(): void {
+    this.children.buttonOptions = new Button({
+        submit: false,
+        className: 'conversation__options-button',
+        events: {
+            click: (evt: PointerEvent) => {
+                evt.preventDefault();
+                console.log('options click');
+            }
+        }
+    });
     this.children.chatFeed = new ChatFeed(this.props.chatFeed);
     this.children.sendMessageForm = new SendMessageForm({});
   }

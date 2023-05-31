@@ -1,4 +1,5 @@
 import Block from "../../utils/Block";
+import { Button } from "../button";
 import { Input } from "../input";
 import template from './send-message-form.hbs';
 
@@ -12,6 +13,17 @@ export class SendMessageForm extends Block {
     }
 
     protected init(): void {
+        this.children.buttonAttachment = new Button({
+            submit: false,
+            className: 'send-message-form__attach-button',
+            events: {
+                click: (evt: PointerEvent) => {
+                  evt.preventDefault();
+                  console.log('attachment click');
+                }
+            }
+          });
+
         this.children.inputMessage = new Input({
             label: "",
             name: "message",
@@ -28,6 +40,18 @@ export class SendMessageForm extends Block {
                 focusout: (evt: FocusEvent) => {},
             }
         });
+
+        this.children.buttonSendMessage = new Button({
+            submit: false,
+            className: 'send-message-form__send-button',
+            events: {
+                click: (evt: PointerEvent) => {
+                  evt.preventDefault();
+                }
+            }
+          });
+
+
     }
 
     render() {

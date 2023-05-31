@@ -52,7 +52,7 @@ export class LoginPage extends Block {
     this.children.button = new Button({
       label: 'Авторизоваться',
       submit: true,
-      mode: 'primary',
+      className: 'button button_primary',
       events: {
           click: (evt: PointerEvent) => {
             evt.preventDefault();

@@ -110,7 +110,7 @@ export class EditProfilePage extends Block {
     this.children.button = new Button({
       label: 'Сохранить',
       submit: true,
-      mode: 'primary',
+      className: 'button button_primary',
       events: {
           click: (evt: PointerEvent) => {
             evt.preventDefault();
