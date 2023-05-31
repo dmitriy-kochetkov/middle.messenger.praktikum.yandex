@@ -6,7 +6,7 @@ type InputValidationFn = (inputValue: string) => string;
 
 interface IValidationResult {
     isValid: boolean;
-    errorMessage?: string[] | null;
+    errorMessages?: string[] | null;
   }
 
 
@@ -21,7 +21,6 @@ export interface IInputProps {
     errorMessage: string,
     placeholder?:string,
     events: {
-        focusin: (evt: FocusEvent) => void,
         focusout: (evt: FocusEvent) => void
     },
     validationFns?: InputValidationFn[];
@@ -46,7 +45,7 @@ export class Input extends Block {
     const errors = validationResult.filter((result) => !!result);
     return {
         isValid: !errors.length,
-        errorMessage: errors,
+        errorMessages: errors,
       };
   }
 

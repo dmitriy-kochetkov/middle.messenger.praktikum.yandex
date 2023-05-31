@@ -2,170 +2,247 @@ import Block from "../../utils/Block";
 import { Button } from "../../components/button";
 import { Input, IInputProps } from "../../components/input";
 import template from './signin.hbs'
-import { validateInput } from "../../utils/validation";
+import { email, login, maxLength, minLength, name, notOnlyDigits, password, phone, repeatPasswordValidationMessage } from "../../utils/validation";
+import { getFormData } from "../../utils/getFormData";
 
 interface ISignin {
   inputs: IInputProps[]
 }
 
 export class SigninPage extends Block {
-  constructor(props: ISignin) {
-    super(props)
-  }
+    private _emailValue: string = '';
+    private _loginValue: string = '';
+    private _firstNameValue: string = '';
+    private _secondNameValue: string = '';
+    private _phoneValue: string = '';
+    private _passwordValue: string = '';
+    private _passwordRepeatValue: string = '';
 
-  protected init(): void {
-    // латиница, может включать цифры и спецсимволы вроде дефиса, обязательно должна быть «собака» (@) и точка после неё, но перед точкой обязательно должны быть буквы.
-    this.children.inputEmail = new Input({
-        label: "Почта",
-        name: "email",
-        type: 'text',
-        value: "pochta@yandex.ru",
-        disabled: false,
-        danger: false,
-        enableErrorMessage: true,
-        errorMessage: "",
-        events: {
-            focusin: (evt: FocusEvent) => {},
-            focusout: (evt: FocusEvent) => {}
-        }
-    });
+    constructor(props: ISignin) {
+        super(props)
+    }
 
-    // от 3 до 20 символов, латиница, может содержать цифры, но не состоять из них, без пробелов, без спецсимволов (допустимы дефис и нижнее подчёркивание).
-    this.children.inputLogin = new Input({
-        label: "Логин",
-        name: "login",
-        type: 'text',
-        value: "ivanivanov",
-        disabled: false,
-        danger: false,
-        enableErrorMessage: true,
-        errorMessage: "",
-        events: {
-            focusin: (evt: FocusEvent) => {},
-            focusout: (evt: FocusEvent) => {}
-        }
-    });
+    protected init(): void {
+        this.children.inputEmail = new Input({
+            label: "Почта",
+            name: "email",
+            type: 'text',
+            value: "pochta@yandex.ru",
+            disabled: false,
+            danger: false,
+            enableErrorMessage: true,
+            errorMessage: "",
+            validationFns: [email()],
+            events: {
+                focusout: (evt: FocusEvent) => {this._handleEmailChange()}
+            }
+        });
 
-    // латиница или кириллица, первая буква должна быть заглавной, без пробелов и без цифр, нет спецсимволов (допустим только дефис).
-    this.children.inputFirstName = new Input({
-        label: "Имя",
-        name: "first_name",
-        type: 'text',
-        value: "Иван",
-        disabled: false,
-        danger: false,
-        enableErrorMessage: true,
-        errorMessage: "",
-        events: {
-            focusin: (evt: FocusEvent) => {},
-            focusout: (evt: FocusEvent) => {}
-        }
-    });
+        this.children.inputLogin = new Input({
+            label: "Логин",
+            name: "login",
+            type: 'text',
+            value: "ivanivanov",
+            disabled: false,
+            danger: false,
+            enableErrorMessage: true,
+            errorMessage: "",
+            validationFns: [minLength(3), maxLength(20), notOnlyDigits(), login()],
+            events: {
+                focusout: (evt: FocusEvent) => {this._handleLoginChange()}
+            }
+        });
 
-    // латиница или кириллица, первая буква должна быть заглавной, без пробелов и без цифр, нет спецсимволов (допустим только дефис).
-    this.children.inputSecondName = new Input({
-        label: "Фамилия",
-        name: "second_name",
-        type: 'text',
-        value: "Иванов",
-        disabled: false,
-        danger: false,
-        enableErrorMessage: true,
-        errorMessage: "",
-        events: {
-            focusin: (evt: FocusEvent) => {},
-            focusout: (evt: FocusEvent) => {}
-        }
-    });
+        this.children.inputFirstName = new Input({
+            label: "Имя",
+            name: "first_name",
+            type: 'text',
+            value: "Иван",
+            disabled: false,
+            danger: false,
+            enableErrorMessage: true,
+            errorMessage: "",
+            validationFns: [name()],
+            events: {
+                focusout: (evt: FocusEvent) => {this._handleFirstNameChange()}
+            }
+        });
 
-    // от 10 до 15 символов, состоит из цифр, может начинается с плюса.
-    this.children.inputPhone = new Input({
-        label: "Телефон",
-        name: "phone",
-        type: 'text',
-        value: "+7 (909) 967 30 30",
-        disabled: false,
-        danger: false,
-        enableErrorMessage: true,
-        errorMessage: "",
-        events: {
-            focusin: (evt: FocusEvent) => {},
-            focusout: (evt: FocusEvent) => {}
-        }
-    });
+        this.children.inputSecondName = new Input({
+            label: "Фамилия",
+            name: "second_name",
+            type: 'text',
+            value: "Иванов",
+            disabled: false,
+            danger: false,
+            enableErrorMessage: true,
+            errorMessage: "",
+            validationFns: [name()],
+            events: {
+                focusout: (evt: FocusEvent) => {this._handleSecondNameChange()}
+            }
+        });
 
-    // от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра.
-    this.children.inputPassword = new Input({
-        label: "Пароль",
-        name: "password",
-        type: 'password',
-        value: "userPassword",
-        disabled: false,
-        danger: false,
-        enableErrorMessage: true,
-        errorMessage: "",
-        events: {
-            focusin: (evt: FocusEvent) => {},
-            focusout: (evt: FocusEvent) => {}
-        }
-    });
+        this.children.inputPhone = new Input({
+            label: "Телефон",
+            name: "phone",
+            type: 'text',
+            value: "+79099673030",
+            disabled: false,
+            danger: false,
+            enableErrorMessage: true,
+            errorMessage: "",
+            validationFns: [minLength(10), maxLength(15), phone()],
+            events: {
+                focusout: (evt: FocusEvent) => {this._handlePhoneChange()}
+            }
+        });
 
-    // от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра.
-    this.children.inputPasswordRepeat = new Input({
-        label: "Пароль (ещё раз)",
-        name: "password_2",
-        type: 'password',
-        value: "userPassword",
-        disabled: false,
-        danger: false,
-        enableErrorMessage: true,
-        errorMessage: "",
-        events: {
-            focusin: (evt: FocusEvent) => {},
-            focusout: (evt: FocusEvent) => {}
-        }
-    });
+        this.children.inputPassword = new Input({
+            label: "Пароль",
+            name: "password",
+            type: 'password',
+            value: "userPassword",
+            disabled: false,
+            danger: false,
+            enableErrorMessage: true,
+            errorMessage: "",
+            validationFns: [minLength(8), maxLength(40), password()],
+            events: {
+                focusout: (evt: FocusEvent) => {this._handlePasswordChange()}
+            }
+        });
 
-    this.children.button = new Button({
-      label: 'Зарегистрироваться',
-      submit: true,
-      className: 'button button_primary',
-      events: {
-          click: (evt: PointerEvent) => {
-            evt.preventDefault();
-          }
-      }
-    })
+        this.children.inputPasswordRepeat = new Input({
+            label: "Пароль (ещё раз)",
+            name: "password_2",
+            type: 'password',
+            value: "userPassword",
+            disabled: false,
+            danger: false,
+            enableErrorMessage: true,
+            errorMessage: "",
+            events: {
+                focusout: (evt: FocusEvent) => {this._handleRepeatPasswordChange()}
+            }
+        });
+
+        this.children.button = new Button({
+            label: 'Зарегистрироваться',
+            submit: true,
+            className: 'button button_primary',
+            events: {
+                click: (evt: PointerEvent) => {
+                    evt.preventDefault();
+                    this._handleSubmit();
+                }
+            }
+        });
   }
 
   render() {
     return this.compile(template, this.props)
   }
 
-  validate(evt: FocusEvent, element: Block) {
-    console.log('validate');
-    // console.log(evt.target);
-    // console.log(element);
+    private _handleEmailChange(): void {
+        this._emailValue = (this.children.inputEmail as Input).getValue();
 
-    const name = (evt.target! as HTMLInputElement).name;
-    const value = (evt.target! as HTMLInputElement).value;
+        const { isValid, errorMessages } = (this.children.inputEmail as Input).validate();
+        this.children.inputEmail.setProps({
+            value: this._emailValue,
+            errorMessage: errorMessages![0] ?? undefined,
+        });
 
-    const validation = validateInput(name, value);
-
-    console.log(validation);
-
-    if (value !== '' && !validation.isValid) {
-      element.setProps({
-        value: value,
-        mode: 'error',
-        errorMessage: validation.errorText
-      })
-    } else {
-      element.setProps({
-        value: value,
-        mode: 'default',
-        errorMessage: ''
-      })
-    }
+        (this.children.inputEmail as Input).setValidState(isValid);
   }
+
+  private _handleLoginChange(): void {
+        this._loginValue = (this.children.inputLogin as Input).getValue();
+
+        const { isValid, errorMessages } = (this.children.inputLogin as Input).validate();
+        this.children.inputLogin.setProps({
+            value: this._loginValue,
+            errorMessage: errorMessages![0] ?? undefined,
+        });
+
+        (this.children.inputLogin as Input).setValidState(isValid);
+    }
+
+    private _handleFirstNameChange(): void {
+        this._firstNameValue = (this.children.inputFirstName as Input).getValue();
+
+        const { isValid, errorMessages } = (this.children.inputFirstName as Input).validate();
+        this.children.inputFirstName.setProps({
+            value: this._firstNameValue,
+            errorMessage: errorMessages![0] ?? undefined,
+        });
+
+        (this.children.inputFirstName as Input).setValidState(isValid);
+    }
+
+    private _handleSecondNameChange(): void {
+        this._secondNameValue = (this.children.inputSecondName as Input).getValue();
+
+        const { isValid, errorMessages } = (this.children.inputSecondName as Input).validate();
+        this.children.inputSecondName.setProps({
+            value: this._secondNameValue,
+            errorMessage: errorMessages![0] ?? undefined,
+        });
+
+        (this.children.inputSecondName as Input).setValidState(isValid);
+    }
+
+    private _handlePhoneChange(): void {
+        this._phoneValue = (this.children.inputPhone as Input).getValue();
+
+        const { isValid, errorMessages } = (this.children.inputPhone as Input).validate();
+        this.children.inputPhone.setProps({
+            value: this._phoneValue,
+            errorMessage: errorMessages![0] ?? undefined,
+        });
+
+        (this.children.inputPhone as Input).setValidState(isValid);
+    }
+
+    private _handlePasswordChange(): void {
+        this._passwordValue = (this.children.inputPassword as Input).getValue();
+
+        const { isValid, errorMessages } = (this.children.inputPassword as Input).validate();
+        this.children.inputPassword.setProps({
+            value: this._passwordValue,
+            errorMessage: errorMessages![0] ?? undefined,
+        });
+
+        (this.children.inputPassword as Input).setValidState(isValid);
+    }
+
+    private _handleRepeatPasswordChange(): void {
+        this._passwordRepeatValue = (this.children.inputPasswordRepeat as Input).getValue();
+        this._passwordValue = (this.children.inputPassword as Input).getValue();
+
+        const isValid = this._passwordValue === this._passwordRepeatValue;
+        const errorMessage = isValid
+            ? undefined
+            : repeatPasswordValidationMessage;
+        this.children.inputPasswordRepeat.setProps({
+            value: this._passwordRepeatValue,
+            errorMessage: errorMessage ?? undefined,
+        });
+
+        (this.children.inputPasswordRepeat as Input).setValidState(isValid);
+    }
+
+    private _handleSubmit(): void {
+        this._handleEmailChange();
+        this._handleLoginChange();
+        this._handleFirstNameChange();
+        this._handleSecondNameChange();
+        this._handlePhoneChange();
+        this._handlePasswordChange();
+        this._handleRepeatPasswordChange();
+        const form = document.getElementById('signin-form');
+        const formData = getFormData(form as HTMLFormElement);
+        console.log(formData);
+    }
+
 }

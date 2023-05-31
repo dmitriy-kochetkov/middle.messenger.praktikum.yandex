@@ -103,6 +103,7 @@
     "lib": [
       "ESNext",
       "DOM",
+      "dom.iterable"
     ],
     "plugins": [
       { "name": "typescript-plugin-css-modules" }

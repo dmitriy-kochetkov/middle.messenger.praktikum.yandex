@@ -2,10 +2,11 @@ import Block from "../../utils/Block";
 import { Button } from "../../components/button";
 import { Input, IInputProps } from "../../components/input";
 import template from './login.hbs'
-import { maxLength, minLength } from "../../utils/validation";
+import { login, maxLength, minLength, notOnlyDigits, password } from "../../utils/validation";
+import { getFormData } from "../../utils/getFormData";
 
 interface ILogin {
-  inputs: IInputProps[]
+    inputs: IInputProps[]
 }
 
 export class LoginPage extends Block {
@@ -26,9 +27,8 @@ export class LoginPage extends Block {
         danger: false,
         enableErrorMessage: true,
         errorMessage: "",
-        validationFns: [minLength(3), maxLength(20)],
+        validationFns: [minLength(3), maxLength(20), notOnlyDigits(), login()],
         events: {
-            focusin: (evt: FocusEvent) => {},
             focusout: (evt: FocusEvent) => this._handleLoginChange(),
         }
     });
@@ -42,37 +42,54 @@ export class LoginPage extends Block {
         danger: false,
         enableErrorMessage: true,
         errorMessage: "",
-        validationFns: [minLength(8), maxLength(40)],
+        validationFns: [minLength(8), maxLength(40), password()],
         events: {
-            focusin: (evt: FocusEvent) => {},
-            focusout: (evt: FocusEvent) => {}
+            focusout: (evt: FocusEvent) => {this._handlePasswordChange()}
         }
     });
 
     this.children.button = new Button({
-      label: 'Авторизоваться',
-      submit: true,
-      className: 'button button_primary',
-      events: {
-          click: (evt: PointerEvent) => {
-            evt.preventDefault();
-          }
-      }
+        label: 'Авторизоваться',
+        submit: true,
+        className: 'button button_primary',
+        events: {
+            click: (evt: PointerEvent) => {
+                evt.preventDefault();
+                this._handleSubmit();
+            }
+        }
     })
   }
 
-  render(): DocumentFragment {
-    return this.compile(template, this.props)
-  }
+    render(): DocumentFragment {
+        return this.compile(template, this.props)
+    }
 
-  private _handleLoginChange(): void {
-    this._loginValue = (this.children.inputLogin as Input).getValue();
-    const { isValid, errorMessage } = (this.children.inputLogin as Input).validate();
-    console.log({isValid, errorMessage})
-    this.children.inputLogin.setProps({
-      value: this._loginValue,
-      errorMessage: errorMessage![0] ?? undefined,
-    });
-    (this.children.inputLogin as Input).setValidState(isValid);
-  }
+    private _handleLoginChange(): void {
+        this._loginValue = (this.children.inputLogin as Input).getValue();
+        const { isValid, errorMessages } = (this.children.inputLogin as Input).validate();
+        this.children.inputLogin.setProps({
+            value: this._loginValue,
+            errorMessage: errorMessages![0] ?? undefined,
+        });
+        (this.children.inputLogin as Input).setValidState(isValid);
+    }
+
+    private _handlePasswordChange(): void {
+        this._passwordValue = (this.children.inputPassword as Input).getValue();
+        const { isValid, errorMessages } = (this.children.inputPassword as Input).validate();
+        this.children.inputPassword.setProps({
+            value: this._passwordValue,
+            errorMessage: errorMessages![0] ?? undefined,
+        });
+        (this.children.inputPassword as Input).setValidState(isValid);
+    }
+
+    private _handleSubmit(): void {
+        this._handleLoginChange();
+        this._handlePasswordChange();
+        const form = document.getElementById('login-form');
+        const formData = getFormData(form as HTMLFormElement);
+        console.log(formData);
+    }
 }
