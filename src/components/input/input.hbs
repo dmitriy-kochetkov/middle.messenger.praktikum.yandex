@@ -1,0 +1,13 @@
+<div class="input">
+    {{#if label}}
+    <label class="input__label" for="{{name}}">
+        {{label}}
+    </label>
+    {{/if}}
+    <input class="input__field {{#if danger}}input__field_danger{{/if}}" type="{{type}}" name="{{name}}" id="{{name}}" value="{{value}}" {{#if disabled}}disabled{{/if}} {{#if placeholder}}placeholder="{{placeholder}}"{{/if}}/>
+    {{#if enableErrorMessage}}
+    <span class="input__error-message">
+        {{errorMessage}}
+    </span>
+    {{/if}}
+</div>

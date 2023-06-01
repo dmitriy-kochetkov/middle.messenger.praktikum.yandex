@@ -1,35 +1,77 @@
-{{!< default}}
+---
+conversation:
+  name: "Вадим"
+  avatarURL: "../../../static/cat.jpeg"
+  data:
+  - date: 19 июня
+    messages:
+      - type: text
+        isText: true
+        time: "11:56"
+        isMine: false
+        content:
+          text: Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.\n\nХассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.
+      - type: image
+        isImage: true
+        time: "11:56"
+        isMine: false
+        content:
+          url: ../../../static/hasselblad.png
+          width: 316
+          height: 211
+      - type: text
+        isText: true
+        time: "12:00"
+        isMine: true
+        content:
+          text: 👍 Круто!
+          readed: true
+      - type: text
+        isText: true
+        time: "12:00"
+        isMine: true
+        content:
+          text: Тогда в продолжение темы космоса тоже кину картинку...
+          readed: true
+      - type: image
+        isImage: true
+        time: "12:07"
+        isMine: true
+        content:
+          url: ../../../static/space.png
+          width: 316
+          height: 202
+          readed: true
+      - type: text
+        isText: true
+        time: "12:08"
+        isMine: true
+        content:
+          text: Круто же?
+          readed: true
+---
 
 <div class="chats">
     <aside class="chats_sidebar">
         <div class="chats_sidebar-header">
-            <a href="../profile/profile.hbs" class="profile-link" tabindex="0">Профиль -&gt;</a>
+            <a href="../profile" class="profile-link" tabindex="0">
+                Профиль
+                <div class="profile-link-icon"></div>
+            </a>
             <div class="chats_sidebar-search">
                 <input class="search-input" type="search" name="search" id="sidebar-search-input" value="" placeholder="Поиск"/>
             </div>
         </div>
-        
+
         <div class="chat-items">
 
-            {{> chat-item/chat-item chatName="Андрей" lastActivity="12:00" previewText="Изображение" newMessageCounter="2" }}
-            {{> chat-item/chat-item chatName="Киноклуб" lastActivity="10:55" isMine=true previewText="стикер" }}
-            {{> chat-item/chat-item chatName="Илья" lastActivity="09:50" previewText="Друзья, у меня для вас особенный выпуск новостей!..." newMessageCounter="5" }}
-            {{> chat-item/chat-item chatName="Вадим" lastActivity="Пт" isMine=true previewText="Круто!" }}
-            {{> chat-item/chat-item chatName="тет-а-теты" lastActivity="Ср" isMine=true previewText="И Human Interface Guidelines и Material Design рекомендуют..." }}
-            {{> chat-item/chat-item chatName="1, 2, 3" lastActivity="Пн" previewText="Миллионы россиян ежедневно проводят десятки часов свое..." }}
-            {{> chat-item/chat-item chatName="Crazy Kitty" lastActivity="21 апреля" previewText="Meow meow meow meow meow meow..." newMessageCounter="10" avatarURL="../../../static/cat.jpeg" }}
-            {{> chat-item/chat-item chatName="Алексей" lastActivity="18 марта" previewText="стикер" }}
-            {{> chat-item/chat-item chatName="Николай" lastActivity="10 ноября" previewText="стикер" }}
-            {{> chat-item/chat-item chatName="Алёна" lastActivity="16 августа" previewText="стикер" }}
-            {{> chat-item/chat-item chatName="Карлос" lastActivity="10 мая"previewText="стикер" }}
-            {{> chat-item/chat-item chatName="Джонни" lastActivity="17 апреля 2022"previewText="стикер" }}
-            {{> chat-item/chat-item chatName="Василий" lastActivity="18 января 2022" isMine=true previewText="стикер" }}
-            {{> chat-item/chat-item chatName="Денис" lastActivity="9 октября 2021" isMine=true previewText="Привет друг! Давно не виделись..." }}
-            {{> chat-item/chat-item chatName="Аня" lastActivity="17 июля 2020" previewText="Не пиши мне больше!" }}
+          {{#each chats}}
+            {{{this}}}
+          {{/each}}
 
     </aside>
 
-    <main class="chat_feed">
-        <span>Выберите чат чтобы отправить сообщение</span>
+    <main>
+        {{{conversation}}}
     </main>
 </div>

@@ -1,0 +1,20 @@
+<div class="message {{#if isMine}}message-mine{{/if}}">
+
+    <div class="message__row">
+        {{#if isText}}
+            <div class="message__text">{{text}}</div>
+        {{else}}
+            <img class="message__image" src="{{url}}" width="{{width}}" height="{{height}}" alt="attached image"/>
+        {{/if}}
+    </div>
+
+    <div class="message__footer">
+      <div class="message__info{{#unless isText}}-cover{{/unless}} message__info{{#unless isText}}-cover{{/unless}}{{#if isMine}}-mine{{/if}}">
+        {{#if isMine}}
+          <div class="message__status message__status-{{#if readed}}readed{{else}}sended{{/if}}"></div>
+        {{/if}}
+          <div {{#if isMine}}class="message__info_colored"{{/if}}> {{time}} </div>
+        </div>
+    </div>
+
+</div>
