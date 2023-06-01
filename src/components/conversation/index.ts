@@ -1,37 +1,37 @@
-import Block from "../../utils/Block";
+import Block from '../../utils/Block';
 import template from './conversation.hbs';
-import { ChatFeed, IChatFeedProps } from "../chat-feed";
-import { SendMessageForm } from "../send-message-form";
-import { Button } from "../button";
+import { ChatFeed, IChatFeedProps } from '../chat-feed';
+import { SendMessageForm } from '../send-message-form';
+import { Button } from '../button';
 
 export interface IConversation {
-  name?: string,
-  avatarURL?: string,
-  defualtAvatarURL: string,
-  chatFeed: IChatFeedProps
+    name?: string,
+    avatarURL?: string,
+    defualtAvatarURL: string,
+    chatFeed: IChatFeedProps,
 }
 
 export class Conversation extends Block {
-  constructor(props: IConversation) {
-    super(props)
-  }
+    constructor(props: IConversation) {
+        super(props);
+    }
 
-  protected init(): void {
-    this.children.buttonOptions = new Button({
-        submit: false,
-        className: 'conversation__options-button',
-        events: {
-            click: (evt: PointerEvent) => {
-                evt.preventDefault();
-                console.log('options click');
-            }
-        }
-    });
-    this.children.chatFeed = new ChatFeed(this.props.chatFeed);
-    this.children.sendMessageForm = new SendMessageForm({});
-  }
+    protected init(): void {
+        this.children.buttonOptions = new Button({
+            submit: false,
+            className: 'conversation__options-button',
+            events: {
+                click: (evt: PointerEvent) => {
+                    evt.preventDefault();
+                    console.log('options click');
+                },
+            },
+        });
+        this.children.chatFeed = new ChatFeed(this.props.chatFeed);
+        this.children.sendMessageForm = new SendMessageForm({});
+    }
 
-  render() {
-    return this.compile(template, this.props)
-  }
+    render() {
+        return this.compile(template, this.props);
+    }
 }

@@ -2,6 +2,7 @@ import { EventBus } from './EventBus';
 import { v4 as uuidv4 } from 'uuid';
 import { TProps } from './types';
 import { EVENTS } from './constants';
+import { deepEqual } from './utils';
 
 /*
 type ChildrenComponents = Record<string, any>;
@@ -117,8 +118,7 @@ class Block {
   }
 
   protected componentDidUpdate(oldProps: TProps, newProps: TProps): boolean {
-    // TODO: deepEquals
-    return true;
+    return !deepEqual(oldProps, newProps);
   }
 
    setProps = (nextProps: TProps) => {
@@ -224,11 +224,11 @@ class Block {
 
 
   show(): void {
-    this.getContent()!.style.display = "block";
+    this.getContent()!.style.display = 'block';
   }
 
   hide(): void {
-    this.getContent()!.style.display = "none";
+    this.getContent()!.style.display = 'none';
   }
 }
 

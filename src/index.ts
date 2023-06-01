@@ -1,12 +1,12 @@
-import renderDom from "./utils/renderDom";
-import { NavigationPage } from "./pages/navigation";
-import { LoginPage } from "./pages/login";
-import { SigninPage } from "./pages/signin";
-import { ErrorPage } from "./pages/error";
-import { ProfilePage } from "./pages/profile";
-import { EditProfilePage } from "./pages/edit-profile";
-import { ChangePasswordPage } from "./pages/change-password";
-import { ChatPage } from "./pages/chat";
+import renderDom from './utils/renderDom';
+import { NavigationPage } from './pages/navigation';
+import { LoginPage } from './pages/login';
+import { SigninPage } from './pages/signin';
+import { ErrorPage } from './pages/error';
+import { ProfilePage } from './pages/profile';
+import { EditProfilePage } from './pages/edit-profile';
+import { ChangePasswordPage } from './pages/change-password';
+import { ChatPage } from './pages/chat';
 
 import defaultAvatar from '../static/default-avatar.svg';
 import catAvatar from '../static/cat.jpeg'
@@ -30,24 +30,24 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const signinPage = new SigninPage({inputs: []});
 
-  const profilePage = new ProfilePage({userName: "Иван", inputs: []});
+  const profilePage = new ProfilePage({userName: 'Иван', inputs: []});
 
   const editProfilePage = new EditProfilePage({inputs: []});
 
   const changePasswordPage = new ChangePasswordPage({inputs: []});
 
   const errorPage404 = new ErrorPage({
-    errorCode: "404",
-    messageText: "Не туда попали",
-    link: "../signin",
-    linkLabel: "Ещё не зарегистрированы?",
+    errorCode: '404',
+    messageText: 'Не туда попали',
+    link: '../signin',
+    linkLabel: 'Ещё не зарегистрированы?',
   });
 
   const errorPage500 = new ErrorPage({
-    errorCode: "500",
-    messageText: "Мы уже фиксим",
-    link: "../chat",
-    linkLabel: "Назад к чатам",
+    errorCode: '500',
+    messageText: 'Мы уже фиксим',
+    link: '../chat',
+    linkLabel: 'Назад к чатам',
   });
 
   const chatPage = new ChatPage({
@@ -126,7 +126,7 @@ window.addEventListener('DOMContentLoaded', () => {
         name: 'Вадим',
         lastActivity: '19 июня',
         isMine: true,
-        text: "Hello, my friend!",
+        text: 'Hello, my friend!',
         defualtAvatarURL: defaultAvatar
       }
     ]

@@ -1,21 +1,21 @@
 import Block from '../../utils/Block';
 import template from './navigation.hbs';
 
-type link = {
-  link: string;
-  label: string;
+export type Link = {
+    link: string;
+    label: string;
 };
 
-interface INavigationPageProps {
-  pages: link[];
+export interface INavigationPageProps {
+    pages: Link[];
 }
 
 export class NavigationPage extends Block {
-  constructor(props: INavigationPageProps) {
-    super(props);
-  }
+    constructor(props: INavigationPageProps) {
+        super(props);
+    }
 
-  render() {
-    return this.compile(template, this.props)
-  }
+    render() {
+        return this.compile(template, this.props);
+    }
 }

@@ -1,19 +1,19 @@
-import Block from "../../utils/Block";
-import template from './error.hbs'
+import Block from '../../utils/Block';
+import template from './error.hbs';
 
-interface IErrorPage {
-  errorCode: string,
-  messageText: string,
-  link: string,
-  linkLabel: string,
+export interface IErrorPage {
+    errorCode: string,
+    messageText: string,
+    link: string,
+    linkLabel: string,
 }
 
 export class ErrorPage extends Block {
-  constructor(props: IErrorPage) {
-    super(props);
-  }
+    constructor(props: IErrorPage) {
+        super(props);
+    }
 
-  render() {
-    return this.compile(template, this.props);
-  }
+    render() {
+        return this.compile(template, this.props);
+    }
 }

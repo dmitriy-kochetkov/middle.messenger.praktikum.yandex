@@ -1,130 +1,146 @@
-import Block from "../../utils/Block";
-import { Button } from "../../components/button";
-import { Input, IInputProps } from "../../components/input";
-import template from './signin.hbs'
-import { email, login, maxLength, minLength, name, notOnlyDigits, password, phone, repeatPasswordValidationMessage } from "../../utils/validation";
-import { getFormData } from "../../utils/getFormData";
+import Block from '../../utils/Block';
+import template from './signin.hbs';
+import { Button } from '../../components/button';
+import { Input, IInputProps } from '../../components/input';
+import { getFormData } from '../../utils/getFormData';
+import {
+    email,
+    login,
+    maxLength,
+    minLength,
+    name,
+    notOnlyDigits,
+    password,
+    phone,
+    repeatPasswordValidationMessage,
+} from '../../utils/validation';
 
-interface ISignin {
-  inputs: IInputProps[]
+export interface ISignin {
+    inputs: IInputProps[]
 }
 
 export class SigninPage extends Block {
     private _emailValue: string = '';
+
     private _loginValue: string = '';
+
     private _firstNameValue: string = '';
+
     private _secondNameValue: string = '';
+
     private _phoneValue: string = '';
+
     private _passwordValue: string = '';
+
     private _passwordRepeatValue: string = '';
 
     constructor(props: ISignin) {
-        super(props)
+        super(props);
     }
 
     protected init(): void {
         this.children.inputEmail = new Input({
-            label: "Почта",
-            name: "email",
+            label: 'Почта',
+            name: 'email',
             type: 'text',
-            value: "pochta@yandex.ru",
+            value: 'pochta@yandex.ru',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
-            errorMessage: "",
+            errorMessage: '',
             validationFns: [email()],
             events: {
-                focusout: (evt: FocusEvent) => {this._handleEmailChange()}
-            }
+                focusout: () => { this._handleEmailChange(); },
+            },
         });
 
         this.children.inputLogin = new Input({
-            label: "Логин",
-            name: "login",
+            label: 'Логин',
+            name: 'login',
             type: 'text',
-            value: "ivanivanov",
+            value: 'ivanivanov',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
-            errorMessage: "",
+            errorMessage: '',
             validationFns: [minLength(3), maxLength(20), notOnlyDigits(), login()],
             events: {
-                focusout: (evt: FocusEvent) => {this._handleLoginChange()}
-            }
+                focusout: () => { this._handleLoginChange(); },
+            },
         });
 
         this.children.inputFirstName = new Input({
-            label: "Имя",
-            name: "first_name",
+            label: 'Имя',
+            name: 'first_name',
             type: 'text',
-            value: "Иван",
+            value: 'Иван',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
-            errorMessage: "",
+            errorMessage: '',
             validationFns: [name()],
             events: {
-                focusout: (evt: FocusEvent) => {this._handleFirstNameChange()}
-            }
+                focusout: () => { this._handleFirstNameChange(); },
+            },
         });
 
         this.children.inputSecondName = new Input({
-            label: "Фамилия",
-            name: "second_name",
+            label: 'Фамилия',
+            name: 'second_name',
             type: 'text',
-            value: "Иванов",
+            value: 'Иванов',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
-            errorMessage: "",
+            errorMessage: '',
             validationFns: [name()],
             events: {
-                focusout: (evt: FocusEvent) => {this._handleSecondNameChange()}
-            }
+                focusout: () => { this._handleSecondNameChange(); },
+            },
         });
 
         this.children.inputPhone = new Input({
-            label: "Телефон",
-            name: "phone",
+            label: 'Телефон',
+            name: 'phone',
             type: 'text',
-            value: "+79099673030",
+            value: '+79099673030',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
-            errorMessage: "",
+            errorMessage: '',
             validationFns: [minLength(10), maxLength(15), phone()],
             events: {
-                focusout: (evt: FocusEvent) => {this._handlePhoneChange()}
-            }
+                focusout: () => { this._handlePhoneChange(); },
+            },
         });
 
         this.children.inputPassword = new Input({
-            label: "Пароль",
-            name: "password",
+            label: 'Пароль',
+            name: 'password',
             type: 'password',
-            value: "userPassword",
+            value: 'userPassword',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
-            errorMessage: "",
+            errorMessage: '',
             validationFns: [minLength(8), maxLength(40), password()],
             events: {
-                focusout: (evt: FocusEvent) => {this._handlePasswordChange()}
-            }
+                focusout: () => { this._handlePasswordChange(); },
+            },
         });
 
         this.children.inputPasswordRepeat = new Input({
-            label: "Пароль (ещё раз)",
-            name: "password_2",
+            label: 'Пароль (ещё раз)',
+            name: 'password_2',
             type: 'password',
-            value: "userPassword",
+            value: 'userPassword',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
-            errorMessage: "",
+            errorMessage: '',
             events: {
-                focusout: (evt: FocusEvent) => {this._handleRepeatPasswordChange()}
-            }
+                focusout: () => { this._handleRepeatPasswordChange(); },
+            },
         });
 
         this.children.button = new Button({
@@ -135,13 +151,13 @@ export class SigninPage extends Block {
                 click: (evt: PointerEvent) => {
                     evt.preventDefault();
                     this._handleSubmit();
-                }
-            }
+                },
+            },
         });
     }
 
     render() {
-        return this.compile(template, this.props)
+        return this.compile(template, this.props);
     }
 
     private _handleEmailChange(): void {
@@ -240,8 +256,11 @@ export class SigninPage extends Block {
         this._handlePhoneChange();
         this._handlePasswordChange();
         this._handleRepeatPasswordChange();
+
         const form = document.getElementById('signin-form');
-        const formData = getFormData(form as HTMLFormElement);
-        console.log(formData);
+        if (form) {
+            const formData = getFormData(form as HTMLFormElement);
+            console.log(formData);
+        }
     }
 }

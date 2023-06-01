@@ -1,13 +1,11 @@
-import Block from "../../utils/Block";
-import { getFormData } from "../../utils/getFormData";
-import { notEmpty } from "../../utils/validation";
-import { Button } from "../button";
-import { Input } from "../input";
+import Block from '../../utils/Block';
 import template from './send-message-form.hbs';
+import { getFormData } from '../../utils/getFormData';
+import { notEmpty } from '../../utils/validation';
+import { Button } from '../button';
+import { Input } from '../input';
 
-export interface ISendMessageForm {
-
-}
+export interface ISendMessageForm {}
 
 export class SendMessageForm extends Block {
     private _messageValue: string = '';
@@ -22,26 +20,26 @@ export class SendMessageForm extends Block {
             className: 'send-message-form__attach-button',
             events: {
                 click: (evt: PointerEvent) => {
-                  evt.preventDefault();
-                  console.log('attachment click');
-                }
-            }
-          });
+                    evt.preventDefault();
+                    console.log('attachment click');
+                },
+            },
+        });
 
         this.children.inputMessage = new Input({
-            label: "",
-            name: "message",
+            label: '',
+            name: 'message',
             type: 'text',
-            placeholder: "Сообщение",
-            value: "",
+            placeholder: 'Сообщение',
+            value: '',
             disabled: false,
             danger: false,
             enableErrorMessage: false,
-            errorMessage: "",
+            errorMessage: '',
             validationFns: [notEmpty()],
             events: {
-                focusout: (evt: FocusEvent) => {this._handleMessageChange()},
-            }
+                focusout: () => { this._handleMessageChange(); },
+            },
         });
 
         this.children.buttonSendMessage = new Button({
@@ -49,11 +47,11 @@ export class SendMessageForm extends Block {
             className: 'send-message-form__send-button',
             events: {
                 click: (evt: PointerEvent) => {
-                  evt.preventDefault();
-                  this._handleSubmit();
-                }
-            }
-          });
+                    evt.preventDefault();
+                    this._handleSubmit();
+                },
+            },
+        });
     }
 
     render() {

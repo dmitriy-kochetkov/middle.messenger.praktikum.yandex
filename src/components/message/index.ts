@@ -1,4 +1,4 @@
-import Block from "../../utils/Block";
+import Block from '../../utils/Block';
 import template from './message.hbs';
 
 export interface IMessage {
@@ -18,6 +18,6 @@ export class Message extends Block {
     }
 
     render() {
-        return this.compile(template, this.props)
+        return this.compile(template, this.props);
     }
 }

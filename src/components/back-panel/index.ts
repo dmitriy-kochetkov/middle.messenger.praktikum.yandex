@@ -1,16 +1,16 @@
 import Block from '../../utils/Block';
-import template from './back-panel.hbs'
+import template from './back-panel.hbs';
 
 interface IBackPanelProps {
-  backURL: string
+    backURL: string
 }
 
 export class BackPanel extends Block {
-  constructor(props: IBackPanelProps) {
-    super(props);
-  }
+    constructor(props: IBackPanelProps) {
+        super(props);
+    }
 
-  render() {
-    return this.compile(template, this.props)
-  }
+    render() {
+        return this.compile(template, this.props);
+    }
 }
