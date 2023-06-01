@@ -78,4 +78,14 @@ export const email =
         return 'Проверьте формат';
     };
 
+export const notEmpty =
+    () =>
+    (inputValue: string): string => {
+      const testingValue = inputValue || '';
+      if (testingValue.length === 0) {
+        return 'Не может быть пустым';
+      }
+      return '';
+    };
+
 export const repeatPasswordValidationMessage: string = 'Пароли не совпадают';

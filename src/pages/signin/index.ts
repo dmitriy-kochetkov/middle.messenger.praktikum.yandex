@@ -138,11 +138,11 @@ export class SigninPage extends Block {
                 }
             }
         });
-  }
+    }
 
-  render() {
-    return this.compile(template, this.props)
-  }
+    render() {
+        return this.compile(template, this.props)
+    }
 
     private _handleEmailChange(): void {
         this._emailValue = (this.children.inputEmail as Input).getValue();
@@ -154,9 +154,9 @@ export class SigninPage extends Block {
         });
 
         (this.children.inputEmail as Input).setValidState(isValid);
-  }
+    }
 
-  private _handleLoginChange(): void {
+    private _handleLoginChange(): void {
         this._loginValue = (this.children.inputLogin as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputLogin as Input).validate();
@@ -244,5 +244,4 @@ export class SigninPage extends Block {
         const formData = getFormData(form as HTMLFormElement);
         console.log(formData);
     }
-
 }

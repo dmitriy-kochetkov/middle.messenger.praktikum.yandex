@@ -16,22 +16,6 @@ export class ProfilePage extends Block {
   protected init(): void {
     this.children.backPanel = new BackPanel({ backURL: '../chat'});
 
-    /*this.children.inputEmail = new Input({
-      mode: 'default',
-      name: 'email',
-      label: 'Почта',
-      value: 'pochta@yandex.ru',
-      errorMessage: '',
-      disabled: true,
-      isPassword: false,
-      events: {
-        focusin: (evt: FocusEvent) => {
-        },
-        focusout: (evt: FocusEvent) => {
-        }
-      }
-    });*/
-
     this.children.inputEmail = new Input({
         label: "Почта",
         name: "email",
@@ -42,7 +26,6 @@ export class ProfilePage extends Block {
         enableErrorMessage: true,
         errorMessage: "",
         events: {
-            focusin: (evt: FocusEvent) => {},
             focusout: (evt: FocusEvent) => {}
         }
     });
@@ -57,7 +40,6 @@ export class ProfilePage extends Block {
         enableErrorMessage: true,
         errorMessage: "",
         events: {
-            focusin: (evt: FocusEvent) => {},
             focusout: (evt: FocusEvent) => {}
         }
     });
@@ -72,7 +54,6 @@ export class ProfilePage extends Block {
         enableErrorMessage: true,
         errorMessage: "",
         events: {
-            focusin: (evt: FocusEvent) => {},
             focusout: (evt: FocusEvent) => {}
         }
     });
@@ -87,7 +68,6 @@ export class ProfilePage extends Block {
         enableErrorMessage: true,
         errorMessage: "",
         events: {
-            focusin: (evt: FocusEvent) => {},
             focusout: (evt: FocusEvent) => {}
         }
     });
@@ -102,7 +82,6 @@ export class ProfilePage extends Block {
         enableErrorMessage: true,
         errorMessage: "",
         events: {
-            focusin: (evt: FocusEvent) => {},
             focusout: (evt: FocusEvent) => {}
         }
     });
@@ -111,13 +90,12 @@ export class ProfilePage extends Block {
         label: "Телефон",
         name: "phone",
         type: 'text',
-        value: "+7 (909) 967 30 30",
+        value: "+79099673030",
         disabled: true,
         danger: false,
         enableErrorMessage: true,
         errorMessage: "",
         events: {
-            focusin: (evt: FocusEvent) => {},
             focusout: (evt: FocusEvent) => {}
         }
     });

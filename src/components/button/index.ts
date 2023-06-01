@@ -5,6 +5,7 @@ interface IButtonProps {
   label?: string,
   submit: boolean,
   className: string,
+  disabled?: boolean,
   events: {
       click: (evt: PointerEvent) => void
   }

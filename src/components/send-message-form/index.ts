@@ -1,4 +1,6 @@
 import Block from "../../utils/Block";
+import { getFormData } from "../../utils/getFormData";
+import { notEmpty } from "../../utils/validation";
 import { Button } from "../button";
 import { Input } from "../input";
 import template from './send-message-form.hbs';
@@ -8,6 +10,8 @@ export interface ISendMessageForm {
 }
 
 export class SendMessageForm extends Block {
+    private _messageValue: string = '';
+
     constructor(props: ISendMessageForm) {
         super(props);
     }
@@ -34,10 +38,9 @@ export class SendMessageForm extends Block {
             danger: false,
             enableErrorMessage: false,
             errorMessage: "",
-            validationFns: [],
+            validationFns: [notEmpty()],
             events: {
-                focusin: (evt: FocusEvent) => {},
-                focusout: (evt: FocusEvent) => {},
+                focusout: (evt: FocusEvent) => {this._handleMessageChange()},
             }
         });
 
@@ -47,14 +50,26 @@ export class SendMessageForm extends Block {
             events: {
                 click: (evt: PointerEvent) => {
                   evt.preventDefault();
+                  this._handleSubmit();
                 }
             }
           });
-
-
     }
 
     render() {
         return this.compile(template, this.props);
+    }
+
+    private _handleMessageChange() {
+        this._messageValue = (this.children.inputMessage as Input).getValue();
+    }
+
+    private _handleSubmit(): void {
+        this._handleMessageChange();
+        const form = document.getElementById('send-message-form');
+        if (form) {
+            const formData = getFormData(form as HTMLFormElement);
+            console.log(formData);
+        }
     }
 }

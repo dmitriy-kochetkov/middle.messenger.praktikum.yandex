@@ -3,150 +3,202 @@ import template from './edit-profile.hbs'
 import { Input, IInputProps } from "../../components/input";
 import { Button } from "../../components/button";
 import { BackPanel } from "../../components/back-panel";
-import { validateInput } from "../../utils/validation";
+import { email, login, maxLength, minLength, name, notOnlyDigits, phone } from "../../utils/validation";
+import { getFormData } from "../../utils/getFormData";
 
 interface IEditProfilePage {
   inputs: IInputProps[]
 }
 
 export class EditProfilePage extends Block {
-  constructor(props: IEditProfilePage) {
-    super(props)
-  }
+    private _emailValue: string = '';
+    private _loginValue: string = '';
+    private _firstNameValue: string = '';
+    private _displayNameValue: string = '';
+    private _secondNameValue: string = '';
+    private _phoneValue: string = '';
 
-  protected init(): void {
-    this.children.backPanel = new BackPanel({ backURL: '../profile'});
-
-    this.children.inputEmail = new Input({
-        label: "Почта",
-        name: "email",
-        type: 'text',
-        value: "pochta@yandex.ru",
-        disabled: false,
-        danger: false,
-        enableErrorMessage: true,
-        errorMessage: "",
-        events: {
-            focusin: (evt: FocusEvent) => {},
-            focusout: (evt: FocusEvent) => {}
-        }
-    });
-
-    this.children.inputLogin = new Input({
-        label: "Логин",
-        name: "login",
-        type: 'text',
-        value: "ivanivanov",
-        disabled: false,
-        danger: false,
-        enableErrorMessage: true,
-        errorMessage: "",
-        events: {
-            focusin: (evt: FocusEvent) => {},
-            focusout: (evt: FocusEvent) => {}
-        }
-    });
-
-    this.children.inputFirstName = new Input({
-        label: "Имя",
-        name: "first_name",
-        type: 'text',
-        value: "Иван",
-        disabled: false,
-        danger: false,
-        enableErrorMessage: true,
-        errorMessage: "",
-        events: {
-            focusin: (evt: FocusEvent) => {},
-            focusout: (evt: FocusEvent) => {}
-        }
-    });
-
-    this.children.inputSecondName = new Input({
-        label: "Фамилия",
-        name: "second_name",
-        type: 'text',
-        value: "Иванов",
-        disabled: false,
-        danger: false,
-        enableErrorMessage: true,
-        errorMessage: "",
-        events: {
-            focusin: (evt: FocusEvent) => {},
-            focusout: (evt: FocusEvent) => {}
-        }
-    });
-
-    this.children.inputDisplayName = new Input({
-        label: "Имя в чате",
-        name: "display_name",
-        type: 'text',
-        value: "Иван",
-        disabled: false,
-        danger: false,
-        enableErrorMessage: true,
-        errorMessage: "",
-        events: {
-            focusin: (evt: FocusEvent) => {},
-            focusout: (evt: FocusEvent) => {}
-        }
-    });
-
-    this.children.inputPhone = new Input({
-        label: "Телефон",
-        name: "phone",
-        type: 'text',
-        value: "+7 (909) 967 30 30",
-        disabled: false,
-        danger: false,
-        enableErrorMessage: true,
-        errorMessage: "",
-        events: {
-            focusin: (evt: FocusEvent) => {},
-            focusout: (evt: FocusEvent) => {}
-        }
-    });
-
-    this.children.button = new Button({
-      label: 'Сохранить',
-      submit: true,
-      className: 'button button_primary',
-      events: {
-          click: (evt: PointerEvent) => {
-            evt.preventDefault();
-          }
-      }
-    });
-  }
-
-  render() {
-    return this.compile(template, this.props);
-  }
-
-  validate(evt: FocusEvent, element: Block) {
-    console.log('validate');
-    // console.log(evt.target);
-    // console.log(element);
-
-    const name = (evt.target! as HTMLInputElement).name;
-    const value = (evt.target! as HTMLInputElement).value;
-
-    const validation = validateInput(name, value);
-
-    console.log(validation);
-
-    if (value !== '' && !validation.isValid) {
-      element.setProps({
-        value: value,
-        mode: 'error',
-        errorMessage: validation.errorText
-      })
-    } else {
-      element.setProps({
-        value: value,
-        mode: 'default',
-        errorMessage: ''
-      })
+    constructor(props: IEditProfilePage) {
+        super(props)
     }
-  }
+
+    protected init(): void {
+        this.children.backPanel = new BackPanel({ backURL: '../profile'});
+
+        this.children.inputEmail = new Input({
+            label: "Почта",
+            name: "email",
+            type: 'text',
+            value: "pochta@yandex.ru",
+            disabled: false,
+            danger: false,
+            enableErrorMessage: true,
+            errorMessage: "",
+            validationFns: [email()],
+            events: {
+                focusout: (evt: FocusEvent) => {this._handleEmailChange()}
+            }
+        });
+
+        this.children.inputLogin = new Input({
+            label: "Логин",
+            name: "login",
+            type: 'text',
+            value: "ivanivanov",
+            disabled: false,
+            danger: false,
+            enableErrorMessage: true,
+            errorMessage: "",
+            validationFns: [minLength(3), maxLength(20), notOnlyDigits(), login()],
+            events: {
+                focusout: (evt: FocusEvent) => {this._handleLoginChange()}
+            }
+        });
+
+        this.children.inputFirstName = new Input({
+            label: "Имя",
+            name: "first_name",
+            type: 'text',
+            value: "Иван",
+            disabled: false,
+            danger: false,
+            enableErrorMessage: true,
+            errorMessage: "",
+            validationFns: [name()],
+            events: {
+                focusout: (evt: FocusEvent) => {this._handleFirstNameChange()}
+            }
+        });
+
+        this.children.inputSecondName = new Input({
+            label: "Фамилия",
+            name: "second_name",
+            type: 'text',
+            value: "Иванов",
+            disabled: false,
+            danger: false,
+            enableErrorMessage: true,
+            errorMessage: "",
+            validationFns: [name()],
+            events: {
+                focusout: (evt: FocusEvent) => {this._handleSecondNameChange()}
+            }
+        });
+
+        this.children.inputDisplayName = new Input({
+            label: "Имя в чате",
+            name: "display_name",
+            type: 'text',
+            value: "Иван",
+            disabled: false,
+            danger: false,
+            enableErrorMessage: true,
+            errorMessage: "",
+            events: {
+                focusout: (evt: FocusEvent) => {}
+            }
+        });
+
+        this.children.inputPhone = new Input({
+            label: "Телефон",
+            name: "phone",
+            type: 'text',
+            value: "+79099673030",
+            disabled: false,
+            danger: false,
+            enableErrorMessage: true,
+            errorMessage: "",
+            validationFns: [minLength(10), maxLength(15), phone()],
+            events: {
+                focusout: (evt: FocusEvent) => {this._handlePhoneChange()}
+            }
+        });
+
+        this.children.button = new Button({
+        label: 'Сохранить',
+        submit: true,
+        className: 'button button_primary',
+        events: {
+            click: (evt: PointerEvent) => {
+                evt.preventDefault();
+                this._handleSubmit();
+            }
+        }
+        });
+    }
+
+    render() {
+        return this.compile(template, this.props);
+    }
+
+    private _handleEmailChange(): void {
+        this._emailValue = (this.children.inputEmail as Input).getValue();
+
+        const { isValid, errorMessages } = (this.children.inputEmail as Input).validate();
+        this.children.inputEmail.setProps({
+            value: this._emailValue,
+            errorMessage: errorMessages![0] ?? undefined,
+        });
+
+        (this.children.inputEmail as Input).setValidState(isValid);
+    }
+
+    private _handleLoginChange(): void {
+        this._loginValue = (this.children.inputLogin as Input).getValue();
+
+        const { isValid, errorMessages } = (this.children.inputLogin as Input).validate();
+        this.children.inputLogin.setProps({
+            value: this._loginValue,
+            errorMessage: errorMessages![0] ?? undefined,
+        });
+
+        (this.children.inputLogin as Input).setValidState(isValid);
+    }
+
+    private _handleFirstNameChange(): void {
+        this._firstNameValue = (this.children.inputFirstName as Input).getValue();
+
+        const { isValid, errorMessages } = (this.children.inputFirstName as Input).validate();
+        this.children.inputFirstName.setProps({
+            value: this._firstNameValue,
+            errorMessage: errorMessages![0] ?? undefined,
+        });
+
+        (this.children.inputFirstName as Input).setValidState(isValid);
+    }
+
+    private _handleSecondNameChange(): void {
+        this._secondNameValue = (this.children.inputSecondName as Input).getValue();
+
+        const { isValid, errorMessages } = (this.children.inputSecondName as Input).validate();
+        this.children.inputSecondName.setProps({
+            value: this._secondNameValue,
+            errorMessage: errorMessages![0] ?? undefined,
+        });
+
+        (this.children.inputSecondName as Input).setValidState(isValid);
+    }
+
+    private _handlePhoneChange(): void {
+        this._phoneValue = (this.children.inputPhone as Input).getValue();
+
+        const { isValid, errorMessages } = (this.children.inputPhone as Input).validate();
+        this.children.inputPhone.setProps({
+            value: this._phoneValue,
+            errorMessage: errorMessages![0] ?? undefined,
+        });
+
+        (this.children.inputPhone as Input).setValidState(isValid);
+    }
+
+    private _handleSubmit(): void {
+        this._handleEmailChange();
+        this._handleLoginChange();
+        this._handleFirstNameChange();
+        this._handleSecondNameChange();
+        this._handlePhoneChange();
+        const form = document.getElementById('edit-profile-form');
+        const formData = getFormData(form as HTMLFormElement);
+        console.log(formData);
+    }
 }
