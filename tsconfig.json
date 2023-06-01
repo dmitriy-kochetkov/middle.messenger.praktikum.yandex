@@ -13,7 +13,8 @@
         "skipLibCheck": true,
         "lib": [
             "ESNext",
-            "DOM"
+            "DOM",
+            "dom.iterable"
         ]
     }
 }

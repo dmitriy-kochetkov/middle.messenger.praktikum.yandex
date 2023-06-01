@@ -6,7 +6,7 @@
     "dev": "parcel --no-cache ./src/index.html",
     "build": "parcel build ./src/index.html",
     "start": "npm run build && node server.js",
-    "eslint": "eslint",
+    "eslint": "eslint src/**/*.ts",
     "stylelint": "stylelint src/**/*.{pcss,css}"
   },
   "repository": {

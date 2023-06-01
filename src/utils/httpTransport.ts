@@ -4,10 +4,10 @@ const METHODS = {
     GET: 'GET',
     POST: 'POST',
     PUT: 'PUT',
-    DELETE: 'DELETE'
+    DELETE: 'DELETE',
 };
 
-type TOptions = {
+export type TOptions = {
     method: string,
     timeout?: number,
     headers?: Record<string, string>,
@@ -16,7 +16,7 @@ type TOptions = {
 
 type TOptionsWithoutMethod = Omit<TOptions, 'method'>;
 
-class HttpTransport {
+export class HttpTransport {
     get(url: string, options: TOptionsWithoutMethod = {}): Promise<XMLHttpRequest> {
         return this.request(url, { ...options, method: METHODS.GET }, options.timeout);
     }

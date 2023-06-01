@@ -188,6 +188,7 @@ export class SigninPage extends Block {
         this._firstNameValue = (this.children.inputFirstName as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputFirstName as Input).validate();
+        console.log({ isValid, errorMessages });
         this.children.inputFirstName.setProps({
             value: this._firstNameValue,
             errorMessage: errorMessages![0] ?? undefined,
