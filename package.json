@@ -1,31 +1,43 @@
 {
-  "name": "ya-pract-mod-01",
+  "name": "middle.messenger.praktikum.yandex",
   "version": "1.0.0",
   "description": "**Vanilla JS chat web-application**",
   "scripts": {
-    "dev": "parcel --no-cache ./src/index.hbs --open",
-    "build": "parcel build ./src/index.hbs",
-    "start": "npm run build && node server.js"
+    "dev": "parcel --no-cache ./src/index.html",
+    "build": "parcel build ./src/index.html",
+    "start": "npm run build && node server.js",
+    "eslint": "eslint src/**/*.ts",
+    "stylelint": "stylelint src/**/*.{pcss,css}"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dmitriy-kochetkov/ya-pract-mod-01.git"
+    "url": "git+https://github.com/dmitriy-kochetkov/middle.messenger.praktikum.yandex.git"
   },
   "keywords": [],
   "author": "Dmitriy Kochektov",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dmitriy-kochetkov/ya-pract-mod-01/issues"
+    "url": "https://github.com/dmitriy-kochetkov/middle.messenger.praktikum.yandex/issues"
   },
-  "homepage": "https://github.com/dmitriy-kochetkov/ya-pract-mod-01#readme",
+  "homepage": "https://github.com/dmitriy-kochetkov/middle.messenger.praktikum.yandex#readme",
   "devDependencies": {
-    "@anikin/parcel-transformer-handlebars": "^1.0.9",
     "@anikin/parcel-transformer-handlebars-precompile": "^1.0.1",
+    "@types/uuid": "^9.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.7",
+    "@typescript-eslint/parser": "^5.59.7",
+    "eslint": "^8.41.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
     "parcel": "^2.8.3",
-    "postcss-nested": "^6.0.1"
+    "postcss-nested": "^6.0.1",
+    "stylelint": "^15.6.2",
+    "stylelint-config-standard": "^33.0.0",
+    "typescript": "^5.0.4",
+    "typescript-plugin-css-modules": "^5.0.1"
   },
   "dependencies": {
+    "express": "^4.18.2",
     "handlebars": "^4.7.7",
-    "express": "^4.18.2"
+    "uuid": "^9.0.0"
   }
 }

@@ -1,0 +1,42 @@
+.send-message-form {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+
+    &__attach-button {
+        width: 32px;
+        height: 32px;
+        background: url("../../../static/attach.svg") 0 0 no-repeat;
+        border: none;
+        box-sizing: border-box;
+
+        &:hover {
+            background: url("../../../static/attach-hover.svg") 0 0 no-repeat;
+        }
+    }
+
+    &__send-button {
+        background: var(--blue-1) url("../../../static/arrow-1.svg") 8px 8px no-repeat;
+        width: 28px;
+        height: 28px;
+        border-radius:14px;
+        border: none;
+        box-sizing: border-box;
+    }
+}
+
+.send-message-form .input {
+    flex-grow: 1;
+}
+
+.send-message-form .input__field {
+    outline: none;
+    flex-grow: 1;
+    border-radius: 16px;
+    border: none;
+    background: var(--grey-4);
+    padding: 0 20px;
+    width: 100%;
+}

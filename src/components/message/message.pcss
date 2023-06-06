@@ -1,0 +1,77 @@
+.message {
+  max-width: 400px;
+  border: 1px solid var(--grey-4);
+  background: var(--grey-4);
+  border-radius: 10px;
+  color: var(--grey-1);
+  overflow: hidden;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  position:relative;
+
+  &__text {
+    padding: 10px 10px 0;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  &__image {
+    display: block;
+  }
+
+  &__footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    line-height: 13px;
+    font-size: 9px;
+  }
+
+  &__info {
+    color: var(--grey-2);
+    display: flex;
+    line-height: 13px;
+    padding: 5px 10px 5px 0;
+
+    &-cover {
+      position: absolute;
+      bottom: 9px;
+      right: 11px;
+      background: var(--grey-6);
+      color: var(--white);
+      padding: 0 5px;
+      border-radius: 7px;
+      line-height: 13px;
+      display: flex;
+
+      &-mine {
+        background: var(--white);
+      }
+    }
+
+    &_colored {
+      color: var(--blue-1);
+    }
+  }
+
+  &__status {
+    width: 10px;
+    height: 10px;
+    margin-right: 2px;
+
+    &-readed {
+      background: url("../../../static/status-readed.svg") 0 4px no-repeat;
+    }
+
+    &-sended {
+      background: url("../../../static/status-sended.svg") 0 4px no-repeat;
+    }
+  }
+}
+
+.message-mine {
+  background: var(--blue-2);
+  border: 1px solid var(--blue-2);
+  align-self: flex-end;
+}
