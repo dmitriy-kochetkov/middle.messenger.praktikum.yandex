@@ -1,4 +1,4 @@
-import { queryStringify } from '../utils/utils';
+import { queryStringify } from '../utils/queryStringify';
 
 const METHODS = {
     GET: 'GET',
@@ -18,19 +18,42 @@ type TOptionsWithoutMethod = Omit<TOptions, 'method'>;
 type HTTPMethod = (url: string, options?: TOptionsWithoutMethod) => Promise<XMLHttpRequest>;
 
 export class HttpTransport {
-    get: HTTPMethod = (url, options = {}) => this
-        .request(url, { ...options, method: METHODS.GET }, options.timeout);
+    static API_ENDPOINT = "https://ya-praktikum.tech/api/v2"
+    protected path: string;
 
-    post: HTTPMethod = (url, options = {}) => this
-        .request(url, { ...options, method: METHODS.POST }, options.timeout);
+    constructor(endpoint: string) {
+        this.path = `${HttpTransport.API_ENDPOINT}${endpoint}`
+    }
 
-    put: HTTPMethod = (url, options = {}) => this
-        .request(url, { ...options, method: METHODS.PUT }, options.timeout);
+    public get: HTTPMethod = (url, options = {}) => this
+        .request(
+            this.path + url,
+            { ...options, method: METHODS.GET },
+            options.timeout
+        );
 
-    delete: HTTPMethod = (url, options = {}) => this
-        .request(url, { ...options, method: METHODS.DELETE }, options.timeout);
+    public post: HTTPMethod = (url, options = {}) => this
+        .request(
+            this.path + url,
+            { ...options, method: METHODS.POST },
+            options.timeout
+        );
 
-    request(
+    public put: HTTPMethod = (url, options = {}) => this
+        .request(
+            this.path + url,
+            { ...options, method: METHODS.PUT },
+            options.timeout
+        );
+
+    public delete: HTTPMethod = (url, options = {}) => this
+        .request(
+            this.path + url,
+            { ...options, method: METHODS.DELETE },
+            options.timeout
+        );
+
+    private request(
         url: string,
         options: TOptions = { method: METHODS.GET },
         timeout = 5000,
@@ -60,11 +83,16 @@ export class HttpTransport {
 
             xhr.onabort = reject;
             xhr.onerror = reject;
-            xhr.timeout = timeout;
             xhr.ontimeout = reject;
+            xhr.timeout = timeout;
+
+            // xhr.responseType = "json"
+            // xhr.withCredentials = true;
 
             if (isGetMethod || !data) {
                 xhr.send();
+            } else if ((data instanceof FormData)) {
+                xhr.send(data);
             } else {
                 xhr.send(data as XMLHttpRequestBodyInit);
             }
