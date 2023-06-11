@@ -1,4 +1,4 @@
-import renderDom from './core/renderDom';
+import renderDOM from './core/renderDOM';
 import { NavigationPage } from './pages/navigation';
 import { LoginPage } from './pages/login';
 import { SigninPage } from './pages/signin';
@@ -135,31 +135,31 @@ window.addEventListener('DOMContentLoaded', () => {
 
   switch (window.location.pathname) {
     case '/login':
-        renderDom(loginPage);
+        renderDOM(loginPage);
         break;
     case '/signin':
-          renderDom(signinPage);
-          break;
+        renderDOM(signinPage);
+        break;
     case '/404':
-          renderDom(errorPage404);
-          break;
+        renderDOM(errorPage404);
+        break;
     case '/500':
-          renderDom(errorPage500);
-          break;
+        renderDOM(errorPage500);
+        break;
     case '/chat':
-        renderDom(chatPage);
+        renderDOM(chatPage);
         break;
     case '/profile':
-          renderDom(profilePage);
-          break;
+        renderDOM(profilePage);
+        break;
     case '/edit-profile':
-          renderDom(editProfilePage);
-          break;
+        renderDOM(editProfilePage);
+        break;
     case '/change-password':
-          renderDom(changePasswordPage);
-          break;
+        renderDOM(changePasswordPage);
+        break;
     default:
-        renderDom(navigationPage);
+        renderDOM(navigationPage);
         break;
 }
 });
