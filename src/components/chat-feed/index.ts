@@ -1,4 +1,4 @@
-import Block from '../../utils/Block';
+import Block from '../../core/Block';
 import template from './chat-feed.hbs';
 import { IMessage, Message } from '../message';
 

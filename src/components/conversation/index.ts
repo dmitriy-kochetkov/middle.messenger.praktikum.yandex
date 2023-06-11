@@ -1,4 +1,4 @@
-import Block from '../../utils/Block';
+import Block from '../../core/Block';
 import template from './conversation.hbs';
 import { ChatFeed, IChatFeedProps } from '../chat-feed';
 import { SendMessageForm } from '../send-message-form';

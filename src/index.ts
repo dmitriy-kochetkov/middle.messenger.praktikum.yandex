@@ -1,4 +1,4 @@
-import renderDom from './utils/renderDom';
+import renderDom from './core/renderDom';
 import { NavigationPage } from './pages/navigation';
 import { LoginPage } from './pages/login';
 import { SigninPage } from './pages/signin';

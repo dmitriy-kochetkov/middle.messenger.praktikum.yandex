@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { EventBus } from './EventBus';
 import { TProps } from './types';
 import { EVENTS } from './constants';
-import { deepEqual } from './utils';
+import { deepEqual } from '../utils/utils';
 
 class Block {
     private id: string;
