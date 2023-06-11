@@ -64,4 +64,4 @@ export function initRouter(router: HashRouter, store: Store<AppState>) {
             renderDOM(new Page({}));
         }
     });
-    }
+}

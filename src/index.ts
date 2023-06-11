@@ -1,4 +1,4 @@
-import renderDOM from './core/renderDOM';
+/*import renderDOM from './core/renderDOM';
 import { NavigationPage } from './pages/navigation';
 import { LoginPage } from './pages/login';
 import { SigninPage } from './pages/signin';
@@ -163,3 +163,4 @@ window.addEventListener('DOMContentLoaded', () => {
         break;
 }
 });
+*/
