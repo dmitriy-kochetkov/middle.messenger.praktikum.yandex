@@ -91,8 +91,6 @@ export class HttpTransport {
 
             if (isGetMethod || !data) {
                 xhr.send();
-            } else if ((data instanceof FormData)) {
-                xhr.send(data);
             } else {
                 xhr.send(data as XMLHttpRequestBodyInit);
             }
