@@ -10,18 +10,25 @@ import {
     notOnlyDigits,
     password,
 } from '../../utils/validation';
+import AuthController from '../../controllers/AuthController';
+import { SigninData } from '../../api/AuthAPI';
 
-export interface ILogin {
-    inputs: IInputProps[]
-}
+// export interface ILogin {
+//     inputs: IInputProps[]
+// }
+
+// interface ICredentials {
+//     login: string;
+//     password: string;
+// }
 
 export class LoginPage extends Block {
     private _loginValue: string = '';
 
     private _passwordValue: string = '';
 
-    constructor(props: ILogin) {
-        super(props);
+    constructor() {
+        super({});
     }
 
     protected init(): void {
@@ -29,7 +36,7 @@ export class LoginPage extends Block {
             label: 'Логин',
             name: 'login',
             type: 'text',
-            value: 'ivanivanov',
+            value: 'ivanivanov1_2_3_4',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -76,7 +83,7 @@ export class LoginPage extends Block {
         this._loginValue = (this.children.inputLogin as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputLogin as Input).validate();
-        this.children.inputLogin.setProps({
+        (this.children.inputLogin as Input).setProps({
             value: this._loginValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
@@ -88,7 +95,7 @@ export class LoginPage extends Block {
         this._passwordValue = (this.children.inputPassword as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputPassword as Input).validate();
-        this.children.inputPassword.setProps({
+        (this.children.inputPassword as Input).setProps({
             value: this._passwordValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
@@ -102,7 +109,17 @@ export class LoginPage extends Block {
         const form = document.getElementById('login-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
-            console.log(formData);
+            const credentials = this.convertFormToCredentials(formData);
+            AuthController.signin(credentials as SigninData);
+        }
+    }
+
+    private convertFormToCredentials(
+        formData: Record<string, FormDataEntryValue>,
+      ): SigninData {
+        return {
+          login: formData.login as string,
+          password: formData.password as string,
         }
     }
 }

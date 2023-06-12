@@ -1,21 +1,20 @@
 import { v4 as uuidv4 } from 'uuid';
 import { EventBus } from './EventBus';
-import { TProps } from './types';
 import { EVENTS } from './constants';
 import { deepEqual } from '../utils/deepEqual';
 
-class Block {
+class Block<P extends Record<string, any> = any> {
     private id: string;
 
-    protected props: TProps;
+    protected props: P;
 
-    protected children: Record<string, Block>;
+    protected children: Record<string, Block | Block[]>;
 
     private eventBus: () => EventBus;
 
     private _element!: HTMLElement;
 
-    constructor(propsWithChildren: TProps) {
+    constructor(propsWithChildren: P) {
         const eventBus = new EventBus();
 
         const { props, children } = this._getChildrenAndProps(propsWithChildren);
@@ -31,8 +30,9 @@ class Block {
         eventBus.emit(EVENTS.INIT);
     }
 
-    private _getChildrenAndProps(childrenAndProps: TProps) {
-        const props: TProps = {} as TProps;
+    private _getChildrenAndProps(childrenAndProps: P):
+    { props: P, children: Record<string, Block | Block[]> } {
+        const props: Record<string, unknown> = {};
         const children: Record<string, Block> = {};
 
         Object.entries(childrenAndProps).forEach(([key, value]) => {
@@ -43,7 +43,7 @@ class Block {
             }
         });
 
-        return { props, children };
+        return { props: props as P, children };
     }
 
     private _registerEvents(eventBus: EventBus): void {
@@ -95,28 +95,32 @@ class Block {
         this.componentDidMount();
     }
 
-    protected componentDidMount(): boolean {
-        return true;
+    protected componentDidMount(): void {
     }
 
     public dispatchComponentDidMount() {
         this.eventBus().emit(EVENTS.FLOW_CDM);
 
-        Object.values(this.children)
-            .forEach((child) => child.dispatchComponentDidMount());
+        Object.values(this.children).forEach(child => {
+            if (Array.isArray(child)) {
+                child.forEach(ch => ch.dispatchComponentDidMount());
+            } else {
+                child.dispatchComponentDidMount()
+            }
+        });
     }
 
-    private _componentDidUpdate(oldProps: any, newProps: any): void {
+    private _componentDidUpdate(oldProps: P, newProps: P): void {
         if (this.componentDidUpdate(oldProps, newProps)) {
             this.eventBus().emit(EVENTS.FLOW_RENDER);
         }
     }
 
-    protected componentDidUpdate(oldProps: TProps, newProps: TProps): boolean {
+    protected componentDidUpdate(oldProps: P, newProps: P): boolean {
         return !deepEqual(oldProps, newProps);
     }
 
-    public setProps = (nextProps: TProps) => {
+    public setProps = (nextProps: P) => {
         if (!nextProps) {
             return;
         }
@@ -140,7 +144,7 @@ class Block {
         this._addEvents();
     }
 
-    protected compile(template: (contex: any) => string, contex: TProps) {
+    protected compile(template: (contex: any) => string, contex: any) {
         const contextAndStubs = { ...contex };
 
         Object.entries(this.children).forEach(([name, component]) => {
@@ -187,17 +191,17 @@ class Block {
         return this.element!;
     }
 
-    _makePropsProxy(props: TProps) {
+    _makePropsProxy(props: P) {
         const self = this;
 
         return new Proxy(props, {
-            get(target: TProps, prop: string) {
+            get(target: P, prop: string) {
                 const value = target[prop];
                 return typeof value === 'function' ? value.bind(target) : value;
             },
-            set(target: TProps, prop: string, value) {
+            set(target: P, prop: string, value) {
                 const oldTarget = { ...target };
-                target[prop] = value;
+                target[prop as keyof P] = value;
 
                 self.eventBus().emit(EVENTS.FLOW_CDU, oldTarget, target);
                 return true;

@@ -10,20 +10,22 @@ import {
     password,
     repeatPasswordValidationMessage,
 } from '../../utils/validation';
+import { withStore } from '../../hocs/withStore';
+import { withRouter } from '../../hocs/withRouter';
 
-export interface IChangePasswordPage {
-    inputs: IInputProps[]
-}
+// export interface IChangePasswordPage {
+//     inputs: IInputProps[]
+// }
 
-export class ChangePasswordPage extends Block {
+class ChangePasswordPage extends Block {
     private _oldPasswordValue: string = '';
 
     private _newPasswordValue: string = '';
 
     private _newPasswordRepeatValue = '';
 
-    constructor(props: IChangePasswordPage) {
-        super(props);
+    constructor() {
+        super({});
     }
 
     protected init(): void {
@@ -94,7 +96,7 @@ export class ChangePasswordPage extends Block {
         this._oldPasswordValue = (this.children.inputOldPassword as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputOldPassword as Input).validate();
-        this.children.inputOldPassword.setProps({
+        (this.children.inputOldPassword as Input).setProps({
             value: this._oldPasswordValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
@@ -106,7 +108,7 @@ export class ChangePasswordPage extends Block {
         this._newPasswordValue = (this.children.inputNewPassword as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputNewPassword as Input).validate();
-        this.children.inputNewPassword.setProps({
+        (this.children.inputNewPassword as Input).setProps({
             value: this._newPasswordValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
@@ -120,7 +122,7 @@ export class ChangePasswordPage extends Block {
 
         const isValid = this._newPasswordValue === this._newPasswordRepeatValue;
         const errorMessage = isValid ? undefined : repeatPasswordValidationMessage;
-        this.children.inputNewPasswordRepeat.setProps({
+        (this.children.inputNewPasswordRepeat as Input).setProps({
             value: this._newPasswordRepeatValue,
             errorMessage: errorMessage ?? undefined,
         });
@@ -139,3 +141,5 @@ export class ChangePasswordPage extends Block {
         }
     }
 }
+
+export default withRouter(withStore(ChangePasswordPage));

@@ -15,9 +15,9 @@ import {
     repeatPasswordValidationMessage,
 } from '../../utils/validation';
 
-export interface ISignin {
-    inputs: IInputProps[]
-}
+// export interface ISignin {
+//     inputs: IInputProps[]
+// }
 
 export class SigninPage extends Block {
     private _emailValue: string = '';
@@ -34,8 +34,8 @@ export class SigninPage extends Block {
 
     private _passwordRepeatValue: string = '';
 
-    constructor(props: ISignin) {
-        super(props);
+    constructor() {
+        super({});
     }
 
     protected init(): void {
@@ -164,7 +164,7 @@ export class SigninPage extends Block {
         this._emailValue = (this.children.inputEmail as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputEmail as Input).validate();
-        this.children.inputEmail.setProps({
+        (this.children.inputEmail as Input).setProps({
             value: this._emailValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
@@ -176,7 +176,7 @@ export class SigninPage extends Block {
         this._loginValue = (this.children.inputLogin as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputLogin as Input).validate();
-        this.children.inputLogin.setProps({
+        (this.children.inputLogin as Input).setProps({
             value: this._loginValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
@@ -188,7 +188,7 @@ export class SigninPage extends Block {
         this._firstNameValue = (this.children.inputFirstName as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputFirstName as Input).validate();
-        this.children.inputFirstName.setProps({
+        (this.children.inputFirstName as Input).setProps({
             value: this._firstNameValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
@@ -200,7 +200,7 @@ export class SigninPage extends Block {
         this._secondNameValue = (this.children.inputSecondName as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputSecondName as Input).validate();
-        this.children.inputSecondName.setProps({
+        (this.children.inputSecondName as Input).setProps({
             value: this._secondNameValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
@@ -212,7 +212,7 @@ export class SigninPage extends Block {
         this._phoneValue = (this.children.inputPhone as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputPhone as Input).validate();
-        this.children.inputPhone.setProps({
+        (this.children.inputPhone as Input).setProps({
             value: this._phoneValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
@@ -224,7 +224,7 @@ export class SigninPage extends Block {
         this._passwordValue = (this.children.inputPassword as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputPassword as Input).validate();
-        this.children.inputPassword.setProps({
+        (this.children.inputPassword as Input).setProps({
             value: this._passwordValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
@@ -240,7 +240,7 @@ export class SigninPage extends Block {
         const errorMessage = isValid
             ? undefined
             : repeatPasswordValidationMessage;
-        this.children.inputPasswordRepeat.setProps({
+        (this.children.inputPasswordRepeat as Input).setProps({
             value: this._passwordRepeatValue,
             errorMessage: errorMessage ?? undefined,
         });

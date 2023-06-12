@@ -11,7 +11,7 @@ export type TOptions = {
     method: string,
     timeout?: number,
     headers?: Record<string, string>,
-    data?: unknown
+    data?: any
 };
 
 type TOptionsWithoutMethod = Omit<TOptions, 'method'>;
@@ -53,16 +53,16 @@ export class HttpTransport {
             options.timeout
         );
 
-    private request(
+    private request<T extends unknown>(
         url: string,
         options: TOptions = { method: METHODS.GET },
-        timeout = 5000,
-    ): Promise<XMLHttpRequest> {
+        timeout: number = 5000,
+    ): Promise<T> {
         const { headers, method, data } = options;
 
         return new Promise((resolve, reject) => {
             if (!method) {
-                reject();
+                reject('No method');
                 return;
             }
 
@@ -70,6 +70,7 @@ export class HttpTransport {
             const isGetMethod = method === METHODS.GET;
 
             xhr.open(method, isGetMethod && !!data ? `${url}${queryStringify(data)}` : url);
+            // console.log(isGetMethod && !!data ? `${url}${queryStringify(data)}` : url);
 
             if (headers) {
                 Object.keys(headers).forEach((key) => {
@@ -78,21 +79,44 @@ export class HttpTransport {
             }
 
             xhr.onload = () => {
-                resolve(xhr);
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status < 400) {
+                        resolve(xhr.response);
+                    } else {
+                        reject(xhr.response);
+                    }
+                }
             };
 
-            xhr.onabort = reject;
-            xhr.onerror = reject;
-            xhr.ontimeout = reject;
+            // xhr.onreadystatechange = (e) => {
+
+            //     if (xhr.readyState === XMLHttpRequest.DONE) {
+            //         if (xhr.status < 400) {
+            //             resolve(xhr.response);
+            //         } else {
+            //             reject(xhr.response);
+            //         }
+            //     }
+            // };
+
+            xhr.onabort = () =>  reject({reason: "abort"});
+            xhr.onerror = () => reject({reason: "network error"})
+            xhr.ontimeout = () => reject({reason: "timeout"});
             xhr.timeout = timeout;
 
-            // xhr.responseType = "json"
-            // xhr.withCredentials = true;
+            xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+            xhr.responseType = "json"
+            xhr.withCredentials = true;
+
+            // const jsonData = JSON.stringify(data)
+            // console.log({data, jsonData});
 
             if (isGetMethod || !data) {
                 xhr.send();
+                console.log('xhr.send()')
             } else {
-                xhr.send(data as XMLHttpRequestBodyInit);
+                xhr.send(JSON.stringify(data));
+                console.log('xhr.send(JSON.stringify(data))')
             }
         });
     }

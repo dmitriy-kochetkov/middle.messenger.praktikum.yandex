@@ -38,7 +38,7 @@ export class AuthAPI extends BaseAPI {
         return this.httpTransport.post('/signin', {data});
     }
 
-    getUser(): Promise<unknown> {
+    fetchUser(): Promise<unknown> {
         return this.httpTransport.get('/user');
     }
 

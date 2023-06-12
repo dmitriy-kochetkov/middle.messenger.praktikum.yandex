@@ -13,12 +13,27 @@ import {
     notOnlyDigits,
     phone,
 } from '../../utils/validation';
+import { withStore } from '../../hocs/withStore';
+import { withRouter } from '../../hocs/withRouter';
 
-interface IEditProfilePage {
-    inputs: IInputProps[]
-}
+import store from '../../core/Store';
+import UsersController from '../../controllers/UsersController';
+import { UserData } from '../../api/UsersAPI';
 
-export class EditProfilePage extends Block {
+// interface IEditProfilePage {
+//     inputs: IInputProps[]
+// }
+
+// interface IUser {
+//     firstName: string;
+//     secondName: string;
+//     login: string;
+//     email: string;
+//     displayName: string;
+//     phone: string;
+//   }
+
+class EditProfilePage extends Block {
     private _emailValue: string = '';
 
     private _loginValue: string = '';
@@ -29,18 +44,18 @@ export class EditProfilePage extends Block {
 
     private _phoneValue: string = '';
 
-    constructor(props: IEditProfilePage) {
-        super(props);
+    constructor() {
+        super({});
     }
 
     protected init(): void {
-        this.children.backPanel = new BackPanel({ backURL: '../profile' });
+        this.children.backPanel = new BackPanel({ backURL: '../settings' });
 
         this.children.inputEmail = new Input({
             label: 'Почта',
             name: 'email',
             type: 'text',
-            value: 'pochta@yandex.ru',
+            value: store.getState().user.email, // 'pochta192548@yandex.ru',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -55,7 +70,7 @@ export class EditProfilePage extends Block {
             label: 'Логин',
             name: 'login',
             type: 'text',
-            value: 'ivanivanov',
+            value: store.getState().user.login, // 'ivanivanov1_2_3_4',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -70,7 +85,7 @@ export class EditProfilePage extends Block {
             label: 'Имя',
             name: 'first_name',
             type: 'text',
-            value: 'Иван',
+            value: store.getState().user.first_name, // 'Иван',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -85,7 +100,7 @@ export class EditProfilePage extends Block {
             label: 'Фамилия',
             name: 'second_name',
             type: 'text',
-            value: 'Иванов',
+            value: store.getState().user.second_name, // 'Иванов',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -100,7 +115,7 @@ export class EditProfilePage extends Block {
             label: 'Имя в чате',
             name: 'display_name',
             type: 'text',
-            value: 'Иван',
+            value: store.getState().user.display_name, // '',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -114,7 +129,7 @@ export class EditProfilePage extends Block {
             label: 'Телефон',
             name: 'phone',
             type: 'text',
-            value: '+79099673030',
+            value: store.getState().user.phone, // '+79876543210',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -146,7 +161,7 @@ export class EditProfilePage extends Block {
         this._emailValue = (this.children.inputEmail as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputEmail as Input).validate();
-        this.children.inputEmail.setProps({
+        (this.children.inputEmail as Input).setProps({
             value: this._emailValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
@@ -158,7 +173,7 @@ export class EditProfilePage extends Block {
         this._loginValue = (this.children.inputLogin as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputLogin as Input).validate();
-        this.children.inputLogin.setProps({
+        (this.children.inputLogin as Input).setProps({
             value: this._loginValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
@@ -170,7 +185,7 @@ export class EditProfilePage extends Block {
         this._firstNameValue = (this.children.inputFirstName as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputFirstName as Input).validate();
-        this.children.inputFirstName.setProps({
+        (this.children.inputFirstName as Input).setProps({
             value: this._firstNameValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
@@ -182,7 +197,7 @@ export class EditProfilePage extends Block {
         this._secondNameValue = (this.children.inputSecondName as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputSecondName as Input).validate();
-        this.children.inputSecondName.setProps({
+        (this.children.inputSecondName as Input).setProps({
             value: this._secondNameValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
@@ -194,7 +209,7 @@ export class EditProfilePage extends Block {
         this._phoneValue = (this.children.inputPhone as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputPhone as Input).validate();
-        this.children.inputPhone.setProps({
+        (this.children.inputPhone as Input).setProps({
             value: this._phoneValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
@@ -211,7 +226,24 @@ export class EditProfilePage extends Block {
         const form = document.getElementById('edit-profile-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
+            const userData = this.convertFormToUser(formData);
             console.log(formData);
+            UsersController.updateUser(userData);
+        }
+    }
+
+    private convertFormToUser(
+        formData: Record<string, FormDataEntryValue>,
+      ): UserData {
+        return {
+          email: formData.email as string,
+          first_name: formData.first_name as string,
+          second_name: formData.second_name as string,
+          display_name: formData.display_name as string,
+          login: formData.login as string,
+          phone: formData.phone as string,
         }
     }
 }
+
+export default withRouter(withStore(EditProfilePage));
