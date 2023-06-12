@@ -1,6 +1,6 @@
 import Block from '../../core/Block';
 import template from './edit-profile.hbs';
-import { Input, IInputProps } from '../../components/input';
+import { Input } from '../../components/input';
 import { Button } from '../../components/button';
 import { BackPanel } from '../../components/back-panel';
 import { getFormData } from '../../utils/getFormData';

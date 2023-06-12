@@ -1,6 +1,6 @@
 import Block from '../../core/Block';
 import template from './change-password.hbs';
-import { Input, IInputProps } from '../../components/input';
+import { Input } from '../../components/input';
 import { BackPanel } from '../../components/back-panel';
 import { Button } from '../../components/button';
 import { getFormData } from '../../utils/getFormData';
