@@ -12,6 +12,8 @@ import {
 } from '../../utils/validation';
 import { withStore } from '../../hocs/withStore';
 import { withRouter } from '../../hocs/withRouter';
+import UsersController from '../../controllers/UsersController';
+import { UserPassword } from '../../api/UsersAPI';
 
 // export interface IChangePasswordPage {
 //     inputs: IInputProps[]
@@ -29,13 +31,13 @@ class ChangePasswordPage extends Block {
     }
 
     protected init(): void {
-        this.children.backPanel = new BackPanel({ backURL: '../profile' });
+        this.children.backPanel = new BackPanel({ backURL: '../settings' });
 
         this.children.inputOldPassword = new Input({
             label: 'Старый пароль',
             name: 'oldPassword',
             type: 'password',
-            value: 'myOldPassword',
+            value: '',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -50,7 +52,7 @@ class ChangePasswordPage extends Block {
             label: 'Новый пароль',
             name: 'newPassword',
             type: 'password',
-            value: 'myNewSuperPassword',
+            value: '',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -65,7 +67,7 @@ class ChangePasswordPage extends Block {
             label: 'Повторите новый пароль',
             name: 'newPassword2',
             type: 'password',
-            value: 'myNewSuperPassword$',
+            value: '',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -137,7 +139,18 @@ class ChangePasswordPage extends Block {
         const form = document.getElementById('edit-profile-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
-            console.log(formData);
+            const userPassword = this._convertFormToPassword(formData);
+            console.log(userPassword);
+            UsersController.updatePassword(userPassword);
+        }
+    }
+
+    private _convertFormToPassword(
+        formData: Record<string, FormDataEntryValue>,
+      ): UserPassword {
+        return {
+          oldPassword: formData.oldPassword as string,
+          newPassword: formData.newPassword as string
         }
     }
 }

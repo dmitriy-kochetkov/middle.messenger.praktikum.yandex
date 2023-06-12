@@ -109,12 +109,12 @@ export class LoginPage extends Block {
         const form = document.getElementById('login-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
-            const credentials = this.convertFormToCredentials(formData);
+            const credentials = this._convertFormToCredentials(formData);
             AuthController.signin(credentials as SigninData);
         }
     }
 
-    private convertFormToCredentials(
+    private _convertFormToCredentials(
         formData: Record<string, FormDataEntryValue>,
       ): SigninData {
         return {

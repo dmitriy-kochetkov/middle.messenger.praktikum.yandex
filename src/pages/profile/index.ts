@@ -28,7 +28,7 @@ class ProfilePage extends Block {
 
         this.props.userName = store.getState().user.display_name; // 'Иван';
 
-        this.children.backPanel = new BackPanel({ backURL: '../chat' });
+        this.children.backPanel = new BackPanel({ backURL: '../messenger' });
 
         this.children.inputEmail = new Input({
             label: 'Почта',
@@ -133,6 +133,7 @@ class ProfilePage extends Block {
             events: {
                 click: (evt: PointerEvent) => {
                     evt.preventDefault();
+                    router.go('/settings/changePassword');
                 },
             },
         });

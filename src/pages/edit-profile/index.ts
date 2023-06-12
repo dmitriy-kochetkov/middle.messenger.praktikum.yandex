@@ -226,13 +226,13 @@ class EditProfilePage extends Block {
         const form = document.getElementById('edit-profile-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
-            const userData = this.convertFormToUser(formData);
-            console.log(formData);
+            const userData = this._convertFormToUser(formData);
+            console.log(userData);
             UsersController.updateUser(userData);
         }
     }
 
-    private convertFormToUser(
+    private _convertFormToUser(
         formData: Record<string, FormDataEntryValue>,
       ): UserData {
         return {
