@@ -3,12 +3,19 @@ import template from './profile.hbs';
 import { Input } from '../../components/input';
 import { BackPanel } from '../../components/back-panel';
 import { Button } from '../../components/button';
+import { Modal } from '../../components/modal/modal';
+import { AvatarEditable } from '../../components/avatar-editable/avatar-editable';
+
 import AuthController from '../../controllers/AuthController';
 import { withStore } from '../../hocs/withStore';
 
 import store from '../../core/Store';
 import router from '../../core/Router';
 import { withRouter } from '../../hocs/withRouter';
+
+import catAvatar from '../../../static/cat.jpeg';
+
+
 
 // export interface IProfilePage {
 //     userName: string,
@@ -26,15 +33,62 @@ class ProfilePage extends Block {
         // const pr = this.props;
         // console.log({...this.props});
 
-        this.props.userName = store.getState().user.display_name; // 'Иван';
+        this.props.userName = store.getState().user.display_name;
 
         this.children.backPanel = new BackPanel({ backURL: '../messenger' });
+
+        this.children.modal = new Modal({
+            isOpen: false,
+            title: 'Modal test',
+            buttonConfirm: new Button({
+                label: 'Confirm',
+                submit: false,
+                className: 'button button_primary',
+                events: {
+                    click: (evt: PointerEvent) => {
+                        evt.preventDefault();
+                        console.log('modal button click');
+                        this._confirmModal();
+                    },
+                },
+            }),
+        });
+
+        console.log(catAvatar);
+
+        this.children.avatar = new AvatarEditable({
+            avatarHoverText: 'Поменять аватар',
+            avatarUrl: store.getState().user.avatar,
+            width: '130',
+            height: '130',
+            events: {
+                click: (evt: PointerEvent) => {
+                    evt.preventDefault();
+                    console.log('change avatar click');
+                    this._changeAvatarClick();
+                },
+            },
+        });
+
+        this.children.avatar2 = new AvatarEditable({
+            avatarHoverText: 'Поменять аватар',
+            avatarUrl: catAvatar,
+            width: '130',
+            height: '130',
+            events: {
+                click: (evt: PointerEvent) => {
+                    evt.preventDefault();
+                    console.log('change avatar click');
+                    this._changeAvatarClick();
+                },
+            },
+        });
 
         this.children.inputEmail = new Input({
             label: 'Почта',
             name: 'email',
             type: 'text',
-            value: store.getState().user.email, // 'pochta192548@yandex.ru',
+            value: store.getState().user.email,
             disabled: true,
             danger: false,
             enableErrorMessage: true,
@@ -48,7 +102,7 @@ class ProfilePage extends Block {
             label: 'Логин',
             name: 'login',
             type: 'text',
-            value: store.getState().user.login, // 'ivanivanov1_2_3_4',
+            value: store.getState().user.login,
             disabled: true,
             danger: false,
             enableErrorMessage: true,
@@ -62,7 +116,7 @@ class ProfilePage extends Block {
             label: 'Имя',
             name: 'first_name',
             type: 'text',
-            value: store.getState().user.first_name, // 'Иван',
+            value: store.getState().user.first_name,
             disabled: true,
             danger: false,
             enableErrorMessage: true,
@@ -76,7 +130,7 @@ class ProfilePage extends Block {
             label: 'Фамилия',
             name: 'second_name',
             type: 'text',
-            value: store.getState().user.second_name, // 'Иванов',
+            value: store.getState().user.second_name,
             disabled: true,
             danger: false,
             enableErrorMessage: true,
@@ -90,7 +144,7 @@ class ProfilePage extends Block {
             label: 'Имя в чате',
             name: 'display_name',
             type: 'text',
-            value: store.getState().user.display_name, // '',
+            value: store.getState().user.display_name,
             disabled: true,
             danger: false,
             enableErrorMessage: true,
@@ -104,7 +158,7 @@ class ProfilePage extends Block {
             label: 'Телефон',
             name: 'phone',
             type: 'text',
-            value: store.getState().user.phone, // '+79876543210',
+            value: store.getState().user.phone,
             disabled: true,
             danger: false,
             enableErrorMessage: true,
@@ -149,6 +203,14 @@ class ProfilePage extends Block {
                 },
             },
         });
+    }
+
+    private _confirmModal() {
+        (this.children.modal as Block).setProps({isOpen: false});
+    }
+
+    private _changeAvatarClick() {
+        (this.children.modal as Block).setProps({isOpen: true});
     }
 
     render() {
