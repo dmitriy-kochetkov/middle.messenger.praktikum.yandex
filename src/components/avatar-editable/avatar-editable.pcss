@@ -1,15 +1,5 @@
 .profile-image-wrap {
     padding-bottom: 21px;
-}
-
-.profile-image {
-    width: 130px;
-    height: 130px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    background: var(--grey-4);
     cursor: pointer;
 }
 
@@ -17,11 +7,18 @@
     border-radius: 50%;
 }
 
+.avatar-l {
+    width: 130px;
+    height: 130px;
+}
+
+.profile-avatar-default {
+    background: var(--grey-4) url("../../../static/default-avatar-f.svg") 45px 45px no-repeat;
+}
+
 .change-image-msg {
     position: absolute;
     padding: 20px;
-    width: 130px;
-    height: 130px;
     display: flex;
     justify-content: center;
     align-items: center;

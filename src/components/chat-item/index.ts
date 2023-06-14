@@ -1,14 +1,15 @@
 import Block from '../../core/Block';
 import template from './chat-item.hbs';
+import { IAvatar } from '../avatar/avatar';
 
 export interface IChatItemProps {
-    avatarURL?: string,
-    defualtAvatarURL: string,
+    avatar: IAvatar,
     name: string,
     lastActivity: string,
     isMine: boolean,
     text: string,
     counter?: string,
+
 }
 
 export class ChatItem extends Block {

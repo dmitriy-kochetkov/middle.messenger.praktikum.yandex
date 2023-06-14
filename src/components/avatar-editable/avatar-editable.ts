@@ -4,8 +4,6 @@ import template from './avatar-editable.hbs';
 interface IAvatarEditable {
     avatarHoverText: string,
     avatarUrl?: string,
-    width: string,
-    height: string,
     events: {
         click: (evt: PointerEvent) => void
     },

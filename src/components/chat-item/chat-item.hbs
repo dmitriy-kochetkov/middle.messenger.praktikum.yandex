@@ -1,11 +1,5 @@
 <div class="chat-item {{#if selected}}chat-item_selected{{/if}}">
-    <div class="chat-item__avatar">
-        {{#if avatarURL}}
-        <img class="chat-item__image" src="{{avatarURL}}" alt="avatar for {{name}}"/>
-        {{else}}
-        <img class="chat-item__image" src="{{defualtAvatarURL}}" alt="no image avatar"/>
-        {{/if}}
-    </div>
+    {{{avatar}}}
     <div class="chat-item__info">
         <div class="chat-item__row chat-item__header">
             <span class="chat-item__name">{{name}}</span>

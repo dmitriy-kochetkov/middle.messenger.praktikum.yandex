@@ -2,9 +2,8 @@ import Block from '../../core/Block';
 import template from './chat.hbs';
 import { Conversation, IConversation } from '../../components/conversation';
 import { ChatItem, IChatItemProps } from '../../components/chat-item';
+import { Avatar } from '../../components/avatar/avatar';
 
-
-import defaultAvatar from '../../../static/default-avatar.svg';
 import catAvatar from '../../../static/cat.jpeg'
 
 // export interface IChat {
@@ -25,28 +24,38 @@ export class ChatPage extends Block {
                 isMine: false,
                 text: 'Hello world!',
                 counter: '10',
-                defualtAvatarURL: defaultAvatar
+                avatar: new Avatar({
+                    size: 'm'
+                })
             },
             {
                 name: 'Марина',
-                avatarURL: catAvatar,
                 lastActivity: 'Вт',
                 isMine: false,
                 text: 'Oh my gosh!',
-                defualtAvatarURL: defaultAvatar
+                avatar: new Avatar({
+                    size: 'm'
+
+                })
             },
             {
                 name: 'Вадим',
                 lastActivity: '19 июня',
                 isMine: true,
                 text: 'Hello, my friend!',
-                defualtAvatarURL: defaultAvatar
+                avatar: new Avatar({
+                    size: 'm',
+                    avatarURL: catAvatar
+                })
             }
         ];
 
         this.props.conversation = {
             name: 'Вадим',
-            defualtAvatarURL: defaultAvatar,
+            avatar: new Avatar({
+                size: 's',
+                avatarURL: catAvatar
+            }),
             chatFeed: {
                 messages: [
                     {

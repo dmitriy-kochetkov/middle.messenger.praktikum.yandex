@@ -13,9 +13,7 @@ import store from '../../core/Store';
 import router from '../../core/Router';
 import { withRouter } from '../../hocs/withRouter';
 
-import catAvatar from '../../../static/cat.jpeg';
-
-
+// import catAvatar from '../../../static/cat.jpeg'
 
 // export interface IProfilePage {
 //     userName: string,
@@ -54,13 +52,9 @@ class ProfilePage extends Block {
             }),
         });
 
-        console.log(catAvatar);
-
         this.children.avatar = new AvatarEditable({
             avatarHoverText: 'Поменять аватар',
             avatarUrl: store.getState().user.avatar,
-            width: '130',
-            height: '130',
             events: {
                 click: (evt: PointerEvent) => {
                     evt.preventDefault();
@@ -70,19 +64,17 @@ class ProfilePage extends Block {
             },
         });
 
-        this.children.avatar2 = new AvatarEditable({
-            avatarHoverText: 'Поменять аватар',
-            avatarUrl: catAvatar,
-            width: '130',
-            height: '130',
-            events: {
-                click: (evt: PointerEvent) => {
-                    evt.preventDefault();
-                    console.log('change avatar click');
-                    this._changeAvatarClick();
-                },
-            },
-        });
+        // this.children.avatar2 = new AvatarEditable({
+        //     avatarHoverText: 'Поменять аватар',
+        //     avatarUrl: catAvatar,
+        //     events: {
+        //         click: (evt: PointerEvent) => {
+        //             evt.preventDefault();
+        //             console.log('change avatar click');
+        //             this._changeAvatarClick();
+        //         },
+        //     },
+        // });
 
         this.children.inputEmail = new Input({
             label: 'Почта',

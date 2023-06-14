@@ -3,12 +3,13 @@ import template from './conversation.hbs';
 import { ChatFeed, IChatFeedProps } from '../chat-feed';
 import { SendMessageForm } from '../send-message-form';
 import { Button } from '../button';
+import { IAvatar } from '../avatar/avatar';
 
 export interface IConversation {
     name?: string,
-    avatarURL?: string,
+    avatar: IAvatar,
     defualtAvatarURL: string,
-    chatFeed: IChatFeedProps,
+    chatFeed: IChatFeedProps
 }
 
 export class Conversation extends Block {
