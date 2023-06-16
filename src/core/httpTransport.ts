@@ -104,7 +104,7 @@ export class HttpTransport {
             xhr.ontimeout = () => reject({reason: "timeout"});
             xhr.timeout = timeout;
 
-            xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+
             xhr.responseType = "json"
             xhr.withCredentials = true;
 
@@ -114,7 +114,11 @@ export class HttpTransport {
             if (isGetMethod || !data) {
                 xhr.send();
                 console.log('xhr.send()')
+            } else if (data instanceof FormData) {
+                xhr.send(data);
+                console.log('xhr.send(data: FormData)');
             } else {
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
                 xhr.send(JSON.stringify(data));
                 console.log('xhr.send(JSON.stringify(data))')
             }

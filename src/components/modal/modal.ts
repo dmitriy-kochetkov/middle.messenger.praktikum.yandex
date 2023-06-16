@@ -1,16 +1,17 @@
 import Block from '../../core/Block';
-import { Button } from '../button';
 import template from './modal.hbs';
 
 interface IModal {
     isOpen: boolean,
     title: string,
-    buttonConfirm: Button,
+    formItems?: Block[],
 }
 
 export class Modal extends Block {
     constructor(props: IModal) {
         super(props);
+
+        this.children.items = this.props.formItems?.map((item: Block) => item)
     }
 
     render() {

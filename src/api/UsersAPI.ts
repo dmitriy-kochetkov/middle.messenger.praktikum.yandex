@@ -14,6 +14,10 @@ export interface UserPassword {
     newPassword: string
 }
 
+// export interface UserAvatar {
+//     avatar: Blob,
+// }
+
 export interface userID {
     id: number
 }

@@ -5,10 +5,11 @@
             <h1 class="modal-title">
                 {{title}}
             </h1>
-
-            <div class="content-form__button">
-                {{{buttonConfirm}}}
-            </div>
+            <form action="" id="modal-form" class="modal-form">
+            {{#each items}}
+                {{{this}}}
+            {{/each}}
+            </form>
         </div>
     </div>
     {{/if}}

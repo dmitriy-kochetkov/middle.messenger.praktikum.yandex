@@ -9,17 +9,18 @@ interface IValidationResult {
 }
 
 export interface IInputProps {
-    label: string,
+    label?: string,
     name: string,
-    type: 'text' | 'password',
-    value: string,
-    disabled: boolean,
-    danger: boolean,
+    type: 'text' | 'password' | 'file',
+    value?: string,
+    disabled?: boolean,
+    danger?: boolean,
     enableErrorMessage: boolean,
     errorMessage: string,
     placeholder?:string,
-    events: {
-        focusout: (evt: FocusEvent) => void
+    events?: {
+        focusout?: (evt: FocusEvent) => void,
+        change?: (evt: Event) => void,
     },
     validationFns?: InputValidationFn[];
 }
