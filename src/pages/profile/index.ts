@@ -6,11 +6,11 @@ import { Button } from '../../components/button';
 import { Modal } from '../../components/modal/modal';
 import { AvatarEditable } from '../../components/avatar-editable/avatar-editable';
 
-import AuthController from '../../controllers/AuthController';
+// import AuthController from '../../controllers/AuthController';
 import { withStore } from '../../hocs/withStore';
 
-import store from '../../core/Store';
-import router from '../../core/Router';
+// import store from '../../core/Store';
+// import router from '../../core/Router';
 import { withRouter } from '../../hocs/withRouter';
 import { getFormData } from '../../utils/getFormData';
 import UsersController from '../../controllers/UsersController';

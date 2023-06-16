@@ -1,40 +1,26 @@
-import Block from "../core/Block";
-import store, {StoreEvents, State} from "../core/Store";
+import { BlockClass } from "../core/Block";
+import { Store, StoreEvents } from "../core/Store";
+import { AppState } from "../store";
+// import store from "../core/Store";
+import { store } from "../store";
 
-/*
-export function withStore<SP>(mapStateToProps: (state: State) => SP) {
-    return function wrap<P>(Component: typeof Block | any){
-        return class WithStore extends Component {
-            constructor(props: Omit<P, keyof SP>) {
-                let previousState = mapStateToProps(store.getState());
-                super({...(props as P), ...previousState});
-                store.on(StoreEvents.Updated, ()=> {
-                const stateProps = mapStateToProps(store.getState());
-                previousState = stateProps;
-                this.setProps({...stateProps})
-                })
-            }
-        }
-    }
-}*/
+type WithStateProps = { store: Store<AppState> };
 
-// type WithStateProps = { store: Store<AppState> };
+export function withStore<P extends WithStateProps>(WrappedBlock: BlockClass<P>) {
+    // @ts-expect-error No base constructor has the specified
+    return class extends WrappedBlock<P> {
 
-export function withStore<P>(Component: typeof Block) {
-    type Props = any
-
-    return class extends Component {
-        constructor(props: Props) {
-            super({ ...props, store: store });
+        constructor(props: P) {
+            super({ ...props,store: store });
         }
 
         __onChangeStoreCallback = () => {
             // @ts-expect-error this is not typed
-            this.setProps({ ...this.props, store: window.store });
+            this.setProps({ ...this.props, store: store });
         }
 
-        componentDidMount() {
-            super.componentDidMount();
+        componentDidMount(props: P) {
+            super.componentDidMount(props);
             store.on(StoreEvents.Updated, this.__onChangeStoreCallback);
         }
 
@@ -42,5 +28,6 @@ export function withStore<P>(Component: typeof Block) {
             super.componentWillUnmount();
             store.off(StoreEvents.Updated, this.__onChangeStoreCallback);
         }
-    }
+
+    } as BlockClass<Omit<P, 'store'>>;
 }

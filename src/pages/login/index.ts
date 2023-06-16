@@ -10,28 +10,29 @@ import {
     notOnlyDigits,
     password,
 } from '../../utils/validation';
-import AuthController from '../../controllers/AuthController';
+
+import { login as loginAction } from '../../controllers/auth';
+
 import { SigninData } from '../../api/AuthAPI';
+import { withRouter } from '../../hocs/withRouter';
+import { withStore } from '../../hocs/withStore';
 
-// export interface ILogin {
-//     inputs: IInputProps[]
-// }
-
-// interface ICredentials {
-//     login: string;
-//     password: string;
-// }
-
-export class LoginPage extends Block {
+class LoginPage extends Block {
     private _loginValue: string = '';
 
     private _passwordValue: string = '';
 
-    constructor() {
-        super({});
+    constructor(props: {}) {
+        super(props);
+        // if (this.props.store.state.user) {
+        //     this.props.router.go('/settings')
+        // }
     }
 
     protected init(): void {
+        console.log(this.props)
+
+
         this.children.inputLogin = new Input({
             label: 'Логин',
             name: 'login',
@@ -110,7 +111,8 @@ export class LoginPage extends Block {
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
             const credentials = this._convertFormToCredentials(formData);
-            AuthController.signin(credentials as SigninData);
+
+            this.props.store.dispatch(loginAction, credentials);
         }
     }
 
@@ -123,3 +125,5 @@ export class LoginPage extends Block {
         }
     }
 }
+
+export default withStore(withRouter(LoginPage));

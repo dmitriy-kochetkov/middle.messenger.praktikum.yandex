@@ -1,16 +1,16 @@
-import Block from "../core/Block";
-import Router from "../core/Router";
+import { BlockClass } from "../core/Block";
+import { Router } from '../core/Router/Router';
+import { router } from '../router'
 
-export function withRouter(Component: typeof Block) {
-    type Props = any
+type WithRouterProps = { router: Router }
 
-    return class WithRouter extends Component {
-        constructor(props: Props & PropsWithRouter) {
-            super({ ...props, router: Router });
+export function withRouter<P extends WithRouterProps>(WrappedBlock: BlockClass<P>) {
+    // @ts-expect-error No base constructor has the specified number of type arguments
+    return class extends WrappedBlock<P> {
+        public static componentName = WrappedBlock.componentName || WrappedBlock.name;
+
+        constructor(props: P) {
+            super({ ...props, router: router });
         }
-    }
-}
-
-export interface PropsWithRouter {
-    router: typeof Router;
+    } as BlockClass<Omit<P, 'router'>>;
 }
