@@ -6,7 +6,7 @@ import { deepEqual } from '../utils/deepEqual';
 class Block<P extends Record<string, any> = any> {
     private id: string;
 
-    protected props: P;
+    protected readonly props: P;
 
     protected children: Record<string, Block | Block[]>;
 
@@ -50,6 +50,7 @@ class Block<P extends Record<string, any> = any> {
         eventBus.on(EVENTS.INIT, this._init.bind(this));
         eventBus.on(EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+        eventBus.on(EVENTS.FLOW_CWU, this._componentWillUnmount.bind(this));
         eventBus.on(EVENTS.FLOW_RENDER, this._render.bind(this));
     }
 
@@ -62,6 +63,17 @@ class Block<P extends Record<string, any> = any> {
                     this._element.addEventListener(eventName, callback);
                 });
         }
+    }
+
+    private _checkInDOM(): void {
+        const elementInDOM = document.body.contains(this._element);
+
+        if (elementInDOM) {
+            setTimeout(() => this._checkInDOM(), 1000);
+            return;
+        }
+
+        this.eventBus().emit(EVENTS.FLOW_CWU, this.props);
     }
 
     private _removeEvents(): void {
@@ -88,15 +100,14 @@ class Block<P extends Record<string, any> = any> {
         this.eventBus().emit(EVENTS.FLOW_RENDER);
     }
 
-    protected init(): void {
-    }
+    protected init(): void {}
 
     private _componentDidMount(): void {
+        this._checkInDOM();
         this.componentDidMount();
     }
 
-    protected componentDidMount(): void {
-    }
+    protected componentDidMount(): void {}
 
     public dispatchComponentDidMount() {
         this.eventBus().emit(EVENTS.FLOW_CDM);
@@ -119,6 +130,13 @@ class Block<P extends Record<string, any> = any> {
     protected componentDidUpdate(oldProps: P, newProps: P): boolean {
         return !deepEqual(oldProps, newProps);
     }
+
+    private _componentWillUnmount(): void {
+        this.eventBus().destroy();
+        this.componentWillUnmount();
+    }
+
+    public componentWillUnmount(): void {}
 
     public setProps = (nextProps: P) => {
         if (!nextProps) {
@@ -188,6 +206,17 @@ class Block<P extends Record<string, any> = any> {
     }
 
     getContent(): HTMLElement {
+        // Хак, чтобы вызвать CDM только после добавления в DOM
+        if (this.element?.parentNode?.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+            setTimeout(() => {
+                if (
+                    this.element?.parentNode?.nodeType !== Node.DOCUMENT_FRAGMENT_NODE
+                ) {
+                    this.eventBus().emit(EVENTS.FLOW_CDM);
+                }
+            }, 100);
+        }
+
         return this.element!;
     }
 
@@ -212,16 +241,20 @@ class Block<P extends Record<string, any> = any> {
         });
     }
 
-    _createDocumentElement(tagName: string) {
+    private _createDocumentElement(tagName: string) {
         return document.createElement(tagName);
     }
 
-    show(): void {
+    public show(): void {
         this.getContent()!.style.display = 'block';
     }
 
-    hide(): void {
+    public hide(): void {
         this.getContent()!.style.display = 'none';
+    }
+
+    public destroy() {
+        this._element!.remove();
     }
 }
 
