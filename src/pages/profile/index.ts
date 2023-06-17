@@ -24,12 +24,12 @@ import { updateUserAvatarAction } from '../../controllers/users';
 
 class ProfilePage extends Block {
     constructor(props: {}) {
+        console.log('ProfilePage.constructor()');
         super(props);
-        console.log('constructor');
     }
 
     protected init(): void {
-        console.log('ProfilePage init');
+        console.log('ProfilePage.init()');
 
 
         this.props.userName = this.props.store.getState().user.displayName;
@@ -179,7 +179,7 @@ class ProfilePage extends Block {
     }
 
     protected componentDidMount(): void {
-        console.log('did mount');
+        console.log('ProfilePage.componentDidMount()');
         // const newValue = this.props.store.getState().user.email;
         // console.log(newValue);
         // (this.children.inputEmail as Block).setProps({ value: newValue});
@@ -187,6 +187,17 @@ class ProfilePage extends Block {
 
     protected componentDidUpdate(oldProps: any, newProps: any): boolean {
         // console.log({newProps});
+
+        console.log('ProfilePage.componentDidUpdate()');
+        // this.children.inputEmail = new Input({
+        //     label: 'Почта',
+        //     name: 'email',
+        //     type: 'text',
+        //     value: this.props.store.getState().user.email,
+        //     disabled: true,
+        //     enableErrorMessage: true,
+        //     errorMessage: '',
+        // });
 
         return super.componentDidUpdate(oldProps, newProps);
     }

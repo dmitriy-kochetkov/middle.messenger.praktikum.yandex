@@ -5,12 +5,6 @@ import { initRouter } from "./router";
 import { AppState, defaultState } from "./store";
 import { store } from "./store";
 
-declare global {
-    interface Window {
-      store: Store<AppState>;
-    }
-  }
-
 window.addEventListener('DOMContentLoaded', async () => {
     store.on(StoreEvents.Updated, (prevState, nextState) => {
         if(!prevState.appIsInited && nextState.appIsInited) {

@@ -22,6 +22,7 @@ class ChatPage extends Block {
 
     protected componentDidMount(): void {
         this.props.store.dispatch(getChatsAction);
+
     }
 
     protected init(): void {
