@@ -6,7 +6,6 @@ import { router } from '../router';
 import { UserDTO } from '../api/types';
 import { transformUser } from '../utils/apiTransformers';
 
-
 type LoginPayload = {
     login: string,
     password: string,
@@ -35,7 +34,7 @@ export const loginAction = async (
         return;
     }
 
-    router.go('/settings');
+    router.go('/messenger');
 };
 
 
@@ -65,9 +64,9 @@ export const signupAction = async (
     action: SigninPayload,
 ) => {
     try {
-        console.log(action);
+        // console.log(action);
         const responseUserID = await authAPI.signup(action);
-        console.log(responseUserID)
+        // console.log(responseUserID)
         dispatch({ signupFormError: null });
     } catch (e) {
         if (apiHasError(e)) {
@@ -86,6 +85,16 @@ export const signupAction = async (
 
     router.go('/settings');
 };
+
+export const getUserAction = async (dispatch: Dispatch<AppState>) => {
+    try {
+        const responseUser = await authAPI.fetchUser();
+        dispatch({ user: transformUser(responseUser as UserDTO) })
+    } catch (e) {
+        dispatch(logoutAction);
+        return;
+    }
+}
 
 
 // export class AuthController {

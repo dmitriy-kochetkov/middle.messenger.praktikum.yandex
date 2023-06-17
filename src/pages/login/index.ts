@@ -13,7 +13,7 @@ import {
 
 import { loginAction } from '../../controllers/auth';
 
-import { SigninData } from '../../api/AuthAPI';
+// import { SigninData } from '../../api/AuthAPI';
 import { withRouter } from '../../hocs/withRouter';
 import { withStore } from '../../hocs/withStore';
 
@@ -25,7 +25,7 @@ class LoginPage extends Block {
     constructor(props: {}) {
         super(props);
         // if (this.props.store.state.user) {
-        //     this.props.router.go('/settings')
+        //     this.props.router.go('/messenger');
         // }
     }
 
@@ -36,7 +36,7 @@ class LoginPage extends Block {
             label: 'Логин',
             name: 'login',
             type: 'text',
-            value: 'ivanivanov1_2_3_4',
+            value: 'cj_',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -51,7 +51,7 @@ class LoginPage extends Block {
             label: 'Пароль',
             name: 'password',
             type: 'password',
-            value: 'ivanivanov',
+            value: 'CJpassword',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -115,14 +115,14 @@ class LoginPage extends Block {
         }
     }
 
-    private _convertFormToCredentials(
-        formData: Record<string, FormDataEntryValue>,
-      ): SigninData {
-        return {
-          login: formData.login as string,
-          password: formData.password as string,
-        }
-    }
+    // private _convertFormToCredentials(
+    //     formData: Record<string, FormDataEntryValue>,
+    //   ): SigninData {
+    //     return {
+    //       login: formData.login as string,
+    //       password: formData.password as string,
+    //     }
+    // }
 }
 
 export default withStore(withRouter(LoginPage));

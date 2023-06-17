@@ -11,12 +11,18 @@ export function withStore<P extends WithStateProps>(WrappedBlock: BlockClass<P>)
     return class extends WrappedBlock<P> {
 
         constructor(props: P) {
-            super({ ...props,store: store });
+            super({ ...props, store: store });
         }
 
         __onChangeStoreCallback = () => {
             // @ts-expect-error this is not typed
-            this.setProps({ ...this.props, store: store });
+            // console.log(
+            //     '%cstore updated - withStore callback',
+            //     'background: #222; color: #ff00fe',
+            //     this.props
+            // );
+
+            this.setProps({ ...this.props, store: store});
         }
 
         componentDidMount(props: P) {

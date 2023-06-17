@@ -1,12 +1,15 @@
 import { Store } from '../core/Store';
-import { User } from '../utils/apiTransformers';
+import { Chat, User } from '../utils/apiTransformers';
 
 export interface AppState {
     loginFormError: string | null;
     signupFormError: string | null;
     updateUserFormError: string | null;
     updateUserPasswordFormError: string | null;
+    updateUserAvatarError: string | null;
+    loadingChatsError: string | null;
     user: User | null;
+    chats: Chat[] | null;
     appIsInited: boolean;
 }
 
@@ -15,7 +18,10 @@ export const defaultState: AppState = {
     signupFormError: null,
     updateUserFormError: null,
     updateUserPasswordFormError: null,
+    updateUserAvatarError: null,
+    loadingChatsError: null,
     user: null,
+    chats: null,
     appIsInited: false,
   };
 

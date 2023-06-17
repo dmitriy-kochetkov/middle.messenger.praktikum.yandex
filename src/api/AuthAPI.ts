@@ -1,8 +1,8 @@
 import BaseAPI from './BaseAPI';
 
 export interface SigninData {
-    login: string;
-    password: string;
+    login: string,
+    password: string,
 }
 
 export interface SignupData {
@@ -11,18 +11,18 @@ export interface SignupData {
     login: string,
     email: string,
     password: string,
-    phone: string
+    phone: string,
 }
 
 export interface User {
-    id: number;
-    first_name: string;
-    second_name: string;
-    login: string;
-    email: string;
-    password: string;
-    phone: string;
-    avatar: string;
+    id: number,
+    first_name: string,
+    second_name: string,
+    login: string,
+    email: string,
+    password: string,
+    phone: string,
+    avatar: string,
 }
 
 export class AuthAPI extends BaseAPI {
@@ -31,11 +31,11 @@ export class AuthAPI extends BaseAPI {
     }
 
     signup(data: SignupData) {
-        return this.httpTransport.post('/signup', {data});
+        return this.httpTransport.post('/signup', { data });
     }
 
     signin(data: SigninData) {
-        return this.httpTransport.post('/signin', {data});
+        return this.httpTransport.post('/signin', { data });
     }
 
     fetchUser(): Promise<unknown> {

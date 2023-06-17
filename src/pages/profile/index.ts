@@ -12,7 +12,10 @@ import { withRouter } from '../../hocs/withRouter';
 import { withStore } from '../../hocs/withStore';
 
 import { getFormData } from '../../utils/getFormData';
-// import UsersController from '../../controllers/UsersController';
+import { StoreEvents } from '../../core/Store';
+import { updateUserAvatarAction } from '../../controllers/users';
+
+
 
 // export interface IProfilePage {
 //     userName: string,
@@ -22,9 +25,13 @@ import { getFormData } from '../../utils/getFormData';
 class ProfilePage extends Block {
     constructor(props: {}) {
         super(props);
+        console.log('constructor');
     }
 
     protected init(): void {
+        console.log('ProfilePage init');
+
+
         this.props.userName = this.props.store.getState().user.displayName;
 
         this.children.backPanel = new BackPanel({ backURL: '../messenger' });
@@ -38,7 +45,6 @@ class ProfilePage extends Block {
                     type: 'file',
                     enableErrorMessage: false,
                     errorMessage: '',
-                    disabled: true,
                     events: {
                         change: (evt: Event) => {
                             console.log('change image event');
@@ -169,6 +175,20 @@ class ProfilePage extends Block {
                 },
             },
         });
+
+    }
+
+    protected componentDidMount(): void {
+        console.log('did mount');
+        // const newValue = this.props.store.getState().user.email;
+        // console.log(newValue);
+        // (this.children.inputEmail as Block).setProps({ value: newValue});
+    }
+
+    protected componentDidUpdate(oldProps: any, newProps: any): boolean {
+        // console.log({newProps});
+
+        return super.componentDidUpdate(oldProps, newProps);
     }
 
     private _confirmModal() {
@@ -178,12 +198,8 @@ class ProfilePage extends Block {
             const formData = getFormData(form as HTMLFormElement);
             const avatar = this._convertFormToAvatar(formData);
             console.log(avatar);
-            // console.log(avatar.get('avatar'));
-            // console.log(typeof avatar);
-            // console.log(avatar instanceof FormData);
 
-
-            // UsersController.updateAvatar(avatar);
+            this.props.store.dispatch(updateUserAvatarAction, avatar);
         }
 
         (this.children.modal as Block).setProps({isOpen: false});

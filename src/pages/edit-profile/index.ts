@@ -21,6 +21,7 @@ import { withStore } from '../../hocs/withStore';
 import { UserData } from '../../api/UsersAPI';
 import { updateUserAction } from '../../controllers/users';
 import { AvatarEditable } from '../../components/avatar-editable/avatar-editable';
+import { getUserAction } from '../../controllers/auth';
 
 // interface IEditProfilePage {
 //     inputs: IInputProps[]
@@ -51,7 +52,7 @@ class EditProfilePage extends Block {
     }
 
     protected init(): void {
-        console.log(this.props);
+        console.log('EditProfilePage init');
 
         this.children.backPanel = new BackPanel({ backURL: '../settings' });
 
@@ -245,23 +246,22 @@ class EditProfilePage extends Block {
             // console.log(userData);
 
             this.props.store.dispatch(updateUserAction, formData);
-
-            //UsersController.updateUser(userData);
+            // this.props.store.dispatch(getUserAction);
         }
     }
 
-    private _convertFormToUser(
-        formData: Record<string, FormDataEntryValue>,
-      ): UserData {
-        return {
-          email: formData.email as string,
-          first_name: formData.first_name as string,
-          second_name: formData.second_name as string,
-          display_name: formData.display_name as string,
-          login: formData.login as string,
-          phone: formData.phone as string,
-        }
-    }
+    // private _convertFormToUser(
+    //     formData: Record<string, FormDataEntryValue>,
+    //   ): UserData {
+    //     return {
+    //       email: formData.email as string,
+    //       first_name: formData.first_name as string,
+    //       second_name: formData.second_name as string,
+    //       display_name: formData.display_name as string,
+    //       login: formData.login as string,
+    //       phone: formData.phone as string,
+    //     }
+    // }
 
     private getAvatarLink() {
         const avatarPath = this.props.store.getState().user.avatar;

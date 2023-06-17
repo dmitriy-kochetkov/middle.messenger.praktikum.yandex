@@ -13,7 +13,7 @@ type updateUserPayload = {
     login: string,
     email: string,
     phone: string,
-}
+};
 
 export const updateUserAction = async (
     dispatch: Dispatch<AppState>,
@@ -23,6 +23,9 @@ export const updateUserAction = async (
     try {
         const responseUser = await usersAPI.updateUser(action);
         dispatch({ user: transformUser(responseUser as UserDTO) });
+        dispatch({ updateUserFormError: null });
+
+        // await new Promise(r => setTimeout(r, 2000));
     } catch (e) {
         if (apiHasError(e)) {
             dispatch({ updateUserFormError: e.reason });
@@ -30,13 +33,14 @@ export const updateUserAction = async (
         return;
     }
 
+
     router.go('/settings');
-}
+};
 
 type updateUserPasswordPayload = {
     oldPassword: string,
     newPassword: string
-}
+};
 
 export const updateUserPasswordAction = async (
     dispatch: Dispatch<AppState>,
@@ -45,6 +49,7 @@ export const updateUserPasswordAction = async (
 ) => {
     try {
         await usersAPI.updatePassword(action);
+        dispatch({ updateUserPasswordFormError: null });
     } catch (e) {
         if (apiHasError(e)) {
             dispatch({ updateUserPasswordFormError: e.reason });
@@ -53,4 +58,23 @@ export const updateUserPasswordAction = async (
     }
 
     router.go('/settings');
-}
+};
+
+export const updateUserAvatarAction = async (
+    dispatch: Dispatch<AppState>,
+    state: AppState,
+    action: FormData,
+) => {
+    try {
+        const responseUser = await usersAPI.updateAvatar(action);
+        dispatch({
+            user: transformUser(responseUser as UserDTO),
+            updateUserAvatarError: null
+        });
+    } catch (e) {
+        if (apiHasError(e)) {
+            dispatch({ updateUserAvatarError: e.reason });
+        }
+        return;
+    }
+};
