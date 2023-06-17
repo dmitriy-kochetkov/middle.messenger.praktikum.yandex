@@ -10,10 +10,14 @@ import {
     password,
     repeatPasswordValidationMessage,
 } from '../../utils/validation';
-import { withStore } from '../../hocs/withStore';
+
 import { withRouter } from '../../hocs/withRouter';
-import UsersController from '../../controllers/UsersController';
+import { withStore } from '../../hocs/withStore';
+
+// import UsersController from '../../controllers/UsersController';
 import { UserPassword } from '../../api/UsersAPI';
+import { AvatarEditable } from '../../components/avatar-editable/avatar-editable';
+import { updateUserPasswordAction } from '../../controllers/users';
 
 // export interface IChangePasswordPage {
 //     inputs: IInputProps[]
@@ -26,12 +30,23 @@ class ChangePasswordPage extends Block {
 
     private _newPasswordRepeatValue = '';
 
-    constructor() {
-        super({});
+    constructor(props: {}) {
+        super(props);
     }
 
     protected init(): void {
         this.children.backPanel = new BackPanel({ backURL: '../settings' });
+
+        this.children.avatar = new AvatarEditable({
+            avatarHoverText: 'Поменять аватар',
+            avatarUrl: '',
+            events: {
+                click: (evt: PointerEvent) => {
+                    evt.preventDefault();
+                    console.log('change avatar click');
+                },
+            },
+        });
 
         this.children.inputOldPassword = new Input({
             label: 'Старый пароль',
@@ -141,7 +156,9 @@ class ChangePasswordPage extends Block {
             const formData = getFormData(form as HTMLFormElement);
             const userPassword = this._convertFormToPassword(formData);
             console.log(userPassword);
-            UsersController.updatePassword(userPassword);
+            // UsersController.updatePassword(userPassword);
+
+            this.props.store.dispatch(updateUserPasswordAction, userPassword);
         }
     }
 
@@ -155,4 +172,4 @@ class ChangePasswordPage extends Block {
     }
 }
 
-export default withRouter(withStore(ChangePasswordPage));
+export default withStore(withRouter(ChangePasswordPage));

@@ -1,7 +1,3 @@
----
-title: Регистрация
----
-
 <main class="page">
     <div class="content-wrap">
         <h1 class="content-title title">
@@ -15,12 +11,13 @@ title: Регистрация
             {{{inputPhone}}}
             {{{inputPassword}}}
             {{{inputPasswordRepeat}}}
+            <div class="content-form__error">{{store.state.signupFormError}}</div>
             <div class="content-form__button">
                 {{{button}}}
             </div>
         </form>
         <div class="content-footer">
-            <a href="../login" class="button button_secondary" tabindex="0">Войти</a>
+            <a href="../" class="button button_secondary" tabindex="0">Войти</a>
         </div>
     </div>
 </main>

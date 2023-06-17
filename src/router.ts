@@ -8,6 +8,9 @@ export const router = new Router('#app')
 
 import LoginPage from "./pages/login";
 import ProfilePage from './pages/profile';
+import SigninPage from './pages/signin';
+import EditProfilePage from './pages/edit-profile';
+import ChangePasswordPage from './pages/change-password';
 
 enum Routes {
     Index = "/",
@@ -15,9 +18,8 @@ enum Routes {
     Messenger = "/messenger",
     Profile = "/settings",
     EditProfile = '/settings/changeData',
-    ChangePassword = '/settings/changePassword'
+    ChangePassword = '/settings/changePassword' // ChangePasswordPage
 }
-
 
 export function initRouter(store: Store<AppState>) {
     router
@@ -27,11 +29,25 @@ export function initRouter(store: Store<AppState>) {
       })
       .use({
         pathname: '/sign-up',
-        block: LoginPage,
+        block: SigninPage,
       })
       .use({
         pathname: '/settings',
         block: ProfilePage,
+        needAuth: true,
+        redirectPath: Routes.Index,
+        onUnautorized: () => Boolean(store.getState().user),
+      })
+      .use({
+        pathname: '/settings/changeData',
+        block: EditProfilePage,
+        needAuth: true,
+        redirectPath: Routes.Index,
+        onUnautorized: () => Boolean(store.getState().user),
+      })
+      .use({
+        pathname: '/settings/changePassword',
+        block: ChangePasswordPage,
         needAuth: true,
         redirectPath: Routes.Index,
         onUnautorized: () => Boolean(store.getState().user),

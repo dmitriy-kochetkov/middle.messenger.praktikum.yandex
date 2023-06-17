@@ -2,7 +2,7 @@ import Block from '../../core/Block';
 import template from './avatar.hbs';
 
 export interface IAvatar {
-    size: 's' | 'm',
+    size: 's' | 'm' | 'l',
     avatarURL?: string,
 }
 

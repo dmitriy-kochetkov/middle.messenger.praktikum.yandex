@@ -11,7 +11,7 @@ import {
     password,
 } from '../../utils/validation';
 
-import { login as loginAction } from '../../controllers/auth';
+import { loginAction } from '../../controllers/auth';
 
 import { SigninData } from '../../api/AuthAPI';
 import { withRouter } from '../../hocs/withRouter';
@@ -31,7 +31,6 @@ class LoginPage extends Block {
 
     protected init(): void {
         console.log(this.props)
-
 
         this.children.inputLogin = new Input({
             label: 'Логин',
@@ -110,9 +109,9 @@ class LoginPage extends Block {
         const form = document.getElementById('login-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
-            const credentials = this._convertFormToCredentials(formData);
+            // const credentials = this._convertFormToCredentials(formData);
 
-            this.props.store.dispatch(loginAction, credentials);
+            this.props.store.dispatch(loginAction, formData);
         }
     }
 

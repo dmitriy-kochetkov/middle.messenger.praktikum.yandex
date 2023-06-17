@@ -8,22 +8,15 @@ import { transformUser } from '../utils/apiTransformers';
 
 
 type LoginPayload = {
-    login: string;
-    password: string;
+    login: string,
+    password: string,
   };
 
-export const login = async (
+export const loginAction = async (
     dispatch: Dispatch<AppState>,
-    // state: AppState,
+    state: AppState,
     action: LoginPayload,
 ) => {
-
-    // const isLogin = await _login(dispatch, action);
-
-    // if(!isLogin) {
-    //     return;
-    // }
-
     try {
         await authAPI.signin(action);
         dispatch({ loginFormError: null });
@@ -38,37 +31,61 @@ export const login = async (
         const responseUser = await authAPI.fetchUser();
         dispatch({ user: transformUser(responseUser as UserDTO) });
     } catch (e) {
-        dispatch(logout);
+        dispatch(logoutAction);
         return;
     }
 
     router.go('/settings');
 };
 
-// async function _login(
-//     dispatch: Dispatch<AppState>,
-//     action: LoginPayload,
-// ) {
-//     try {
-//         await authAPI.signin(action);
-//         dispatch({ loginFormError: null });
-//         return true;
-//     } catch (e) {
-//         if (apiHasError(e)) {
-//             dispatch({ loginFormError: e.reason });
-//         }
-//         return false;
-//     }
-// }
 
-export const logout = async (dispatch: Dispatch<AppState>) => {
-    await authAPI.logout();
-    dispatch({ user: null });
+export const logoutAction = async (dispatch: Dispatch<AppState>) => {
+    try {
+        await authAPI.logout();
+        dispatch({ user: null });
+    } catch (e) {
+        return;
+    }
+
     router.go('/');
 };
 
+type SigninPayload = {
+    first_name: string,
+    second_name: string,
+    login: string,
+    email: string,
+    password: string,
+    phone: string,
+};
 
+export const signupAction = async (
+    dispatch: Dispatch<AppState>,
+    state: AppState,
+    action: SigninPayload,
+) => {
+    try {
+        console.log(action);
+        const responseUserID = await authAPI.signup(action);
+        console.log(responseUserID)
+        dispatch({ signupFormError: null });
+    } catch (e) {
+        if (apiHasError(e)) {
+            dispatch({ signupFormError: e.reason });
+        }
+        return;
+    }
 
+    try {
+        const responseUser = await authAPI.fetchUser();
+        dispatch({ user: transformUser(responseUser as UserDTO) });
+    } catch (e) {
+        dispatch(logoutAction);
+        return;
+    }
+
+    router.go('/settings');
+};
 
 
 // export class AuthController {

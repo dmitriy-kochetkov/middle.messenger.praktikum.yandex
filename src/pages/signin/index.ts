@@ -15,11 +15,12 @@ import {
     repeatPasswordValidationMessage,
 } from '../../utils/validation';
 
-// export interface ISignin {
-//     inputs: IInputProps[]
-// }
+import { signupAction } from '../../controllers/auth';
 
-export class SigninPage extends Block {
+import { withRouter } from '../../hocs/withRouter';
+import { withStore } from '../../hocs/withStore';
+
+class SigninPage extends Block {
     private _emailValue: string = '';
 
     private _loginValue: string = '';
@@ -34,8 +35,8 @@ export class SigninPage extends Block {
 
     private _passwordRepeatValue: string = '';
 
-    constructor() {
-        super({});
+    constructor(props: {}) {
+        super(props);
     }
 
     protected init(): void {
@@ -261,6 +262,11 @@ export class SigninPage extends Block {
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
             console.log(formData);
+
+            this.props.store.dispatch(signupAction, formData);
         }
     }
 }
+
+export default withStore(withRouter(SigninPage));
+

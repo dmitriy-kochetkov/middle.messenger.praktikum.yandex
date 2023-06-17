@@ -1,7 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import { EventBus } from './EventBus';
 import { EVENTS } from './constants';
-import { deepEqual } from '../utils/deepEqual';
+// import { deepEqual } from '../utils/deepEqual';
+import isEqual from '../utils/isEqual';
 
 export interface BlockClass<P extends Record<string, any>> extends Function {
     new (props: P): Block<P>;
@@ -133,7 +134,8 @@ class Block<P extends Record<string, any> = any> {
     }
 
     protected componentDidUpdate(oldProps: P, newProps: P): boolean {
-        return !deepEqual(oldProps, newProps);
+        return true;
+        //return !isEqual(oldProps, newProps);
     }
 
     private _componentWillUnmount(): void {

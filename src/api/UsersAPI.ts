@@ -31,15 +31,15 @@ export class UsersAPI extends BaseAPI {
         super('/user');
     }
 
-    updateUser(data: UserData) {
+    updateUser(data: UserData): Promise<unknown> {
         return this.httpTransport.put('/profile', {data});
     }
 
-    updatePassword(data: UserPassword) {
+    updatePassword(data: UserPassword): Promise<unknown> {
         return this.httpTransport.put('/password', {data});
     }
 
-    updateAvatar(data: FormData) {
+    updateAvatar(data: FormData): Promise<unknown> {
         return this.httpTransport.put('/profile/avatar', {data});
     }
 

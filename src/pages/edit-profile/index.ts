@@ -13,12 +13,14 @@ import {
     notOnlyDigits,
     phone,
 } from '../../utils/validation';
-import { withStore } from '../../hocs/withStore';
-import { withRouter } from '../../hocs/withRouter';
 
-import store from '../../core/Store';
-import UsersController from '../../controllers/UsersController';
+import { withRouter } from '../../hocs/withRouter';
+import { withStore } from '../../hocs/withStore';
+
+// import UsersController from '../../controllers/UsersController';
 import { UserData } from '../../api/UsersAPI';
+import { updateUserAction } from '../../controllers/users';
+import { AvatarEditable } from '../../components/avatar-editable/avatar-editable';
 
 // interface IEditProfilePage {
 //     inputs: IInputProps[]
@@ -44,18 +46,31 @@ class EditProfilePage extends Block {
 
     private _phoneValue: string = '';
 
-    constructor() {
-        super({});
+    constructor(props: {}) {
+        super(props);
     }
 
     protected init(): void {
+        console.log(this.props);
+
         this.children.backPanel = new BackPanel({ backURL: '../settings' });
+
+        this.children.avatar = new AvatarEditable({
+            avatarHoverText: 'Поменять аватар',
+            avatarUrl: this.getAvatarLink(),
+            events: {
+                click: (evt: PointerEvent) => {
+                    evt.preventDefault();
+                    console.log('change avatar click');
+                },
+            },
+        });
 
         this.children.inputEmail = new Input({
             label: 'Почта',
             name: 'email',
             type: 'text',
-            value: store.getState().user.email, // 'pochta192548@yandex.ru',
+            value: this.props.store.getState().user.email,
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -70,7 +85,7 @@ class EditProfilePage extends Block {
             label: 'Логин',
             name: 'login',
             type: 'text',
-            value: store.getState().user.login, // 'ivanivanov1_2_3_4',
+            value: this.props.store.getState().user.login,
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -85,7 +100,7 @@ class EditProfilePage extends Block {
             label: 'Имя',
             name: 'first_name',
             type: 'text',
-            value: store.getState().user.first_name, // 'Иван',
+            value: this.props.store.getState().user.firstName,
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -100,7 +115,7 @@ class EditProfilePage extends Block {
             label: 'Фамилия',
             name: 'second_name',
             type: 'text',
-            value: store.getState().user.second_name, // 'Иванов',
+            value: this.props.store.getState().user.secondName,
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -115,7 +130,7 @@ class EditProfilePage extends Block {
             label: 'Имя в чате',
             name: 'display_name',
             type: 'text',
-            value: store.getState().user.display_name, // '',
+            value: this.props.store.getState().user.displayName,
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -129,7 +144,7 @@ class EditProfilePage extends Block {
             label: 'Телефон',
             name: 'phone',
             type: 'text',
-            value: store.getState().user.phone, // '+79876543210',
+            value: this.props.store.getState().user.phone,
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -226,9 +241,12 @@ class EditProfilePage extends Block {
         const form = document.getElementById('edit-profile-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
-            const userData = this._convertFormToUser(formData);
-            console.log(userData);
-            UsersController.updateUser(userData);
+            // const userData = this._convertFormToUser(formData);
+            // console.log(userData);
+
+            this.props.store.dispatch(updateUserAction, formData);
+
+            //UsersController.updateUser(userData);
         }
     }
 
@@ -243,6 +261,14 @@ class EditProfilePage extends Block {
           login: formData.login as string,
           phone: formData.phone as string,
         }
+    }
+
+    private getAvatarLink() {
+        const avatarPath = this.props.store.getState().user.avatar;
+        if (avatarPath) {
+            return `https://ya-praktikum.tech/api/v2/resources${avatarPath}`;
+        }
+        return '';
     }
 }
 
