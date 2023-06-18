@@ -31,19 +31,19 @@ export class AuthAPI extends BaseAPI {
     }
 
     signup(data: SignupData) {
-        return this.httpTransport.post('/signup', { data, headers: this.defaultHeaders });
+        return this.http.post('/signup', { data, headers: this.defaultHeaders });
     }
 
     signin(data: SigninData) {
-        return this.httpTransport.post('/signin', { data, headers: this.defaultHeaders });
+        return this.http.post('/signin', { data, headers: this.defaultHeaders });
     }
 
     fetchUser(): Promise<unknown> {
-        return this.httpTransport.get('/user');
+        return this.http.get('/user');
     }
 
     logout() {
-        return this.httpTransport.post('/logout');
+        return this.http.post('/logout');
     }
 }
 

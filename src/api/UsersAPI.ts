@@ -32,24 +32,24 @@ export class UsersAPI extends BaseAPI {
     }
 
     updateUser(data: UserData): Promise<unknown> {
-        return this.httpTransport.put('/profile', { data, headers: this.defaultHeaders });
+        return this.http.put('/profile', { data, headers: this.defaultHeaders });
     }
 
     updatePassword(data: UserPassword): Promise<unknown> {
-        return this.httpTransport.put('/password', { data, headers: this.defaultHeaders });
+        return this.http.put('/password', { data, headers: this.defaultHeaders });
     }
 
     updateAvatar(data: FormData): Promise<unknown> {
-        return this.httpTransport.put('/profile/avatar', { data, headers: this.uploadFileHeaders });
+        return this.http.put('/profile/avatar', { data, headers: this.uploadFileHeaders });
     }
 
     getUser(data: userID) {
         // XSS: need to check that data.id is a number?
-        return this.httpTransport.get(`/${data.id}`);
+        return this.http.get(`/${data.id}`);
     }
 
     searchUsers(data: userLogin) {
-        return this.httpTransport.post('/search', {data});
+        return this.http.post('/search', {data});
     }
 }
 

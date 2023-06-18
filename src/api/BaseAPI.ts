@@ -1,7 +1,7 @@
 import { HttpTransport } from "../core/HttpTransport";
 
 export default class BaseAPI {
-    protected httpTransport: HttpTransport;
+    protected http: HttpTransport;
 
     protected defaultHeaders = {
         "Content-Type": "application/json",
@@ -13,6 +13,6 @@ export default class BaseAPI {
       };
 
     protected constructor(endpoint: string) {
-        this.httpTransport = new HttpTransport(endpoint);
+        this.http = new HttpTransport(endpoint);
     }
 }

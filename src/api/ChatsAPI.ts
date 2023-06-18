@@ -10,15 +10,15 @@ export class ChatsAPI extends BaseAPI {
     }
 
     getChats(): Promise<unknown> {
-        return this.httpTransport.get('');
+        return this.http.get('');
     }
 
     createChat(data: CreateChatData): Promise<unknown> {
-        return this.httpTransport.post('', { data, headers: this.defaultHeaders });
+        return this.http.post('', { data, headers: this.defaultHeaders });
     }
 
     token(id: number) {
-        return this.httpTransport.post(`/token/${id}`);
+        return this.http.post(`/token/${id}`);
     }
 }
 
