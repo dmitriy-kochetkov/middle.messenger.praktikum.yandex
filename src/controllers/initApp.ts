@@ -1,5 +1,5 @@
 import { transformUser } from '../utils/apiTransformers';
-import { hasError as apiHasError } from '../utils/apiHasError';
+import { apiHasError } from '../utils/apiHasError';
 import type { Dispatch } from '../core/Store';
 import { AppState } from '../store';
 import authAPI from '../api/AuthAPI';
@@ -12,6 +12,7 @@ export async function initApp(dispatch: Dispatch<AppState>) {
   // await new Promise(r => setTimeout(r, 700));
 
   try {
+    console.log('initApp()');
     const response = await authAPI.fetchUser();
 
     if (apiHasError(response)) {

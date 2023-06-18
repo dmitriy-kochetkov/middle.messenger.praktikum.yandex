@@ -1,7 +1,7 @@
 import usersAPI from '../api/UsersAPI';
 import { Dispatch } from '../core/Store';
 import { AppState } from '../store';
-import { hasError as apiHasError } from '../utils/apiHasError';
+import { apiHasError } from '../utils/apiHasError';
 import { router } from '../router';
 import { UserDTO } from '../api/types';
 import { transformUser } from '../utils/apiTransformers';

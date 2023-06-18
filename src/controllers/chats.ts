@@ -1,6 +1,6 @@
 import { Dispatch } from "../core/Store";
 import { AppState } from "../store";
-import { hasError as apiHasError } from '../utils/apiHasError';
+import { apiHasError } from '../utils/apiHasError';
 import chatsAPI from '../api/ChatsAPI';
 import { transformChats } from "../utils/apiTransformers";
 import { ChatDTO } from "../api/types";

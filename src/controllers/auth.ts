@@ -1,7 +1,7 @@
 import authAPI from '../api/AuthAPI';
 import { Dispatch } from '../core/Store';
 import { AppState } from '../store';
-import { hasError as apiHasError } from '../utils/apiHasError';
+import { apiHasError } from '../utils/apiHasError';
 import { router } from '../router';
 import { UserDTO } from '../api/types';
 import { transformUser } from '../utils/apiTransformers';
@@ -95,60 +95,3 @@ export const getUserAction = async (dispatch: Dispatch<AppState>) => {
         return;
     }
 }
-
-
-// export class AuthController {
-//     private readonly api: AuthAPI;
-
-//     constructor() {
-//         this.api = API;
-//     }
-
-//     async signin(data: SigninData) {
-//         try {
-//             await this.api.signin(data);
-//             router.go('/settings');
-//         } catch (e: any) {
-//             console.log('signin catch:')
-//             console.log(e);                 // {reason: 'Login or password is incorrect'}
-//         }
-//     }
-
-//     async signup(data: SignupData) {
-//         try {
-//             await this.api.signup(data);
-//             await this.fetchUser();
-//             router.go('/settings');
-//         } catch (e: any) {
-//             console.log('signup catch:')
-//             console.error(e);
-//         }
-//     }
-
-//     async fetchUser() {
-//         try{
-//             const user = await this.api.fetchUser();
-//             // const message = 'fetchUser'
-//             // console.log({message, user});
-//             store.set('user', user);
-//             // console.log(store);
-//         } catch (e: any) {
-//             console.log('fetchUser catch:')
-//             console.error(e);       // {reason: 'Cookie is not valid'}
-//         }
-
-//     }
-
-//     async logout() {
-//         try {
-//             await this.api.logout();
-//             router.go('/');
-//         } catch (e: any) {
-//             console.log('logout catch:')
-//             console.error(e);
-//         }
-//     }
-
-// }
-
-// export default new AuthController();
