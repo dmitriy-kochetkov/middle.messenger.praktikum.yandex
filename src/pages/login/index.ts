@@ -11,12 +11,12 @@ import {
     password,
 } from '../../utils/validation';
 
-import { loginAction } from '../../controllers/auth';
-
+// import { loginAction } from '../../controllers/auth';
 // import { SigninData } from '../../api/AuthAPI';
 // import { withRouter } from '../../hocs/withRouter';
-import { withStore, withStore_plus } from '../../hocs/withStore';
+import { withStore_plus } from '../../hocs/withStore';
 import AuthController from '../../controllers/AuthController';
+import { SigninData } from '../../api/AuthAPI';
 
 class LoginPage extends Block {
     private _loginValue: string = '';
@@ -123,9 +123,19 @@ class LoginPage extends Block {
         const form = document.getElementById('login-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
+            const payload = this.convertFormToCredentials(formData)
 
-            await AuthController.signin(formData);
+            await AuthController.signin(payload);
             await AuthController.user();
+        }
+    }
+
+    private convertFormToCredentials(
+        formData: Record<string, FormDataEntryValue>,
+      ): SigninData {
+        return {
+          login: formData.login as string,
+          password: formData.password as string,
         }
     }
 }

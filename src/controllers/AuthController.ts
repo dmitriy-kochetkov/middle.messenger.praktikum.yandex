@@ -1,23 +1,9 @@
-import authAPI, { AuthAPI } from '../api/AuthAPI';
+import authAPI, { AuthAPI, SigninData, SignupData } from '../api/AuthAPI';
 import { apiHasError } from '../utils/apiHasError';
 import { UserDTO } from "../api/types";
 import { transformUser } from "../utils/apiTransformers";
 import { store } from '../store';
 import { router } from '../router';
-
-type LoginPayload = {
-    login: string,
-    password: string,
-};
-
-type SignupPayload = {
-    first_name: string,
-    second_name: string,
-    login: string,
-    email: string,
-    password: string,
-    phone: string,
-};
 
 export class AuthController {
     private api: AuthAPI;
@@ -26,7 +12,7 @@ export class AuthController {
         this.api = authAPI;
     }
 
-    async signin(payload: LoginPayload) {
+    async signin(payload: SigninData) {
         try {
             const response = await this.api.signin(payload);
 
@@ -42,7 +28,7 @@ export class AuthController {
         }
     }
 
-    async signup(payload: SignupPayload) {
+    async signup(payload: SignupData) {
         try {
             const response = await this.api.signup(payload);
 

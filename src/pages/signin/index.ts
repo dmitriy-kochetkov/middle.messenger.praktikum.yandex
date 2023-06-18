@@ -15,10 +15,11 @@ import {
     repeatPasswordValidationMessage,
 } from '../../utils/validation';
 
-import { signupAction } from '../../controllers/auth';
-
-import { withRouter } from '../../hocs/withRouter';
-import { withStore } from '../../hocs/withStore';
+// import { signupAction } from '../../controllers/auth';
+// import { withRouter } from '../../hocs/withRouter';
+import { withStore_plus } from '../../hocs/withStore';
+import AuthController from '../../controllers/AuthController';
+import { SignupData } from '../../api/AuthAPI';
 
 class SigninPage extends Block {
     private _emailValue: string = '';
@@ -161,7 +162,7 @@ class SigninPage extends Block {
         return this.compile(template, this.props);
     }
 
-    private _handleEmailChange(): void {
+    private _handleEmailChange(): boolean {
         this._emailValue = (this.children.inputEmail as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputEmail as Input).validate();
@@ -171,9 +172,10 @@ class SigninPage extends Block {
         });
 
         (this.children.inputEmail as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleLoginChange(): void {
+    private _handleLoginChange(): boolean {
         this._loginValue = (this.children.inputLogin as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputLogin as Input).validate();
@@ -183,9 +185,10 @@ class SigninPage extends Block {
         });
 
         (this.children.inputLogin as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleFirstNameChange(): void {
+    private _handleFirstNameChange(): boolean {
         this._firstNameValue = (this.children.inputFirstName as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputFirstName as Input).validate();
@@ -195,9 +198,10 @@ class SigninPage extends Block {
         });
 
         (this.children.inputFirstName as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleSecondNameChange(): void {
+    private _handleSecondNameChange(): boolean {
         this._secondNameValue = (this.children.inputSecondName as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputSecondName as Input).validate();
@@ -207,9 +211,10 @@ class SigninPage extends Block {
         });
 
         (this.children.inputSecondName as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handlePhoneChange(): void {
+    private _handlePhoneChange(): boolean {
         this._phoneValue = (this.children.inputPhone as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputPhone as Input).validate();
@@ -219,9 +224,10 @@ class SigninPage extends Block {
         });
 
         (this.children.inputPhone as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handlePasswordChange(): void {
+    private _handlePasswordChange(): boolean {
         this._passwordValue = (this.children.inputPassword as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputPassword as Input).validate();
@@ -231,9 +237,10 @@ class SigninPage extends Block {
         });
 
         (this.children.inputPassword as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleRepeatPasswordChange(): void {
+    private _handleRepeatPasswordChange(): boolean {
         this._passwordRepeatValue = (this.children.inputPasswordRepeat as Input).getValue();
         this._passwordValue = (this.children.inputPassword as Input).getValue();
 
@@ -247,26 +254,53 @@ class SigninPage extends Block {
         });
 
         (this.children.inputPasswordRepeat as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleSubmit(): void {
-        this._handleEmailChange();
-        this._handleLoginChange();
-        this._handleFirstNameChange();
-        this._handleSecondNameChange();
-        this._handlePhoneChange();
-        this._handlePasswordChange();
-        this._handleRepeatPasswordChange();
+    private isValid(): boolean {
+        const validationResult = []
+        validationResult.push(this._handleEmailChange());
+        validationResult.push(this._handleLoginChange());
+        validationResult.push(this._handleFirstNameChange());
+        validationResult.push(this._handleSecondNameChange());
+        validationResult.push(this._handlePhoneChange());
+        validationResult.push(this._handlePasswordChange());
+        validationResult.push(this._handleRepeatPasswordChange());
+        return validationResult.every(Boolean);
+    }
+
+    private async _handleSubmit() {
+        if (!this.isValid()) {
+            return;
+        }
 
         const form = document.getElementById('signin-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
-            console.log(formData);
+            const payload = this.convertFormToSUP(formData);
 
-            this.props.store.dispatch(signupAction, formData);
+            await AuthController.signup(payload);
+            await AuthController.user();
+        }
+    }
+
+    private convertFormToSUP(
+        formData: Record<string, FormDataEntryValue>,
+      ): SignupData {
+        return {
+            first_name: formData.first_name as string,
+            second_name: formData.second_name as string,
+            login: formData.login as string,
+            email: formData.email as string,
+            password: formData.password as string,
+            phone: formData.phone as string,
         }
     }
 }
 
-export default withStore(SigninPage);
+const withAuthError = withStore_plus((state)=> (
+    { authError: state.authError, }
+))
+
+export default withAuthError(SigninPage);
 
