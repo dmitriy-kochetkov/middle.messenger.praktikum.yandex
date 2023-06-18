@@ -46,7 +46,9 @@ export type Chat = {
     lastMessage: Message;
 }
 
-export const transformChats = (data: ChatDTO[]): Chat[] => {
+export type Chats = Chat[] | [];
+
+export const transformChats = (data: ChatDTO[]): Chats => {
     const result = [] as Chat[];
     data.forEach((chat: ChatDTO) => {
         result.push({

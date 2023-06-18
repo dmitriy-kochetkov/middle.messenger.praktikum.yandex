@@ -18,10 +18,10 @@ export const loginAction = async (
 ) => {
     try {
         await authAPI.signin(action);
-        dispatch({ loginFormError: null });
+        dispatch({ authError: null });
     } catch (e) {
         if (apiHasError(e)) {
-            dispatch({ loginFormError: e.reason });
+            dispatch({ authError: e.reason });
         }
         return;
     }
