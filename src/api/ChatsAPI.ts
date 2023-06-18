@@ -14,7 +14,7 @@ export class ChatsAPI extends BaseAPI {
     }
 
     createChat(data: CreateChatData): Promise<unknown> {
-        return this.httpTransport.post('', { data });
+        return this.httpTransport.post('', { data, headers: this.defaultHeaders });
     }
 
     token(id: number) {

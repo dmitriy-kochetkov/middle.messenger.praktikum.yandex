@@ -28,37 +28,32 @@ export class HttpTransport {
     public get: HTTPMethod = (url, options = {}) => this
         .request(
             this.path + url,
-            { ...options, method: METHODS.GET },
-            options.timeout
+            { ...options, method: METHODS.GET }
         );
 
     public post: HTTPMethod = (url, options = {}) => this
         .request(
             this.path + url,
-            { ...options, method: METHODS.POST },
-            options.timeout
+            { ...options, method: METHODS.POST }
         );
 
     public put: HTTPMethod = (url, options = {}) => this
         .request(
             this.path + url,
-            { ...options, method: METHODS.PUT },
-            options.timeout
+            { ...options, method: METHODS.PUT }
         );
 
     public delete: HTTPMethod = (url, options = {}) => this
         .request(
             this.path + url,
-            { ...options, method: METHODS.DELETE },
-            options.timeout
+            { ...options, method: METHODS.DELETE }
         );
 
     private request<T extends unknown>(
         url: string,
         options: TOptions = { method: METHODS.GET },
-        timeout: number = 5000,
     ): Promise<T> {
-        const { headers, method, data } = options;
+        const { headers, method, data, timeout } = options;
 
         return new Promise((resolve, reject) => {
             if (!method) {
@@ -70,12 +65,17 @@ export class HttpTransport {
             const isGetMethod = method === METHODS.GET;
 
             xhr.open(method, isGetMethod && !!data ? `${url}${queryStringify(data)}` : url);
-            // console.log(isGetMethod && !!data ? `${url}${queryStringify(data)}` : url);
+            xhr.responseType = "json"
+            xhr.withCredentials = true;
 
             if (headers) {
                 Object.keys(headers).forEach((key) => {
                     xhr.setRequestHeader(key, headers[key]);
                 });
+            }
+
+            if (timeout) {
+                xhr.timeout = timeout;
             }
 
             xhr.onload = () => {
@@ -88,28 +88,9 @@ export class HttpTransport {
                 }
             };
 
-            // xhr.onreadystatechange = (e) => {
-
-            //     if (xhr.readyState === XMLHttpRequest.DONE) {
-            //         if (xhr.status < 400) {
-            //             resolve(xhr.response);
-            //         } else {
-            //             reject(xhr.response);
-            //         }
-            //     }
-            // };
-
             xhr.onabort = () =>  reject({reason: "abort"});
             xhr.onerror = () => reject({reason: "network error"})
             xhr.ontimeout = () => reject({reason: "timeout"});
-            xhr.timeout = timeout;
-
-
-            xhr.responseType = "json"
-            xhr.withCredentials = true;
-
-            // const jsonData = JSON.stringify(data)
-            // console.log({data, jsonData});
 
             if (isGetMethod || !data) {
                 xhr.send();
@@ -118,7 +99,6 @@ export class HttpTransport {
                 xhr.send(data);
                 console.log('xhr.send(data: FormData)');
             } else {
-                xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
                 xhr.send(JSON.stringify(data));
                 console.log('xhr.send(JSON.stringify(data))')
             }

@@ -9,6 +9,7 @@ import catAvatar from '../../../static/cat.jpeg'
 import { withRouter } from '../../hocs/withRouter';
 import { withStore } from '../../hocs/withStore';
 import { getChatsAction } from '../../controllers/chats';
+import { Button } from '../../components/button';
 
 // export interface IChat {
 //     chatItems: IChatItemProps[],
@@ -27,6 +28,18 @@ class ChatPage extends Block {
 
     protected init(): void {
         this.props.chatItems = [];
+
+        this.props.buttonCreateChat = new Button({
+            label: 'Создать чат',
+            submit: false,
+            className: 'chats_create-button',
+            events: {
+                click: (evt: PointerEvent) => {
+                    evt.preventDefault();
+                    console.log('create chat click');
+                },
+            },
+        });
 
 
         // this.props.chatItems = [
@@ -127,6 +140,8 @@ class ChatPage extends Block {
         //         ],
         //     }
         // };
+
+        this.children.buttonCreateChat = this.props.buttonCreateChat;
 
         this.children.chats = this.props.chatItems.map(
             (props: IChatItemProps) => new ChatItem(props),

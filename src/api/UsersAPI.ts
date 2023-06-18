@@ -32,15 +32,15 @@ export class UsersAPI extends BaseAPI {
     }
 
     updateUser(data: UserData): Promise<unknown> {
-        return this.httpTransport.put('/profile', {data});
+        return this.httpTransport.put('/profile', { data, headers: this.defaultHeaders });
     }
 
     updatePassword(data: UserPassword): Promise<unknown> {
-        return this.httpTransport.put('/password', {data});
+        return this.httpTransport.put('/password', { data, headers: this.defaultHeaders });
     }
 
     updateAvatar(data: FormData): Promise<unknown> {
-        return this.httpTransport.put('/profile/avatar', {data});
+        return this.httpTransport.put('/profile/avatar', { data, headers: this.uploadFileHeaders });
     }
 
     getUser(data: userID) {
