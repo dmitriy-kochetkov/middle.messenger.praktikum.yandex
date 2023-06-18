@@ -67,10 +67,10 @@ export const signupAction = async (
         // console.log(action);
         const responseUserID = await authAPI.signup(action);
         // console.log(responseUserID)
-        dispatch({ signupFormError: null });
+        dispatch({ authError: null });
     } catch (e) {
         if (apiHasError(e)) {
-            dispatch({ signupFormError: e.reason });
+            dispatch({ authError: e.reason });
         }
         return;
     }

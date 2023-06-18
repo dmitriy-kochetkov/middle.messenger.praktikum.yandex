@@ -3,7 +3,6 @@ import { Chats, User } from '../utils/apiTransformers';
 
 export interface AppState {
     authError: string | null;
-    signupFormError: string | null;
     updateUserFormError: string | null;
     updateUserPasswordFormError: string | null;
     updateUserAvatarError: string | null;
@@ -15,7 +14,6 @@ export interface AppState {
 
 export const defaultState: AppState = {
     authError: null,
-    signupFormError: null,
     updateUserFormError: null,
     updateUserPasswordFormError: null,
     updateUserAvatarError: null,
