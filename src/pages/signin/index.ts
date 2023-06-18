@@ -268,5 +268,5 @@ class SigninPage extends Block {
     }
 }
 
-export default withStore(withRouter(SigninPage));
+export default withStore(SigninPage);
 

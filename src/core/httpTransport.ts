@@ -78,29 +78,35 @@ export class HttpTransport {
                 xhr.timeout = timeout;
             }
 
-            xhr.onload = () => {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status < 400) {
-                        resolve(xhr.response);
-                    } else {
-                        reject(xhr.response);
-                    }
+            try {
+                // xhr.onload = () => {
+                //     if (xhr.readyState === XMLHttpRequest.DONE) {
+                //         if (xhr.status < 400) {
+                //             resolve(xhr.response);
+                //         } else {
+                //             reject(xhr.response);
+                //         }
+                //     }
+                // };
+
+                xhr.onload = () => resolve(xhr.response);
+
+                xhr.onabort = () =>  reject; // ({reason: "abort"});
+                xhr.onerror = () => reject; //({reason: "network error"})
+                xhr.ontimeout = () => reject; //({reason: "timeout"});
+
+                if (isGetMethod || !data) {
+                    xhr.send();
+                    console.log('xhr.send()')
+                } else if (data instanceof FormData) {
+                    xhr.send(data);
+                    console.log('xhr.send(data: FormData)');
+                } else {
+                    xhr.send(JSON.stringify(data));
+                    console.log('xhr.send(JSON.stringify(data))')
                 }
-            };
-
-            xhr.onabort = () =>  reject({reason: "abort"});
-            xhr.onerror = () => reject({reason: "network error"})
-            xhr.ontimeout = () => reject({reason: "timeout"});
-
-            if (isGetMethod || !data) {
-                xhr.send();
-                console.log('xhr.send()')
-            } else if (data instanceof FormData) {
-                xhr.send(data);
-                console.log('xhr.send(data: FormData)');
-            } else {
-                xhr.send(JSON.stringify(data));
-                console.log('xhr.send(JSON.stringify(data))')
+            } catch (e) {
+                console.log(e);
             }
         });
     }

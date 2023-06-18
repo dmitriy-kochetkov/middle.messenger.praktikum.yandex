@@ -134,8 +134,7 @@ class Block<P extends Record<string, any> = any> {
     }
 
     protected componentDidUpdate(oldProps: P, newProps: P): boolean {
-        return true;
-        //return !isEqual(oldProps, newProps);
+        return !isEqual(oldProps, newProps);
     }
 
     private _componentWillUnmount(): void {

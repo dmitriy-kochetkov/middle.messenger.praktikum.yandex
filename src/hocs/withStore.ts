@@ -1,4 +1,4 @@
-import { BlockClass } from "../core/Block";
+import Block, { BlockClass } from "../core/Block";
 import { Store, StoreEvents } from "../core/Store";
 import { AppState } from "../store";
 // import store from "../core/Store";
@@ -36,4 +36,21 @@ export function withStore<P extends WithStateProps>(WrappedBlock: BlockClass<P>)
         }
 
     } as BlockClass<Omit<P, 'store'>>;
+}
+
+
+export function withStore_plus<SP>(mapStateToProps: (state: AppState) => SP) {
+    return function wrap<P>(Component: typeof Block | any){
+        return class WithStore extends Component {
+            constructor(props: Omit<P, keyof SP>) {
+                let previousState = mapStateToProps(store.getState());
+                super({...(props as P), ...previousState});
+                store.on(StoreEvents.Updated, ()=> {
+                    const stateProps = mapStateToProps(store.getState());
+                    previousState = stateProps;
+                    this.setProps({...stateProps})
+                })
+            }
+        }
+    }
 }

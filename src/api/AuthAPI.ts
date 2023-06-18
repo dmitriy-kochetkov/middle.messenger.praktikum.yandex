@@ -30,12 +30,12 @@ export class AuthAPI extends BaseAPI {
         super('/auth');
     }
 
-    signup(data: SignupData) {
-        return this.http.post('/signup', { data, headers: this.defaultHeaders });
-    }
-
     signin(data: SigninData) {
         return this.http.post('/signin', { data, headers: this.defaultHeaders });
+    }
+
+    signup(data: SignupData) {
+        return this.http.post('/signup', { data, headers: this.defaultHeaders });
     }
 
     fetchUser(): Promise<unknown> {

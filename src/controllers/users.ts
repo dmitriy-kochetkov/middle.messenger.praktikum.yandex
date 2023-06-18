@@ -77,4 +77,5 @@ export const updateUserAvatarAction = async (
         }
         return;
     }
+    router.go('/settings');
 };

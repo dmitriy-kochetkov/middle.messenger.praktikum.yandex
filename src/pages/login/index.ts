@@ -15,7 +15,8 @@ import { loginAction } from '../../controllers/auth';
 
 // import { SigninData } from '../../api/AuthAPI';
 // import { withRouter } from '../../hocs/withRouter';
-import { withStore } from '../../hocs/withStore';
+import { withStore, withStore_plus } from '../../hocs/withStore';
+import AuthController from '../../controllers/AuthController';
 
 class LoginPage extends Block {
     private _loginValue: string = '';
@@ -30,7 +31,8 @@ class LoginPage extends Block {
     }
 
     protected init(): void {
-        console.log(this.props)
+        console.log('LoginPage.init');
+        console.log(this.props);
 
         this.children.inputLogin = new Input({
             label: 'Логин',
@@ -79,7 +81,7 @@ class LoginPage extends Block {
         return this.compile(template, this.props);
     }
 
-    private _handleLoginChange(): void {
+    private _handleLoginChange(): boolean {
         this._loginValue = (this.children.inputLogin as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputLogin as Input).validate();
@@ -89,9 +91,11 @@ class LoginPage extends Block {
         });
 
         (this.children.inputLogin as Input).setValidState(isValid);
+
+        return isValid;
     }
 
-    private _handlePasswordChange(): void {
+    private _handlePasswordChange(): boolean {
         this._passwordValue = (this.children.inputPassword as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputPassword as Input).validate();
@@ -101,17 +105,33 @@ class LoginPage extends Block {
         });
 
         (this.children.inputPassword as Input).setValidState(isValid);
+
+        return isValid;
     }
 
-    private _handleSubmit(): void {
-        this._handleLoginChange();
-        this._handlePasswordChange();
+    private isValid(): boolean {
+        const validationResult = []
+        validationResult.push(this._handleLoginChange());
+        validationResult.push(this._handlePasswordChange());
+        return validationResult.every(Boolean);
+    }
+
+    private async _handleSubmit() {
+        if (!this.isValid()) {
+            return;
+        }
         const form = document.getElementById('login-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
-            this.props.store.dispatch(loginAction, formData);
+
+            await AuthController.signin(formData);
+            await AuthController.user();
         }
     }
 }
 
-export default withStore(LoginPage);
+const withAuthError = withStore_plus((state)=> (
+    { authError: state.authError, }
+))
+
+export default withAuthError(LoginPage);
