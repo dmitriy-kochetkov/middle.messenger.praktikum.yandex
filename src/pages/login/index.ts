@@ -14,7 +14,7 @@ import {
 import { loginAction } from '../../controllers/auth';
 
 // import { SigninData } from '../../api/AuthAPI';
-import { withRouter } from '../../hocs/withRouter';
+// import { withRouter } from '../../hocs/withRouter';
 import { withStore } from '../../hocs/withStore';
 
 class LoginPage extends Block {
@@ -109,20 +109,9 @@ class LoginPage extends Block {
         const form = document.getElementById('login-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
-            // const credentials = this._convertFormToCredentials(formData);
-
             this.props.store.dispatch(loginAction, formData);
         }
     }
-
-    // private _convertFormToCredentials(
-    //     formData: Record<string, FormDataEntryValue>,
-    //   ): SigninData {
-    //     return {
-    //       login: formData.login as string,
-    //       password: formData.password as string,
-    //     }
-    // }
 }
 
-export default withStore(withRouter(LoginPage));
+export default withStore(LoginPage);

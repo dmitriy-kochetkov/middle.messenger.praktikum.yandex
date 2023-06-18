@@ -16,14 +16,14 @@ export async function initApp(dispatch: Dispatch<AppState>) {
     const response = await authAPI.fetchUser();
 
     if (apiHasError(response)) {
-      return;
+        return;
     }
 
     dispatch({ user: transformUser(response as UserDTO) });
 
-  } catch (err) {
-    console.error(err);
-  } finally {
-    dispatch({ appIsInited: true });
-  }
+    } catch (err) {
+        console.error(err);
+    } finally {
+        dispatch({ appIsInited: true });
+    }
 }

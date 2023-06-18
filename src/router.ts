@@ -20,6 +20,7 @@ enum Routes {
 }
 
 export function initRouter(store: Store<AppState>) {
+    console.log('initRouter()');
     router
       .use({
         pathname: '/',

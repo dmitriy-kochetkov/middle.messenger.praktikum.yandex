@@ -180,25 +180,10 @@ class ProfilePage extends Block {
 
     protected componentDidMount(): void {
         console.log('ProfilePage.componentDidMount()');
-        // const newValue = this.props.store.getState().user.email;
-        // console.log(newValue);
-        // (this.children.inputEmail as Block).setProps({ value: newValue});
     }
 
     protected componentDidUpdate(oldProps: any, newProps: any): boolean {
-        // console.log({newProps});
-
-        console.log('ProfilePage.componentDidUpdate()');
-        // this.children.inputEmail = new Input({
-        //     label: 'Почта',
-        //     name: 'email',
-        //     type: 'text',
-        //     value: this.props.store.getState().user.email,
-        //     disabled: true,
-        //     enableErrorMessage: true,
-        //     errorMessage: '',
-        // });
-
+        console.log('ProfilePage.componentDidUpdate()', oldProps, newProps);
         return super.componentDidUpdate(oldProps, newProps);
     }
 
