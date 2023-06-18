@@ -23,12 +23,12 @@ export const updateUserAction = async (
     try {
         const responseUser = await usersAPI.updateUser(action);
         dispatch({ user: transformUser(responseUser as UserDTO) });
-        dispatch({ updateUserFormError: null });
+        dispatch({ profileError: null });
 
         // await new Promise(r => setTimeout(r, 2000));
     } catch (e) {
         if (apiHasError(e)) {
-            dispatch({ updateUserFormError: e.reason });
+            dispatch({ profileError: e.reason });
         }
         return;
     }
@@ -49,10 +49,10 @@ export const updateUserPasswordAction = async (
 ) => {
     try {
         await usersAPI.updatePassword(action);
-        dispatch({ updateUserPasswordFormError: null });
+        dispatch({ profileError: null });
     } catch (e) {
         if (apiHasError(e)) {
-            dispatch({ updateUserPasswordFormError: e.reason });
+            dispatch({ profileError: e.reason });
         }
         return;
     }
@@ -69,11 +69,11 @@ export const updateUserAvatarAction = async (
         const responseUser = await usersAPI.updateAvatar(action);
         dispatch({
             user: transformUser(responseUser as UserDTO),
-            updateUserAvatarError: null
+            profileError: null
         });
     } catch (e) {
         if (apiHasError(e)) {
-            dispatch({ updateUserAvatarError: e.reason });
+            dispatch({ profileError: e.reason });
         }
         return;
     }

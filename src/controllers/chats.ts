@@ -10,10 +10,10 @@ export const getChatsAction = async (dispatch: Dispatch<AppState>) => {
     try {
         const responseUser = await chatsAPI.getChats();
         dispatch({ chats: transformChats(responseUser as ChatDTO[]) })
-        dispatch({ loadingChatsError: null });
+        dispatch({ chatsError: null });
     } catch (e) {
         if (apiHasError(e)) {
-            dispatch({ loadingChatsError: e.reason });
+            dispatch({ chatsError: e.reason });
         }
         return;
     }

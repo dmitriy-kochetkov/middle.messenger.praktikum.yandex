@@ -3,10 +3,8 @@ import { Chats, User } from '../utils/apiTransformers';
 
 export interface AppState {
     authError: string | null;
-    updateUserFormError: string | null;
-    updateUserPasswordFormError: string | null;
-    updateUserAvatarError: string | null;
-    loadingChatsError: string | null;
+    profileError: string | null;
+    chatsError: string | null;
     user: User | null;
     chats: Chats;
     appIsInited: boolean;
@@ -14,10 +12,8 @@ export interface AppState {
 
 export const defaultState: AppState = {
     authError: null,
-    updateUserFormError: null,
-    updateUserPasswordFormError: null,
-    updateUserAvatarError: null,
-    loadingChatsError: null,
+    profileError: null,
+    chatsError: null,
     user: null,
     chats: [],
     appIsInited: false,
