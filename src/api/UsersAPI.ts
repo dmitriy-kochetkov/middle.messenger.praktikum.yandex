@@ -14,10 +14,6 @@ export interface UserPassword {
     newPassword: string
 }
 
-// export interface UserAvatar {
-//     avatar: Blob,
-// }
-
 export interface userID {
     id: number
 }
@@ -31,20 +27,20 @@ export class UsersAPI extends BaseAPI {
         super('/user');
     }
 
-    updateUser(data: UserData): Promise<unknown> {
+    profile(data: UserData): Promise<unknown> {
         return this.http.put('/profile', { data, headers: this.defaultHeaders });
     }
 
-    updatePassword(data: UserPassword): Promise<unknown> {
+    password(data: UserPassword): Promise<unknown> {
         return this.http.put('/password', { data, headers: this.defaultHeaders });
     }
 
-    updateAvatar(data: FormData): Promise<unknown> {
+    avatar(data: FormData): Promise<unknown> {
         return this.http.put('/profile/avatar', { data, headers: this.uploadFileHeaders });
     }
 
     getUser(data: userID) {
-        // XSS: need to check that data.id is a number?
+        //
         return this.http.get(`/${data.id}`);
     }
 

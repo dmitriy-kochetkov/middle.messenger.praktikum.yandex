@@ -32,7 +32,6 @@ class LoginPage extends Block {
 
     protected init(): void {
         console.log('LoginPage.init');
-        console.log(this.props);
 
         this.children.inputLogin = new Input({
             label: 'Логин',

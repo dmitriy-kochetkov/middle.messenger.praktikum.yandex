@@ -15,13 +15,15 @@ import {
 } from '../../utils/validation';
 
 import { withRouter } from '../../hocs/withRouter';
-import { withStore } from '../../hocs/withStore';
+import { withStore_plus } from '../../hocs/withStore';
 
-// import UsersController from '../../controllers/UsersController';
 import { UserData } from '../../api/UsersAPI';
-import { updateUserAction } from '../../controllers/users';
-import { AvatarEditable } from '../../components/avatar-editable/avatar-editable';
-import { getUserAction } from '../../controllers/auth';
+// import { updateUserAction } from '../../controllers/users';
+// import { getUserAction } from '../../controllers/auth';
+// import { AvatarEditable } from '../../components/avatar-editable/avatar-editable';
+import UsersController from '../../controllers/UsersControlles';
+import { Avatar } from '../../components/avatar/avatar';
+
 
 // interface IEditProfilePage {
 //     inputs: IInputProps[]
@@ -53,25 +55,20 @@ class EditProfilePage extends Block {
 
     protected init(): void {
         console.log('EditProfilePage init');
+        console.log({...this.props});
 
         this.children.backPanel = new BackPanel({ backURL: '../settings' });
 
-        this.children.avatar = new AvatarEditable({
-            avatarHoverText: 'Поменять аватар',
-            avatarUrl: this.getAvatarLink(),
-            events: {
-                click: (evt: PointerEvent) => {
-                    evt.preventDefault();
-                    console.log('change avatar click');
-                },
-            },
-        });
+        this.children.avatar = new Avatar({
+                        size: 'l',
+                        avatarURL: this.getAvatarLink(),
+                    })
 
         this.children.inputEmail = new Input({
             label: 'Почта',
             name: 'email',
             type: 'text',
-            value: this.props.store.getState().user.email,
+            value: this.props.email,
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -86,7 +83,7 @@ class EditProfilePage extends Block {
             label: 'Логин',
             name: 'login',
             type: 'text',
-            value: this.props.store.getState().user.login,
+            value: this.props.login,
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -101,7 +98,7 @@ class EditProfilePage extends Block {
             label: 'Имя',
             name: 'first_name',
             type: 'text',
-            value: this.props.store.getState().user.firstName,
+            value: this.props.firstName,
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -116,7 +113,7 @@ class EditProfilePage extends Block {
             label: 'Фамилия',
             name: 'second_name',
             type: 'text',
-            value: this.props.store.getState().user.secondName,
+            value: this.props.secondName,
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -131,7 +128,7 @@ class EditProfilePage extends Block {
             label: 'Имя в чате',
             name: 'display_name',
             type: 'text',
-            value: this.props.store.getState().user.displayName,
+            value: this.props.displayName,
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -145,7 +142,7 @@ class EditProfilePage extends Block {
             label: 'Телефон',
             name: 'phone',
             type: 'text',
-            value: this.props.store.getState().user.phone,
+            value: this.props.phone,
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -173,7 +170,7 @@ class EditProfilePage extends Block {
         return this.compile(template, this.props);
     }
 
-    private _handleEmailChange(): void {
+    private _handleEmailChange(): boolean {
         this._emailValue = (this.children.inputEmail as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputEmail as Input).validate();
@@ -183,9 +180,10 @@ class EditProfilePage extends Block {
         });
 
         (this.children.inputEmail as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleLoginChange(): void {
+    private _handleLoginChange(): boolean {
         this._loginValue = (this.children.inputLogin as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputLogin as Input).validate();
@@ -195,9 +193,10 @@ class EditProfilePage extends Block {
         });
 
         (this.children.inputLogin as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleFirstNameChange(): void {
+    private _handleFirstNameChange(): boolean {
         this._firstNameValue = (this.children.inputFirstName as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputFirstName as Input).validate();
@@ -207,9 +206,10 @@ class EditProfilePage extends Block {
         });
 
         (this.children.inputFirstName as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleSecondNameChange(): void {
+    private _handleSecondNameChange(): boolean {
         this._secondNameValue = (this.children.inputSecondName as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputSecondName as Input).validate();
@@ -219,9 +219,10 @@ class EditProfilePage extends Block {
         });
 
         (this.children.inputSecondName as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handlePhoneChange(): void {
+    private _handlePhoneChange(): boolean {
         this._phoneValue = (this.children.inputPhone as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputPhone as Input).validate();
@@ -231,40 +232,47 @@ class EditProfilePage extends Block {
         });
 
         (this.children.inputPhone as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleSubmit(): void {
-        this._handleEmailChange();
-        this._handleLoginChange();
-        this._handleFirstNameChange();
-        this._handleSecondNameChange();
-        this._handlePhoneChange();
+    private isValid(): boolean {
+        const validationResult = []
+        validationResult.push(this._handleEmailChange());
+        validationResult.push(this._handleLoginChange());
+        validationResult.push(this._handleFirstNameChange());
+        validationResult.push(this._handleSecondNameChange());
+        validationResult.push(this._handlePhoneChange());
+        return validationResult.every(Boolean);
+    }
+
+    private async _handleSubmit() {
+        if (!this.isValid()) {
+            return;
+        }
         const form = document.getElementById('edit-profile-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
-            // const userData = this._convertFormToUser(formData);
-            // console.log(userData);
+            const payload = this.convertFormToUser(formData);
 
-            this.props.store.dispatch(updateUserAction, formData);
-            // this.props.store.dispatch(getUserAction);
+            await UsersController.profile(payload);
         }
     }
 
-    // private _convertFormToUser(
-    //     formData: Record<string, FormDataEntryValue>,
-    //   ): UserData {
-    //     return {
-    //       email: formData.email as string,
-    //       first_name: formData.first_name as string,
-    //       second_name: formData.second_name as string,
-    //       display_name: formData.display_name as string,
-    //       login: formData.login as string,
-    //       phone: formData.phone as string,
-    //     }
-    // }
+    private convertFormToUser(
+        formData: Record<string, FormDataEntryValue>,
+      ): UserData {
+        return {
+          email: formData.email as string,
+          first_name: formData.first_name as string,
+          second_name: formData.second_name as string,
+          display_name: formData.display_name as string,
+          login: formData.login as string,
+          phone: formData.phone as string,
+        }
+    }
 
     private getAvatarLink() {
-        const avatarPath = this.props.store.getState().user.avatar;
+        const avatarPath = this.props.avatar;
         if (avatarPath) {
             return `https://ya-praktikum.tech/api/v2/resources${avatarPath}`;
         }
@@ -272,4 +280,9 @@ class EditProfilePage extends Block {
     }
 }
 
-export default withRouter(withStore(EditProfilePage));
+const withUser = withStore_plus((state)=> ({
+    ...state.user,
+    profileError: state.authError,
+}))
+
+export default withUser(withRouter(EditProfilePage));

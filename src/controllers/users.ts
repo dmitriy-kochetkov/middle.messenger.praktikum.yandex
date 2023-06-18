@@ -21,7 +21,7 @@ export const updateUserAction = async (
     action: updateUserPayload,
 ) => {
     try {
-        const responseUser = await usersAPI.updateUser(action);
+        const responseUser = await usersAPI.profile(action);
         dispatch({ user: transformUser(responseUser as UserDTO) });
         dispatch({ profileError: null });
 
@@ -48,7 +48,7 @@ export const updateUserPasswordAction = async (
     action: updateUserPasswordPayload,
 ) => {
     try {
-        await usersAPI.updatePassword(action);
+        await usersAPI.password(action);
         dispatch({ profileError: null });
     } catch (e) {
         if (apiHasError(e)) {
@@ -66,7 +66,7 @@ export const updateUserAvatarAction = async (
     action: FormData,
 ) => {
     try {
-        const responseUser = await usersAPI.updateAvatar(action);
+        const responseUser = await usersAPI.avatar(action);
         dispatch({
             user: transformUser(responseUser as UserDTO),
             profileError: null
