@@ -14,9 +14,6 @@ import {
     phone,
     repeatPasswordValidationMessage,
 } from '../../utils/validation';
-
-// import { signupAction } from '../../controllers/auth';
-// import { withRouter } from '../../hocs/withRouter';
 import { withStore_plus } from '../../hocs/withStore';
 import AuthController from '../../controllers/AuthController';
 import { SignupData } from '../../api/AuthAPI';
@@ -303,4 +300,3 @@ const withAuthError = withStore_plus((state)=> (
 ))
 
 export default withAuthError(SigninPage);
-

@@ -13,30 +13,12 @@ import {
     notOnlyDigits,
     phone,
 } from '../../utils/validation';
-
-// import { withRouter } from '../../hocs/withRouter';
 import { withStore_plus } from '../../hocs/withStore';
-
 import { UserData } from '../../api/UsersAPI';
-// import { updateUserAction } from '../../controllers/users';
-// import { getUserAction } from '../../controllers/auth';
-// import { AvatarEditable } from '../../components/avatar-editable/avatar-editable';
 import UsersController from '../../controllers/UsersControlles';
 import { Avatar } from '../../components/avatar/avatar';
+import { getAvatarLink } from '../../utils/getAvatarLink';
 
-
-// interface IEditProfilePage {
-//     inputs: IInputProps[]
-// }
-
-// interface IUser {
-//     firstName: string;
-//     secondName: string;
-//     login: string;
-//     email: string;
-//     displayName: string;
-//     phone: string;
-//   }
 
 class EditProfilePage extends Block {
     private _emailValue: string = '';
@@ -54,14 +36,11 @@ class EditProfilePage extends Block {
     }
 
     protected init(): void {
-        console.log('EditProfilePage init');
-        console.log({...this.props});
-
         this.children.backPanel = new BackPanel({ backURL: '../settings' });
 
         this.children.avatar = new Avatar({
                         size: 'l',
-                        avatarURL: this.getAvatarLink(),
+                        avatarURL: getAvatarLink(this.props.avatar),
                     })
 
         this.children.inputEmail = new Input({
@@ -270,19 +249,11 @@ class EditProfilePage extends Block {
           phone: formData.phone as string,
         }
     }
-
-    private getAvatarLink() {
-        const avatarPath = this.props.avatar;
-        if (avatarPath) {
-            return `https://ya-praktikum.tech/api/v2/resources${avatarPath}`;
-        }
-        return '';
-    }
 }
 
 const withUser = withStore_plus((state)=> ({
     ...state.user,
-    profileError: state.authError,
+    profileError: state.profileError,
 }))
 
 export default withUser(EditProfilePage);

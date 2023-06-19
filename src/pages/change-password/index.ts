@@ -10,19 +10,11 @@ import {
     password,
     repeatPasswordValidationMessage,
 } from '../../utils/validation';
-
-import { withRouter } from '../../hocs/withRouter';
-import { withStore, withStore_plus } from '../../hocs/withStore';
-
+import { withStore_plus } from '../../hocs/withStore';
 import { UserPassword } from '../../api/UsersAPI';
-import { AvatarEditable } from '../../components/avatar-editable/avatar-editable';
-import { updateUserPasswordAction } from '../../controllers/users';
 import { Avatar } from '../../components/avatar/avatar';
 import UsersController from '../../controllers/UsersControlles';
-
-// export interface IChangePasswordPage {
-//     inputs: IInputProps[]
-// }
+import { getAvatarLink } from '../../utils/getAvatarLink';
 
 class ChangePasswordPage extends Block {
     private _oldPasswordValue: string = '';
@@ -36,12 +28,11 @@ class ChangePasswordPage extends Block {
     }
 
     protected init(): void {
-        console.log({...this.props})
         this.children.backPanel = new BackPanel({ backURL: '../settings' });
 
         this.children.avatar = new Avatar({
             size: 'l',
-            avatarURL: this.getAvatarLink(),
+            avatarURL: getAvatarLink(this.props.avatar),
         })
 
         this.children.inputOldPassword = new Input({
@@ -164,8 +155,6 @@ class ChangePasswordPage extends Block {
             const userPassword = this._convertFormToPassword(formData);
 
             await UsersController.password(userPassword)
-
-            // this.props.store.dispatch(updateUserPasswordAction, userPassword);
         }
     }
 
@@ -178,18 +167,18 @@ class ChangePasswordPage extends Block {
         }
     }
 
-    private getAvatarLink() {
-        const avatarPath = this.props.avatar;
-        if (avatarPath) {
-            return `https://ya-praktikum.tech/api/v2/resources${avatarPath}`;
-        }
-        return '';
-    }
+    // private getAvatarLink() {
+    //     const avatarPath = this.props.avatar;
+    //     if (avatarPath) {
+    //         return `https://ya-praktikum.tech/api/v2/resources${avatarPath}`;
+    //     }
+    //     return '';
+    // }
 }
 
 const withUser = withStore_plus((state)=> ({
     ...state.user,
-    profileError: state.authError,
+    profileError: state.profileError,
 }))
 
 export default withUser(ChangePasswordPage);

@@ -10,11 +10,8 @@ import {
     notOnlyDigits,
     password,
 } from '../../utils/validation';
-
-// import { loginAction } from '../../controllers/auth';
-// import { SigninData } from '../../api/AuthAPI';
-// import { withRouter } from '../../hocs/withRouter';
 import { withStore_plus } from '../../hocs/withStore';
+import { withRouter } from '../../hocs/withRouter';
 import AuthController from '../../controllers/AuthController';
 import { SigninData } from '../../api/AuthAPI';
 
@@ -25,9 +22,9 @@ class LoginPage extends Block {
 
     constructor(props: {}) {
         super(props);
-        // if (this.props.store.state.user) {
-        //     this.props.router.go('/messenger');
-        // }
+        if (this.props.user) {
+            this.props.router.go('/messenger');
+        }
     }
 
     protected init(): void {
@@ -139,8 +136,9 @@ class LoginPage extends Block {
     }
 }
 
-const withAuthError = withStore_plus((state)=> (
-    { authError: state.authError, }
-))
+const withAuthError = withStore_plus((state)=> ({
+    user: state.user,
+    authError: state.authError,
+}))
 
-export default withAuthError(LoginPage);
+export default withAuthError(withRouter(LoginPage));

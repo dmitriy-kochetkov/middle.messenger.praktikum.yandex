@@ -12,7 +12,6 @@ export async function initApp(dispatch: Dispatch<AppState>) {
   // await new Promise(r => setTimeout(r, 700));
 
   try {
-    console.log('initApp()');
     const response = await authAPI.fetchUser();
 
     if (apiHasError(response)) {

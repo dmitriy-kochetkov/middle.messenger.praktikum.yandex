@@ -32,6 +32,20 @@ export class UsersController {
     }
 
     async avatar(payload: FormData) {
+        try {
+            const response = await this.api.avatar(payload);
+            if (apiHasError(response)) {
+                store.dispatch({ profileError: response.reason });
+                return;
+            }
+            store.dispatch({
+                user: transformUser(response as UserDTO),
+                profileError: null,
+            });
+            router.go('/settings');
+        } catch (e) {
+            console.error(e);
+        }
 
     }
 

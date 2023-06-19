@@ -4,7 +4,6 @@ import { initRouter } from "./router";
 import { store } from "./store";
 
 window.addEventListener('DOMContentLoaded', async () => {
-    console.log('DOMContentLoaded');
     store.on(StoreEvents.Updated, (prevState, nextState) => {
         if(!prevState.appIsInited && nextState.appIsInited) {
             initRouter(store);

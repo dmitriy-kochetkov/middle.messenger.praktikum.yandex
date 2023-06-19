@@ -5,34 +5,20 @@ import { BackPanel } from '../../components/back-panel';
 import { Button } from '../../components/button';
 import { Modal } from '../../components/modal/modal';
 import { AvatarEditable } from '../../components/avatar-editable/avatar-editable';
-
-// import AuthController from '../../controllers/AuthController';
-import { logoutAction } from '../../controllers/auth';
 import { withRouter } from '../../hocs/withRouter';
-import { withStore } from '../../hocs/withStore';
-
+import { withStore_plus } from '../../hocs/withStore';
 import { getFormData } from '../../utils/getFormData';
-import { StoreEvents } from '../../core/Store';
-import { updateUserAvatarAction } from '../../controllers/users';
-
-
-
-// export interface IProfilePage {
-//     userName: string,
-//     inputs: IInputProps[]
-// }
+import AuthController from '../../controllers/AuthController';
+import UsersController from '../../controllers/UsersControlles';
+import { getAvatarLink } from '../../utils/getAvatarLink';
 
 class ProfilePage extends Block {
     constructor(props: {}) {
-        console.log('ProfilePage.constructor()');
         super(props);
     }
 
     protected init(): void {
-        console.log('ProfilePage.init()');
-
-
-        this.props.userName = this.props.store.getState().user.displayName;
+        this.props.userName = this.props.displayName;
 
         this.children.backPanel = new BackPanel({ backURL: '../messenger' });
 
@@ -45,13 +31,13 @@ class ProfilePage extends Block {
                     type: 'file',
                     enableErrorMessage: false,
                     errorMessage: '',
-                    events: {
-                        change: (evt: Event) => {
-                            console.log('change image event');
-                            // const file = (<HTMLInputElement>evt.target).files![0];
-                            // console.log(file)
-                        },
-                    },
+                    // events: {
+                    //     change: (evt: Event) => {
+                    //         console.log('change image event');
+                    //         const file = (<HTMLInputElement>evt.target).files![0];
+                    //         console.log(file)
+                    //     },
+                    // },
                 }),
                 new Button({
                     label: 'Принять',
@@ -70,7 +56,7 @@ class ProfilePage extends Block {
 
         this.children.avatar = new AvatarEditable({
             avatarHoverText: 'Поменять аватар',
-            avatarUrl: this.getAvatarLink(),
+            avatarUrl: getAvatarLink(this.props.avatar),
             events: {
                 click: (evt: PointerEvent) => {
                     evt.preventDefault();
@@ -84,7 +70,7 @@ class ProfilePage extends Block {
             label: 'Почта',
             name: 'email',
             type: 'text',
-            value: this.props.store.getState().user.email,
+            value: this.props.email,
             disabled: true,
             enableErrorMessage: true,
             errorMessage: '',
@@ -94,7 +80,7 @@ class ProfilePage extends Block {
             label: 'Логин',
             name: 'login',
             type: 'text',
-            value: this.props.store.getState().user.login,
+            value: this.props.login,
             disabled: true,
             enableErrorMessage: true,
             errorMessage: '',
@@ -104,7 +90,7 @@ class ProfilePage extends Block {
             label: 'Имя',
             name: 'first_name',
             type: 'text',
-            value: this.props.store.getState().user.firstName,
+            value: this.props.firstName,
             disabled: true,
             enableErrorMessage: true,
             errorMessage: '',
@@ -114,7 +100,7 @@ class ProfilePage extends Block {
             label: 'Фамилия',
             name: 'second_name',
             type: 'text',
-            value: this.props.store.getState().user.secondName,
+            value: this.props.secondName,
             disabled: true,
             enableErrorMessage: true,
             errorMessage: '',
@@ -124,7 +110,7 @@ class ProfilePage extends Block {
             label: 'Имя в чате',
             name: 'display_name',
             type: 'text',
-            value: this.props.store.getState().user.displayName,
+            value: this.props.displayName,
             disabled: true,
             enableErrorMessage: true,
             errorMessage: '',
@@ -134,7 +120,7 @@ class ProfilePage extends Block {
             label: 'Телефон',
             name: 'phone',
             type: 'text',
-            value: this.props.store.getState().user.phone,
+            value: this.props.phone,
             disabled: true,
             enableErrorMessage: true,
             errorMessage: '',
@@ -169,33 +155,24 @@ class ProfilePage extends Block {
             submit: false,
             className: 'button button_dangerous',
             events: {
-                click: (evt: PointerEvent) => {
+                click: async (evt: PointerEvent) => {
                     evt.preventDefault();
-                    this.props.store.dispatch(logoutAction);
+                    await AuthController.logout();
                 },
             },
         });
 
     }
 
-    protected componentDidMount(): void {
-        console.log('ProfilePage.componentDidMount()');
-    }
-
-    protected componentDidUpdate(oldProps: any, newProps: any): boolean {
-        console.log('ProfilePage.componentDidUpdate()', oldProps, newProps);
-        return super.componentDidUpdate(oldProps, newProps);
-    }
-
-    private _confirmModal() {
+    private async _confirmModal() {
         const form = document.getElementById('modal-form') as HTMLFormElement;
 
         if (form) {
-            const formData = getFormData(form as HTMLFormElement);
-            const avatar = this._convertFormToAvatar(formData);
-            console.log(avatar);
+            const rawData = getFormData(form as HTMLFormElement);
+            const avatarFormData = this._convertFormToAvatar(rawData);
+            console.log(avatarFormData);
 
-            this.props.store.dispatch(updateUserAvatarAction, avatar);
+            await UsersController.avatar(avatarFormData);
         }
 
         (this.children.modal as Block).setProps({isOpen: false});
@@ -213,18 +190,14 @@ class ProfilePage extends Block {
         (this.children.modal as Block).setProps({isOpen: true});
     }
 
-    private getAvatarLink() {
-        const avatarPath = this.props.store.getState().user.avatar;
-        if (avatarPath) {
-            return `https://ya-praktikum.tech/api/v2/resources${avatarPath}`;
-        }
-        return '';
-    }
-
     render() {
         return this.compile(template, this.props);
     }
 }
 
-// const withUser = withStore((state) => ({...state.user}));
-export default withStore(withRouter(ProfilePage));
+const withUser = withStore_plus((state)=> ({
+    ...state.user,
+    profileError: state.profileError,
+}))
+
+export default withUser(withRouter(ProfilePage));
