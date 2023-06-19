@@ -36,7 +36,17 @@ export class UsersController {
     }
 
     async password(payload: UserPassword) {
-
+        try {
+            const response = await this.api.password(payload);
+            if (apiHasError(response)) {
+                store.dispatch({ profileError: response.reason });
+                return;
+            }
+            store.dispatch({ profileError: null });
+            router.go('/settings')
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     async user() {

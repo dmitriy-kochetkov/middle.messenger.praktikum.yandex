@@ -12,12 +12,13 @@ import {
 } from '../../utils/validation';
 
 import { withRouter } from '../../hocs/withRouter';
-import { withStore } from '../../hocs/withStore';
+import { withStore, withStore_plus } from '../../hocs/withStore';
 
-// import UsersController from '../../controllers/UsersController';
 import { UserPassword } from '../../api/UsersAPI';
 import { AvatarEditable } from '../../components/avatar-editable/avatar-editable';
 import { updateUserPasswordAction } from '../../controllers/users';
+import { Avatar } from '../../components/avatar/avatar';
+import UsersController from '../../controllers/UsersControlles';
 
 // export interface IChangePasswordPage {
 //     inputs: IInputProps[]
@@ -35,18 +36,13 @@ class ChangePasswordPage extends Block {
     }
 
     protected init(): void {
+        console.log({...this.props})
         this.children.backPanel = new BackPanel({ backURL: '../settings' });
 
-        this.children.avatar = new AvatarEditable({
-            avatarHoverText: 'Поменять аватар',
-            avatarUrl: '',
-            events: {
-                click: (evt: PointerEvent) => {
-                    evt.preventDefault();
-                    console.log('change avatar click');
-                },
-            },
-        });
+        this.children.avatar = new Avatar({
+            size: 'l',
+            avatarURL: this.getAvatarLink(),
+        })
 
         this.children.inputOldPassword = new Input({
             label: 'Старый пароль',
@@ -109,7 +105,7 @@ class ChangePasswordPage extends Block {
         return this.compile(template, this.props);
     }
 
-    private _handleOldPasswordChange(): void {
+    private _handleOldPasswordChange(): boolean {
         this._oldPasswordValue = (this.children.inputOldPassword as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputOldPassword as Input).validate();
@@ -119,9 +115,10 @@ class ChangePasswordPage extends Block {
         });
 
         (this.children.inputOldPassword as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleNewPasswordChange(): void {
+    private _handleNewPasswordChange(): boolean {
         this._newPasswordValue = (this.children.inputNewPassword as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputNewPassword as Input).validate();
@@ -131,9 +128,10 @@ class ChangePasswordPage extends Block {
         });
 
         (this.children.inputNewPassword as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleRepeatPasswordChange(): void {
+    private _handleRepeatPasswordChange(): boolean {
         this._newPasswordRepeatValue = (this.children.inputNewPasswordRepeat as Input).getValue();
         this._newPasswordValue = (this.children.inputNewPassword as Input).getValue();
 
@@ -145,20 +143,29 @@ class ChangePasswordPage extends Block {
         });
 
         (this.children.inputNewPasswordRepeat as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleSubmit(): void {
-        this._handleOldPasswordChange();
-        this._handleNewPasswordChange();
-        this._handleRepeatPasswordChange();
+    private isValid(): boolean {
+        const validationResult = []
+        validationResult.push(this._handleOldPasswordChange());
+        validationResult.push(this._handleNewPasswordChange());
+        validationResult.push(this._handleRepeatPasswordChange());
+        return validationResult.every(Boolean);
+    }
+
+    private async _handleSubmit() {
+        if (!this.isValid()) {
+            return;
+        }
         const form = document.getElementById('edit-profile-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
             const userPassword = this._convertFormToPassword(formData);
-            console.log(userPassword);
-            // UsersController.updatePassword(userPassword);
 
-            this.props.store.dispatch(updateUserPasswordAction, userPassword);
+            await UsersController.password(userPassword)
+
+            // this.props.store.dispatch(updateUserPasswordAction, userPassword);
         }
     }
 
@@ -170,6 +177,19 @@ class ChangePasswordPage extends Block {
           newPassword: formData.newPassword as string
         }
     }
+
+    private getAvatarLink() {
+        const avatarPath = this.props.avatar;
+        if (avatarPath) {
+            return `https://ya-praktikum.tech/api/v2/resources${avatarPath}`;
+        }
+        return '';
+    }
 }
 
-export default withStore(withRouter(ChangePasswordPage));
+const withUser = withStore_plus((state)=> ({
+    ...state.user,
+    profileError: state.authError,
+}))
+
+export default withUser(ChangePasswordPage);

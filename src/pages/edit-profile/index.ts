@@ -14,7 +14,7 @@ import {
     phone,
 } from '../../utils/validation';
 
-import { withRouter } from '../../hocs/withRouter';
+// import { withRouter } from '../../hocs/withRouter';
 import { withStore_plus } from '../../hocs/withStore';
 
 import { UserData } from '../../api/UsersAPI';
@@ -285,4 +285,4 @@ const withUser = withStore_plus((state)=> ({
     profileError: state.authError,
 }))
 
-export default withUser(withRouter(EditProfilePage));
+export default withUser(EditProfilePage);
