@@ -45,18 +45,18 @@ export type Chat = {
     title: string;
     avatar: string;
     unreadCount: number;
-    lastMessage: Message;
+    lastMessage: Message | null;
 }
 
-export type ChatX = {
-    id: number;
-    title: string;
-    avatar: string;
-    unreadCount: string;
-    messageTime: string;
-    content: string;
-    isMine: boolean;
-}
+// export type ChatX = {
+//     id: number;
+//     title: string;
+//     avatar: string;
+//     unreadCount: string;
+//     messageTime: string;
+//     content: string;
+//     isMine: boolean;
+// }
 
 export type Chats = Chat[] | [];
 
@@ -92,21 +92,25 @@ export const transformChats = (data: ChatsDTO): Chats => {
         title: chat.title,
         avatar: chat.avatar,
         unreadCount: chat.unread_count,
-        lastMessage: {
-            id: chat.last_message.id,
-            time: chat.last_message.time,
-            content: chat.last_message.content,
-            user: {
-                id: chat.last_message.user.id,
-                login: chat.last_message.user.login,
-                firstName: chat.last_message.user.first_name,
-                secondName: chat.last_message.user.second_name,
-                displayName: chat.last_message.user.display_name,
-                avatar: chat.last_message.user.avatar,
-                phone: chat.last_message.user.phone,
-                email: chat.last_message.user.email,
-            },
-        },
+
+        lastMessage:
+            chat.last_message !== null && chat.last_message !== undefined
+            ? {
+                id: chat.last_message.id,
+                time: chat.last_message.time,
+                content: chat.last_message.content,
+                user: {
+                    id: chat.last_message.user.id,
+                    login: chat.last_message.user.login,
+                    firstName: chat.last_message.user.first_name,
+                    secondName: chat.last_message.user.second_name,
+                    displayName: chat.last_message.user.display_name,
+                    avatar: chat.last_message.user.avatar,
+                    phone: chat.last_message.user.phone,
+                    email: chat.last_message.user.email,
+                },
+            }
+            : null
     }));
 }
 

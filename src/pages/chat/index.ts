@@ -13,32 +13,98 @@ import { Chats } from '../../utils/apiTransformers';
 import { getAvatarLink } from '../../utils/getAvatarLink';
 import { extractFirstWords } from '../../utils/extractFirstWords';
 import { getPrettyTime } from '../../utils/getPrettyTime';
+import { Modal } from '../../components/modal/modal';
+import { Input } from '../../components/input';
+import { getFormData } from '../../utils/getFormData';
+import { CreateChatData } from '../../api/ChatsAPI';
+import { notEmpty } from '../../utils/validation';
 
 interface IChatPageProps {
     chats: Chats;
 }
 
 class ChatPage extends Block {
+    private modalInput: Input;
+
+    private modalSubmit: Button;
+
+    private modalInputValue: string;
+
     constructor(props: IChatPageProps) {
         super(props);
-    }
 
-    protected async componentDidMount() {
-        await ChatsController.getAll({});
-        // console.log(this.props);
+        this.modalInput = new Input({
+            name: '',
+            type: 'text',
+            enableErrorMessage: true,
+            errorMessage: '',
+            validationFns: [notEmpty()],
+            events: {
+                focusout: () => { this.handleModalInputChange(); },
+            },
+        })
+
+        this.modalSubmit = new Button({
+            label: '',
+            submit: true,
+            className: 'button button_primary button_modal',
+            events: {
+                click: (evt: PointerEvent) => {
+                    evt.preventDefault();
+                    console.log('default button click');
+                },
+            },
+        });
+
+        this.modalInputValue = '';
     }
 
     protected async init() {
-        this.props.buttonCreateChat = new Button({
+
+        this.children.buttonCreateChat = new Button({
             label: 'Создать чат',
             submit: false,
             className: 'chats_create-button',
             events: {
                 click: (evt: PointerEvent) => {
                     evt.preventDefault();
-                    console.log('create chat click');
+                    this.createChatClick()
+                    // console.log('create chat click');
                 },
             },
+        });
+
+        this.children.modal = new Modal({
+            isOpen: false,
+            title: 'Загрузите файл',
+            formItems: [],
+            // formItems: [
+            //     new Input({
+            //         name: 'avatar',
+            //         type: 'file',
+            //         enableErrorMessage: false,
+            //         errorMessage: '',
+            //         // events: {
+            //         //     change: (evt: Event) => {
+            //         //         console.log('change image event');
+            //         //         const file = (<HTMLInputElement>evt.target).files![0];
+            //         //         console.log(file)
+            //         //     },
+            //         // },
+            //     }),
+            //     new Button({
+            //         label: 'Принять',
+            //         submit: false,
+            //         className: 'button button_primary button_modal',
+            //         events: {
+            //             click: (evt: PointerEvent) => {
+            //                 evt.preventDefault();
+            //                 console.log('modal button click');
+            //                 this._confirmModal();
+            //             },
+            //         },
+            //     }),
+            // ],
         });
 
         this.props.conversation = {
@@ -107,8 +173,6 @@ class ChatPage extends Block {
         //     }
         // };
 
-        this.children.buttonCreateChat = this.props.buttonCreateChat;
-
         this.children.chats = this.createChats(this.props.chats);
 
 
@@ -117,25 +181,13 @@ class ChatPage extends Block {
         );
     }
 
-    private createChats(chats: Chats): ChatItem[] {
-        return chats.map( chat =>
-            new ChatItem({
-                id: chat.id,
-                title: chat.title,
-                avatar: new Avatar({
-                    size: 'm',
-                    avatarURL: getAvatarLink(chat.avatar),
-                }),
-                unreadCount: chat.unreadCount ? '' + chat.unreadCount : '',
-                messageTime: getPrettyTime(chat.lastMessage.time),
-                isMine: this.isMessageMine(chat.lastMessage.user.login),
-                content: extractFirstWords(chat.lastMessage.content),
-            })
-        );
+    render() {
+        console.log(this.props.routerParams);
+        return this.compile(template, {...this.props});
     }
 
-    private isMessageMine(login: String) {
-        return login === this.props.userLogin;
+    protected async componentDidMount() {
+        await ChatsController.getAll({});
     }
 
     protected componentDidUpdate(oldProps: IChatItemProps, newProps: IChatPageProps) {
@@ -144,11 +196,117 @@ class ChatPage extends Block {
             this.children.chats = this.createChats(newProps.chats);
         }
         return shouldUpdate;
-      }
-
-    render() {
-        return this.compile(template, {...this.props});
     }
+
+    private createChats(chats: Chats): ChatItem[] {
+        return chats.map( chat => {
+            let messageTime = '';
+            let isMine = false;
+            let content = '';
+
+            if (chat.lastMessage) {
+                messageTime = getPrettyTime(chat.lastMessage.time);
+                isMine = this.isMessageMine(chat.lastMessage.user.login);
+                content = extractFirstWords(chat.lastMessage.content);
+            }
+
+            return new ChatItem({
+                id: chat.id,
+                title: chat.title,
+                avatar: new Avatar({
+                    size: 'm',
+                    avatarURL: getAvatarLink(chat.avatar),
+                }),
+                unreadCount: chat.unreadCount ? '' + chat.unreadCount : '',
+                messageTime: messageTime,
+                isMine: isMine,
+                content: content,
+                })
+            }
+        );
+    }
+
+    private isMessageMine(login: String) {
+        return login === this.props.userLogin;
+    }
+
+    private createChatClick() {
+        this.initCreateChatModalForm();
+        this.setupCreateChatModal();
+    }
+
+    private initCreateChatModalForm() {
+        this.modalInput.setProps({
+            label: 'Имя чата',
+            name: 'title',
+        });
+
+        this.modalSubmit.setProps({
+            label: 'Создать',
+            events: {
+                click: (evt: PointerEvent) => {
+                    evt.preventDefault();
+                    this.createChatHandleSubmit()
+                },
+            },
+        });
+    }
+
+    private setupCreateChatModal() {
+        (this.children.modal as Block).setProps({
+            isOpen: true,
+            title: 'Создать чат',
+            formItems: [
+                this.modalInput,
+                this.modalSubmit,
+            ],
+        });
+    }
+
+    private async createChatHandleSubmit() {
+        if (!this.isValid()) {
+            return;
+        }
+        const form = document.getElementById('modal-form') as HTMLFormElement;
+        if (form) {
+            const rawData = getFormData(form as HTMLFormElement);
+            const newChatName = this.convertFromToChatName(rawData);
+
+            await ChatsController.create(newChatName);
+            await ChatsController.getAll({});
+        }
+
+        (this.children.modal as Block).setProps({ isOpen: false });
+    }
+
+    private isValid(): boolean {
+        return this.handleModalInputChange()
+    }
+
+    private handleModalInputChange(): boolean {
+        console.log('focusout');
+        this.modalInputValue = this.modalInput.getValue();
+
+        const { isValid, errorMessages } = this.modalInput.validate();
+
+        this.modalInput.setProps({
+            value: this.modalInputValue,
+            errorMessage: errorMessages![0] ?? undefined,
+        });
+
+        this.modalInput.setValidState(isValid);
+        this.setupCreateChatModal();
+        return isValid;
+    }
+
+    private convertFromToChatName(
+        formData: Record<string, FormDataEntryValue>,
+      ): CreateChatData {
+        return {
+            title: formData.title as string,
+        };
+    }
+
 }
 
 const withChats = withStore_plus((state)=> ({

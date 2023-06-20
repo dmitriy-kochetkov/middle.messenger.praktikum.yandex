@@ -27,6 +27,7 @@ class ProfilePage extends Block {
             title: 'Загрузите файл',
             formItems: [
                 new Input({
+                    label: 'Выберите файл',
                     name: 'avatar',
                     type: 'file',
                     enableErrorMessage: false,

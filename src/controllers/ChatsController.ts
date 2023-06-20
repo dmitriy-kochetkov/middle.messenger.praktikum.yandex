@@ -1,4 +1,4 @@
-import chatsAPI, { ChatsAPI, GetChatsData } from '../api/ChatsAPI';
+import chatsAPI, { ChatsAPI, CreateChatData, GetChatsData } from '../api/ChatsAPI';
 import { apiHasError } from "../utils/apiHasError";
 import { transformChats } from "../utils/apiTransformers";
 import { store } from '../store';
@@ -24,6 +24,19 @@ class ChatsController {
                 chatsError: null,
                 chats: transformChats(response as ChatsDTO),
             });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async create(payload: CreateChatData) {
+        try {
+            const response = await this.api.create(payload);
+            if (apiHasError(response)) {
+                store.dispatch({ chatsError: response.reason });
+                return;
+            }
+            store.dispatch({ chatsError: null });
         } catch (e) {
             console.error(e);
         }

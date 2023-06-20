@@ -35,7 +35,7 @@ export type ChatDTO = {
     title: string;
     avatar: string;
     unread_count: number;
-    last_message: MessageDTO;
+    last_message?: MessageDTO;
 }
 
 export type ChatsDTO = ChatDTO[] | [];
