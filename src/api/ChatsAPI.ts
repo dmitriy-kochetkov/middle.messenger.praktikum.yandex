@@ -1,5 +1,11 @@
 import BaseAPI from './BaseAPI';
 
+export interface GetChatsData {
+    offset?: number,
+    limit?: number,
+    title?: number
+}
+
 export interface CreateChatData {
     title: string,
 }
@@ -9,12 +15,24 @@ export class ChatsAPI extends BaseAPI {
         super('/chats');
     }
 
-    getChats(): Promise<unknown> {
-        return this.http.get('');
+    getAll(data: GetChatsData): Promise<unknown> {
+        return this.http.get('', {data, headers: this.defaultHeaders});
     }
 
-    createChat(data: CreateChatData): Promise<unknown> {
+    create(data: CreateChatData): Promise<unknown> {
         return this.http.post('', { data, headers: this.defaultHeaders });
+    }
+
+    delete(): Promise<unknown> {
+        return this.http.delete('');
+    }
+
+    addUsers() {
+
+    }
+
+    deleteUsers() {
+
     }
 
     token(id: number) {

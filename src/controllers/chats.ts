@@ -8,7 +8,7 @@ import { ChatDTO } from "../api/types";
 
 export const getChatsAction = async (dispatch: Dispatch<AppState>) => {
     try {
-        const responseUser = await chatsAPI.getChats();
+        const responseUser = await chatsAPI.getAll({});
         dispatch({ chats: transformChats(responseUser as ChatDTO[]) })
         dispatch({ chatsError: null });
     } catch (e) {

@@ -1,4 +1,4 @@
-import { ChatDTO, MessageDTO, UserDTO } from '../api/types';
+import { ChatDTO, ChatsDTO, MessageDTO, UserDTO } from '../api/types';
 
 export type User = {
   id: number;
@@ -25,16 +25,18 @@ export const transformUser = (data: UserDTO): User => {
 };
 
 export type Message = {
-    user: User;
+    id: number,
     time: string;
     content: string;
+    user: User;
 }
 
 export const transformMessage = (data: MessageDTO): Message => {
     return {
-        user: transformUser(data.user as UserDTO),
+        id: data.id,
         time: data.time,
-        content: data.content
+        content: data.content,
+        user: transformUser(data.user as UserDTO),
     }
 }
 
@@ -46,20 +48,66 @@ export type Chat = {
     lastMessage: Message;
 }
 
+export type ChatX = {
+    id: number;
+    title: string;
+    avatar: string;
+    unreadCount: string;
+    messageTime: string;
+    content: string;
+    isMine: boolean;
+}
+
 export type Chats = Chat[] | [];
 
-export const transformChats = (data: ChatDTO[]): Chats => {
-    const result = [] as Chat[];
-    data.forEach((chat: ChatDTO) => {
-        result.push({
-            id: chat.id,
-            title: chat.title,
-            avatar: chat.avatar,
-            unreadCount: chat.unread_count,
-            lastMessage: transformMessage(chat.last_message as MessageDTO),
-        })
-}   );
-    return result;
+export const transformChats = (data: ChatsDTO): Chats => {
+    // const result = [] as Chat[];
+    // data.forEach((chat: ChatDTO) => {
+    //     result.push({
+    //         id: chat.id,
+    //         title: chat.title,
+    //         avatar: chat.avatar,
+    //         unreadCount: chat.unread_count,
+    //         lastMessage: {
+    //             id: chat.last_message.id,
+    //             time: chat.last_message.time,
+    //             content: chat.last_message.content,
+    //             user: {
+    //                 id: chat.last_message.user.id,
+    //                 login: chat.last_message.user.login,
+    //                 firstName: chat.last_message.user.first_name,
+    //                 secondName: chat.last_message.user.second_name,
+    //                 displayName: chat.last_message.user.display_name,
+    //                 avatar: chat.last_message.user.avatar,
+    //                 phone: chat.last_message.user.phone,
+    //                 email: chat.last_message.user.email,
+    //             },
+    //         },
+    //     })
+    // );
+    //return result;
+
+    return data.map((chat: ChatDTO) => ({
+        id: chat.id,
+        title: chat.title,
+        avatar: chat.avatar,
+        unreadCount: chat.unread_count,
+        lastMessage: {
+            id: chat.last_message.id,
+            time: chat.last_message.time,
+            content: chat.last_message.content,
+            user: {
+                id: chat.last_message.user.id,
+                login: chat.last_message.user.login,
+                firstName: chat.last_message.user.first_name,
+                secondName: chat.last_message.user.second_name,
+                displayName: chat.last_message.user.display_name,
+                avatar: chat.last_message.user.avatar,
+                phone: chat.last_message.user.phone,
+                email: chat.last_message.user.email,
+            },
+        },
+    }));
 }
 
 

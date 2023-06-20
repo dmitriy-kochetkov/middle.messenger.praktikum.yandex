@@ -4,31 +4,31 @@ import { Conversation, IConversation } from '../../components/conversation';
 import { ChatItem, IChatItemProps } from '../../components/chat-item';
 import { Avatar } from '../../components/avatar/avatar';
 
-import catAvatar from '../../../static/cat.jpeg'
-
 import { withRouter } from '../../hocs/withRouter';
-import { withStore } from '../../hocs/withStore';
-import { getChatsAction } from '../../controllers/chats';
+import { withStore_plus } from '../../hocs/withStore';
 import { Button } from '../../components/button';
 
-// export interface IChat {
-//     chatItems: IChatItemProps[],
-//     conversation: IConversation,
-// }
+import ChatsController from '../../controllers/ChatsController';
+import { Chats } from '../../utils/apiTransformers';
+import { getAvatarLink } from '../../utils/getAvatarLink';
+import { extractFirstWords } from '../../utils/extractFirstWords';
+import { getPrettyTime } from '../../utils/getPrettyTime';
+
+interface IChatPageProps {
+    chats: Chats;
+}
 
 class ChatPage extends Block {
-    constructor(props: {}) {
+    constructor(props: IChatPageProps) {
         super(props);
     }
 
-    protected componentDidMount(): void {
-        this.props.store.dispatch(getChatsAction);
-
+    protected async componentDidMount() {
+        await ChatsController.getAll({});
+        // console.log(this.props);
     }
 
-    protected init(): void {
-        this.props.chatItems = [];
-
+    protected async init() {
         this.props.buttonCreateChat = new Button({
             label: 'Создать чат',
             submit: false,
@@ -40,40 +40,6 @@ class ChatPage extends Block {
                 },
             },
         });
-
-
-        // this.props.chatItems = [
-        //     {
-        //         name: 'HELLO_WORLD_BOT',
-        //         lastActivity: '20:17',
-        //         isMine: false,
-        //         text: 'Hello world!',
-        //         counter: '10',
-        //         avatar: new Avatar({
-        //             size: 'm'
-        //         })
-        //     },
-        //     {
-        //         name: 'Марина',
-        //         lastActivity: 'Вт',
-        //         isMine: false,
-        //         text: 'Oh my gosh!',
-        //         avatar: new Avatar({
-        //             size: 'm'
-
-        //         })
-        //     },
-        //     {
-        //         name: 'Вадим',
-        //         lastActivity: '19 июня',
-        //         isMine: true,
-        //         text: 'Hello, my friend!',
-        //         avatar: new Avatar({
-        //             size: 'm',
-        //             avatarURL: catAvatar
-        //         })
-        //     }
-        // ];
 
         this.props.conversation = {
             name: '',
@@ -143,17 +109,90 @@ class ChatPage extends Block {
 
         this.children.buttonCreateChat = this.props.buttonCreateChat;
 
-        this.children.chats = this.props.chatItems.map(
-            (props: IChatItemProps) => new ChatItem(props),
-        );
+        this.children.chats = this.createChats(this.props.chats);
+
+
         this.children.conversation = new Conversation(
             this.props.conversation as IConversation,
         );
     }
 
+    private createChats(chats: Chats): ChatItem[] {
+        return chats.map( chat =>
+            new ChatItem({
+                id: chat.id,
+                title: chat.title,
+                avatar: new Avatar({
+                    size: 'm',
+                    avatarURL: getAvatarLink(chat.avatar),
+                }),
+                unreadCount: chat.unreadCount ? '' + chat.unreadCount : '',
+                messageTime: getPrettyTime(chat.lastMessage.time),
+                isMine: this.isMessageMine(chat.lastMessage.user.login),
+                content: extractFirstWords(chat.lastMessage.content),
+            })
+        );
+    }
+
+    private isMessageMine(login: String) {
+        return login === this.props.userLogin;
+    }
+
+    protected componentDidUpdate(oldProps: IChatItemProps, newProps: IChatPageProps) {
+        const shouldUpdate = super.componentDidUpdate(oldProps, newProps);
+        if (shouldUpdate) {
+            this.children.chats = this.createChats(newProps.chats);
+        }
+        return shouldUpdate;
+      }
+
     render() {
-        return this.compile(template, this.props);
+        return this.compile(template, {...this.props});
     }
 }
 
-export default withStore(withRouter(ChatPage));
+const withChats = withStore_plus((state)=> ({
+    chats: state.chats,
+    chatsError: state.chatsError,
+    userLogin: state.user?.login,
+}))
+
+export default withChats(withRouter(ChatPage));
+
+
+
+// this.props.chatItems = [
+        //     {
+        //         id: 10,
+        //         title: 'HELLO_WORLD_BOT',
+        //         messageTime: '20:17',
+        //         isMine: false,
+        //         content: 'Hello world!',
+        //         unreadCount: '10',
+        //         avatar: new Avatar({
+        //             size: 'm'
+        //         })
+        //     },
+        //     {
+        //         id: 15,
+        //         title: 'Марина',
+        //         messageTime: 'Вт',
+        //         isMine: false,
+        //         content: 'Oh my gosh!',
+        //         avatar: new Avatar({
+        //             size: 'm'
+
+        //         })
+        //     },
+        //     {
+        //         id: 20,
+        //         title: 'Вадим',
+        //         messageTime: '19 июня',
+        //         isMine: true,
+        //         content: 'Hello, my friend!',
+        //         avatar: new Avatar({
+        //             size: 'm',
+        //             avatarURL: catAvatar
+        //         })
+        //     }
+        // ];

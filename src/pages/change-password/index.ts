@@ -166,14 +166,6 @@ class ChangePasswordPage extends Block {
           newPassword: formData.newPassword as string
         }
     }
-
-    // private getAvatarLink() {
-    //     const avatarPath = this.props.avatar;
-    //     if (avatarPath) {
-    //         return `https://ya-praktikum.tech/api/v2/resources${avatarPath}`;
-    //     }
-    //     return '';
-    // }
 }
 
 const withUser = withStore_plus((state)=> ({

@@ -13,19 +13,21 @@ export type UserDTO = {
     email: string;
 };
 
-export type MessageUserDTO = {
-    first_name: string;
-    second_name: string;
-    avatar: string;
-    email: string;
-    login: string;
-    phone: string;
-}
+// export type MessageUserDTO = {
+//     login: string;
+//     first_name: string;
+//     second_name: string;
+//     display_name: string;
+//     avatar: string;
+//     phone: string;
+//     email: string;
+// }
 
 export type MessageDTO = {
-    user: MessageUserDTO;
+    id: number;
     time: string;
     content: string;
+    user: UserDTO;
 }
 
 export type ChatDTO = {
@@ -35,3 +37,5 @@ export type ChatDTO = {
     unread_count: number;
     last_message: MessageDTO;
 }
+
+export type ChatsDTO = ChatDTO[] | [];
