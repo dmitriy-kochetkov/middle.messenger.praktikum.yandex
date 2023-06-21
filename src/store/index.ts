@@ -1,5 +1,5 @@
 import { Store } from '../core/Store';
-import { Chats, User } from '../utils/apiTransformers';
+import { Chats, Message, User } from '../utils/apiTransformers';
 
 export interface AppState {
     authError: string | null;
@@ -8,6 +8,7 @@ export interface AppState {
     user: User | null;
     chats: Chats;
     activeChat: number | null;
+    messages: Record<number, Message[]>
     appIsInited: boolean;
 }
 
@@ -18,6 +19,7 @@ export const defaultState: AppState = {
     user: null,
     chats: [],
     activeChat: null,
+    messages: {},
     appIsInited: false,
   };
 
