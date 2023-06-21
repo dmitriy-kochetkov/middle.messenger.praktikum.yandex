@@ -14,7 +14,7 @@ import {
     phone,
     repeatPasswordValidationMessage,
 } from '../../utils/validation';
-import { withStore_plus } from '../../hocs/withStore';
+import { withStore } from '../../hocs/withStore';
 import AuthController from '../../controllers/AuthController';
 import { SignupData } from '../../api/AuthAPI';
 
@@ -295,7 +295,7 @@ class SigninPage extends Block {
     }
 }
 
-const withAuthError = withStore_plus((state)=> (
+const withAuthError = withStore((state)=> (
     { authError: state.authError, }
 ))
 

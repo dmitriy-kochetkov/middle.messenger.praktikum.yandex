@@ -6,7 +6,7 @@ import { Button } from '../../components/button';
 import { Modal } from '../../components/modal/modal';
 import { AvatarEditable } from '../../components/avatar-editable/avatar-editable';
 import { withRouter } from '../../hocs/withRouter';
-import { withStore_plus } from '../../hocs/withStore';
+import { withStore } from '../../hocs/withStore';
 import { getFormData } from '../../utils/getFormData';
 import AuthController from '../../controllers/AuthController';
 import UsersController from '../../controllers/UsersControlles';
@@ -196,7 +196,7 @@ class ProfilePage extends Block {
     }
 }
 
-const withUser = withStore_plus((state)=> ({
+const withUser = withStore((state)=> ({
     ...state.user,
     profileError: state.profileError,
 }))

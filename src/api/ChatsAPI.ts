@@ -36,7 +36,7 @@ export class ChatsAPI extends BaseAPI {
     }
 
     token(id: number) {
-        return this.http.post(`/token/${id}`);
+        return this.http.post(`/token/${id}`, { headers: this.defaultHeaders });
     }
 }
 

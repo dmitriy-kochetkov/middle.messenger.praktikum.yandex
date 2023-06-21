@@ -9,12 +9,20 @@ export interface IChatItemProps {
     unreadCount?: string,
     messageTime: string,
     isMine: boolean,
+    selected?: boolean,
     content: string,
+    events: {
+        click: (evt: PointerEvent | null) => void
+    },
 }
 
 export class ChatItem extends Block {
     constructor(props: IChatItemProps) {
         super(props);
+    }
+
+    init() {
+
     }
 
     render() {

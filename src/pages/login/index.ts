@@ -10,7 +10,7 @@ import {
     notOnlyDigits,
     password,
 } from '../../utils/validation';
-import { withStore_plus } from '../../hocs/withStore';
+import { withStore } from '../../hocs/withStore';
 import { withRouter } from '../../hocs/withRouter';
 import AuthController from '../../controllers/AuthController';
 import { SigninData } from '../../api/AuthAPI';
@@ -136,7 +136,7 @@ class LoginPage extends Block {
     }
 }
 
-const withAuthError = withStore_plus((state)=> ({
+const withAuthError = withStore((state)=> ({
     user: state.user,
     authError: state.authError,
 }))

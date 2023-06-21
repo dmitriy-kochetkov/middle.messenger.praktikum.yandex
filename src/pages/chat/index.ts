@@ -5,7 +5,7 @@ import { ChatItem, IChatItemProps } from '../../components/chat-item';
 import { Avatar } from '../../components/avatar/avatar';
 
 import { withRouter } from '../../hocs/withRouter';
-import { withStore_plus } from '../../hocs/withStore';
+import { withStore } from '../../hocs/withStore';
 import { Button } from '../../components/button';
 
 import ChatsController from '../../controllers/ChatsController';
@@ -68,8 +68,7 @@ class ChatPage extends Block {
             events: {
                 click: (evt: PointerEvent) => {
                     evt.preventDefault();
-                    this.createChatClick()
-                    // console.log('create chat click');
+                    this.createChatClick();
                 },
             },
         });
@@ -78,33 +77,6 @@ class ChatPage extends Block {
             isOpen: false,
             title: 'Загрузите файл',
             formItems: [],
-            // formItems: [
-            //     new Input({
-            //         name: 'avatar',
-            //         type: 'file',
-            //         enableErrorMessage: false,
-            //         errorMessage: '',
-            //         // events: {
-            //         //     change: (evt: Event) => {
-            //         //         console.log('change image event');
-            //         //         const file = (<HTMLInputElement>evt.target).files![0];
-            //         //         console.log(file)
-            //         //     },
-            //         // },
-            //     }),
-            //     new Button({
-            //         label: 'Принять',
-            //         submit: false,
-            //         className: 'button button_primary button_modal',
-            //         events: {
-            //             click: (evt: PointerEvent) => {
-            //                 evt.preventDefault();
-            //                 console.log('modal button click');
-            //                 this._confirmModal();
-            //             },
-            //         },
-            //     }),
-            // ],
         });
 
         this.props.conversation = {
@@ -221,9 +193,19 @@ class ChatPage extends Block {
                 messageTime: messageTime,
                 isMine: isMine,
                 content: content,
+                selected: this.isChatActive(chat.id),
+                events: {
+                    click: async () => {
+                        await ChatsController.activateChat(chat.id);
+                    },
+                },
                 })
             }
         );
+    }
+
+    private isChatActive(id: number): boolean {
+        return id === this.props.activeChat;
     }
 
     private isMessageMine(login: String) {
@@ -284,9 +266,7 @@ class ChatPage extends Block {
     }
 
     private handleModalInputChange(): boolean {
-        console.log('focusout');
         this.modalInputValue = this.modalInput.getValue();
-
         const { isValid, errorMessages } = this.modalInput.validate();
 
         this.modalInput.setProps({
@@ -309,48 +289,11 @@ class ChatPage extends Block {
 
 }
 
-const withChats = withStore_plus((state)=> ({
+const withChats = withStore((state)=> ({
     chats: state.chats,
     chatsError: state.chatsError,
     userLogin: state.user?.login,
+    activeChat: state.activeChat,
 }))
 
 export default withChats(withRouter(ChatPage));
-
-
-
-// this.props.chatItems = [
-        //     {
-        //         id: 10,
-        //         title: 'HELLO_WORLD_BOT',
-        //         messageTime: '20:17',
-        //         isMine: false,
-        //         content: 'Hello world!',
-        //         unreadCount: '10',
-        //         avatar: new Avatar({
-        //             size: 'm'
-        //         })
-        //     },
-        //     {
-        //         id: 15,
-        //         title: 'Марина',
-        //         messageTime: 'Вт',
-        //         isMine: false,
-        //         content: 'Oh my gosh!',
-        //         avatar: new Avatar({
-        //             size: 'm'
-
-        //         })
-        //     },
-        //     {
-        //         id: 20,
-        //         title: 'Вадим',
-        //         messageTime: '19 июня',
-        //         isMine: true,
-        //         content: 'Hello, my friend!',
-        //         avatar: new Avatar({
-        //             size: 'm',
-        //             avatarURL: catAvatar
-        //         })
-        //     }
-        // ];

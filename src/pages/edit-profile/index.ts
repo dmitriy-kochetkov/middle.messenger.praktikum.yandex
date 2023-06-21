@@ -13,7 +13,7 @@ import {
     notOnlyDigits,
     phone,
 } from '../../utils/validation';
-import { withStore_plus } from '../../hocs/withStore';
+import { withStore } from '../../hocs/withStore';
 import { UserData } from '../../api/UsersAPI';
 import UsersController from '../../controllers/UsersControlles';
 import { Avatar } from '../../components/avatar/avatar';
@@ -251,7 +251,7 @@ class EditProfilePage extends Block {
     }
 }
 
-const withUser = withStore_plus((state)=> ({
+const withUser = withStore((state)=> ({
     ...state.user,
     profileError: state.profileError,
 }))

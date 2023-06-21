@@ -10,7 +10,7 @@ import {
     password,
     repeatPasswordValidationMessage,
 } from '../../utils/validation';
-import { withStore_plus } from '../../hocs/withStore';
+import { withStore } from '../../hocs/withStore';
 import { UserPassword } from '../../api/UsersAPI';
 import { Avatar } from '../../components/avatar/avatar';
 import UsersController from '../../controllers/UsersControlles';
@@ -168,7 +168,7 @@ class ChangePasswordPage extends Block {
     }
 }
 
-const withUser = withStore_plus((state)=> ({
+const withUser = withStore((state)=> ({
     ...state.user,
     profileError: state.profileError,
 }))
