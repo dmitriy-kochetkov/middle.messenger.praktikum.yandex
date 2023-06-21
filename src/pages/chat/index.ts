@@ -3,21 +3,22 @@ import template from './chat.hbs';
 import { Conversation, IConversation } from '../../components/conversation';
 import { ChatItem, IChatItemProps } from '../../components/chat-item';
 import { Avatar } from '../../components/avatar/avatar';
-
-import { withRouter } from '../../hocs/withRouter';
-import { withStore } from '../../hocs/withStore';
+import { Modal } from '../../components/modal/modal';
+import { Input } from '../../components/input';
 import { Button } from '../../components/button';
+import { notEmpty } from '../../utils/validation';
 
-import ChatsController from '../../controllers/ChatsController';
 import { Chats } from '../../utils/apiTransformers';
 import { getAvatarLink } from '../../utils/getAvatarLink';
 import { extractFirstWords } from '../../utils/extractFirstWords';
 import { getPrettyTime } from '../../utils/getPrettyTime';
-import { Modal } from '../../components/modal/modal';
-import { Input } from '../../components/input';
 import { getFormData } from '../../utils/getFormData';
 import { CreateChatData } from '../../api/ChatsAPI';
-import { notEmpty } from '../../utils/validation';
+
+import { withRouter } from '../../hocs/withRouter';
+import { withStore } from '../../hocs/withStore';
+import ChatsController from '../../controllers/ChatsController';
+
 
 interface IChatPageProps {
     chats: Chats;

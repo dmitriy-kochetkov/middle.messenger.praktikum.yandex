@@ -2,6 +2,10 @@ export type APIError = {
     reason: string;
 };
 
+export type Token = {
+    token: string;
+}
+
 export type UserDTO = {
     id: number;
     login: string;
@@ -12,16 +16,6 @@ export type UserDTO = {
     phone: string;
     email: string;
 };
-
-// export type MessageUserDTO = {
-//     login: string;
-//     first_name: string;
-//     second_name: string;
-//     display_name: string;
-//     avatar: string;
-//     phone: string;
-//     email: string;
-// }
 
 export type MessageDTO = {
     id: number;
