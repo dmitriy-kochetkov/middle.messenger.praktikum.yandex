@@ -201,7 +201,7 @@ class ChatPage extends Block {
                 selected: this.isChatActive(chat.id),
                 events: {
                     click: async () => {
-                        await ChatsController.activateChat(chat.id);
+                        await ChatsController.activateChat(chat);
                     },
                 },
                 })

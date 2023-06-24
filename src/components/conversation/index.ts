@@ -1,25 +1,24 @@
 import Block from '../../core/Block';
 import template from './conversation.hbs';
-import { ChatFeed, IChatFeedProps } from '../chat-feed';
+import ChatFeed from '../chat-feed';
 import { SendMessageForm } from '../send-message-form';
 import { Button } from '../button';
-import { Avatar, IAvatar } from '../avatar/avatar';
+import { Avatar } from '../avatar/avatar';
 
 import { withStore } from '../../hocs/withStore';
-import { Chat } from '../../utils/apiTransformers';
+import { getAvatarLink } from '../../utils/getAvatarLink';
+
 
 export interface IConversation {
-    activeChat: number,
-    name?: string,
-    // avatar: IAvatar,
-    chatFeed: IChatFeedProps
-    // messages:
+    activeChatID: number,
+    name: string,
+    avatar: string,
 }
 
 class Conversation extends Block<IConversation> {
+
     constructor(props: IConversation) {
         super(props);
-        // console.log('conversation constructor')
     }
 
     protected init(): void {
@@ -29,33 +28,42 @@ class Conversation extends Block<IConversation> {
             events: {
                 click: (evt: PointerEvent) => {
                     evt.preventDefault();
-                    console.log('options click');
+                    console.log(`options click for ${this.props.activeChatID}`);
                 },
             },
         });
-        this.children.chatFeed = new ChatFeed(this.props.chatFeed);
-        this.children.sendMessageForm = new SendMessageForm({});
+
+        this.children.chatFeed = new ChatFeed({});
 
         this.children.avatar = new Avatar({
             size: 's',
-            avatarURL: '',
+            avatarURL: getAvatarLink(this.props.avatar),
         });
+
+        this.children.sendMessageForm = new SendMessageForm({});
+
     }
 
     render() {
         return this.compile(template, this.props);
     }
+
+    protected componentDidUpdate(oldProps: IConversation, newProps: IConversation) {
+        const shouldUpdate = super.componentDidUpdate(oldProps, newProps);
+        if (shouldUpdate) {
+            this.children.avatar = new Avatar({
+                size: 's',
+                avatarURL: getAvatarLink(this.props.avatar),
+            });
+        }
+        return shouldUpdate;
+    }
 }
 
 const withConversation = withStore((state)=> ({
-    // chats: state.chats,
-    name: (state.chats || []).filter((chat: Chat) => {chat.id === state.activeChat}),
-    chatFeed: {
-        messages: [],
-    },
-    // chatsError: state.chatsError,
-    // userLogin: state.user?.login,
-    activeChat: state.activeChat,
+    name: state.activeChat.title,
+    avatar: state.activeChat.avatar,
+    activeChatID: state.activeChat.id,
 }))
 
 export default withConversation(Conversation);

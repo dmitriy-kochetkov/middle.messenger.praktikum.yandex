@@ -7,7 +7,11 @@ export interface AppState {
     chatsError: string | null;
     user: User | null;
     chats: Chats;
-    activeChat: number | null;
+    activeChat: {
+        id: number;
+        title: string;
+        avatar: string;
+    };
     messages: Record<number, Message[]>
     appIsInited: boolean;
 }
@@ -18,7 +22,11 @@ export const defaultState: AppState = {
     chatsError: null,
     user: null,
     chats: [],
-    activeChat: null,
+    activeChat: {
+        id: 0,
+        title: '',
+        avatar: '',
+    },
     messages: {},
     appIsInited: false,
   };

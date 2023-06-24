@@ -5,16 +5,23 @@ import { notEmpty } from '../../utils/validation';
 import { Button } from '../button';
 import { Input } from '../input';
 
-export interface ISendMessageForm {}
+export interface ISendMessageForm {
+}
 
 export class SendMessageForm extends Block {
-    private _messageValue: string = '';
 
     constructor(props: ISendMessageForm) {
         super(props);
     }
 
     protected init(): void {
+        this.setProps({events: {
+            submit: (evt: Event) => {
+                evt.preventDefault();
+                this._handleSubmit();
+            }
+        }});
+
         this.children.buttonAttachment = new Button({
             submit: false,
             className: 'send-message-form__attach-button',
@@ -37,9 +44,6 @@ export class SendMessageForm extends Block {
             enableErrorMessage: false,
             errorMessage: '',
             validationFns: [notEmpty()],
-            events: {
-                focusout: () => { this._handleMessageChange(); },
-            },
         });
 
         this.children.buttonSendMessage = new Button({
@@ -58,16 +62,29 @@ export class SendMessageForm extends Block {
         return this.compile(template, this.props);
     }
 
-    private _handleMessageChange() {
-        this._messageValue = (this.children.inputMessage as Input).getValue();
-    }
-
     private _handleSubmit(): void {
-        this._handleMessageChange();
+        const { isValid } = (this.children.inputMessage as Input).validate();
+
+        if (!isValid) {
+            return;
+        }
         const form = document.getElementById('send-message-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
             console.log(formData);
+
+            // send message...
+
+            (this.children.inputMessage as Input).setValue('');
         }
     }
+
+    // private convertFormToCredentials(
+    //     formData: Record<string, FormDataEntryValue>,
+    //   ): SigninData {
+    //     return {
+    //       login: formData.login as string,
+    //       password: formData.password as string,
+    //     }
+    // }
 }

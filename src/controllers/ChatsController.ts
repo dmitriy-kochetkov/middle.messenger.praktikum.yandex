@@ -1,6 +1,6 @@
 import chatsAPI, { ChatsAPI, CreateChatData, GetChatsData } from '../api/ChatsAPI';
 import { apiHasError } from "../utils/apiHasError";
-import { transformChats } from "../utils/apiTransformers";
+import { Chat, transformChats } from "../utils/apiTransformers";
 import { store } from '../store';
 // import { router } from '../router';
 import { ChatsDTO } from '../api/types';
@@ -57,21 +57,25 @@ class ChatsController {
         }
     }
 
-    async activateChat(id: number) {
+    async activateChat(chat: Chat) {
         const currentActiveChat = store.getState().activeChat;
 
-        if (currentActiveChat && currentActiveChat !== id) {
+        if (currentActiveChat.id && currentActiveChat.id !== chat.id) {
             //  закрываем соединение с текущим чатом
-            console.log(`close connection for chat ${currentActiveChat}`);
-            // MessageController.close(currentActiveChat);
+            console.log(`close connection for chat ${currentActiveChat.id}`);
+            // MessageController.close(currentActiveChat.id);
         }
-        store.dispatch({ activeChat: id });
+        store.dispatch({ activeChat: {
+            id: chat.id,
+            title: chat.title,
+            avatar: chat.avatar
+        } });
 
-        const response = await this.token(id);
+        const response = await this.token(chat.id);
         if (apiHasToken(response)) {
             // тут коннектимся к чату
-            console.log(`create connection for chat ${id} with token:${response.token}`);
-            // await MessageController.connect(id, response.token);
+            console.log(`create connection for chat ${chat.id} with token:${response.token}`);
+            // await MessageController.connect(chat.id, response.token);
         }
 
     }

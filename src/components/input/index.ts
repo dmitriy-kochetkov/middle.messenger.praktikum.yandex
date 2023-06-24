@@ -56,6 +56,10 @@ export class Input extends Block {
         return this._getHTMLInputElement().value;
     }
 
+    public setValue(value: string) {
+        this._getHTMLInputElement().value = value;
+    }
+
     private _getHTMLInputElement(): HTMLInputElement {
         const { element } = this;
         return element?.getElementsByTagName('input')[0];

@@ -9,15 +9,15 @@ class MessageController {
         this.threads = new Map();
     }
 
-    private subscribe(activeChat: number, ws: wsTransport) {
+    private subscribe(activeChatID: number, ws: wsTransport) {
         ws.on(WSEvents.Message, (...event) => {
-            this.onMessage(activeChat, event);
+            this.onMessage(activeChatID, event);
         });
 
-        ws.on(WSEvents.Close, () => {this.onClose(activeChat)});
+        ws.on(WSEvents.Close, () => {this.onClose(activeChatID)});
     }
 
-    private onMessage(activeChat: number, data: Message | Message[]) {
+    private onMessage(activeChatID: number, data: Message | Message[]) {
         let messages: Message[] = [];
 
         if (Array.isArray(data)) {
@@ -26,25 +26,25 @@ class MessageController {
             messages.push(data);
         }
 
-        const storedMessages = store.getState().messages[activeChat];
+        const storedMessages = store.getState().messages[activeChatID];
 
         store.dispatch({
             messages: {
-                [activeChat]: [...(storedMessages || []), ...messages] }
+                [activeChatID]: [...(storedMessages || []), ...messages] }
         });
     }
 
-    private onClose(activeChat: number) {
+    private onClose(activeChatID: number) {
         try {
-            this.threads.delete(activeChat);
+            this.threads.delete(activeChatID);
         } catch (e) {
             console.error(e);
         }
     }
 
-    async connect(activeChat: number, token: string) {
+    async connect(activeChatID: number, token: string) {
         try {
-            if (!this.threads.has(activeChat)) {
+            if (!this.threads.has(activeChatID)) {
                 return;
             }
 
@@ -54,14 +54,14 @@ class MessageController {
                 throw new Error(`User not found`);
             }
 
-            const ws = new wsTransport(`${WS_BASE_URL}/${userID}/${activeChat}/${token}`);
+            const ws = new wsTransport(`${WS_BASE_URL}/${userID}/${activeChatID}/${token}`);
 
             await ws.connect();
 
-            this.subscribe(activeChat, ws);
-            this.threads.set(activeChat, ws);
+            this.subscribe(activeChatID, ws);
+            this.threads.set(activeChatID, ws);
 
-            this.fetchOldMessages(activeChat);
+            this.fetchOldMessages(activeChatID);
 
         } catch (e) {
             console.error(e);
@@ -69,13 +69,13 @@ class MessageController {
     }
 
     async send(message: string) {
-        const id = store.getState().activeChat;
+        const {id: activeChatID} = store.getState().activeChat;
 
-        if (!id) {
+        if (!activeChatID) {
             throw new Error('Chat is not connected');
         }
 
-        const socket = this.threads.get(id);
+        const socket = this.threads.get(activeChatID);
         if (socket) {
             socket.send({
                 type: 'message',

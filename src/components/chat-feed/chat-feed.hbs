@@ -1,6 +1,13 @@
+{{#if messages}}
 <div class="chat-feed">
     <div class="chat-feed__date-delimeter ">19 июня</div>
     {{#each messages}}
         {{{this}}}
     {{/each}}
 </div>
+{{else}}
+<div class="conversation__empty">
+    <span>Отправьте сообщение чтобы начать общение</span>
+</div>
+{{/if}}
+

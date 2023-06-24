@@ -1,4 +1,5 @@
-import { ChatDTO, ChatsDTO, MessageDTO, UserDTO } from '../api/types';
+import { ChatDTO, ChatsDTO, ChatMessageDTO, UserDTO, MessageDTO, FileDTO } from '../api/types';
+import { bytesToString } from './bytesToString';
 
 export type User = {
   id: number;
@@ -31,14 +32,14 @@ export type ChatMessage = {
     user: User;
 }
 
-export const transformMessage = (data: MessageDTO): ChatMessage => {
-    return {
-        id: data.id,
-        time: data.time,
-        content: data.content,
-        user: transformUser(data.user as UserDTO),
-    }
-}
+// export const transformMessage = (data: ChatMessageDTO): ChatMessage => {
+//     return {
+//         id: data.id,
+//         time: data.time,
+//         content: data.content,
+//         user: transformUser(data.user as UserDTO),
+//     }
+// }
 
 export type Chat = {
     id: number;
@@ -80,19 +81,42 @@ export const transformChats = (data: ChatsDTO): Chats => {
 
 export type File = {
     id: number;
-    user_id: number;
+    userId: number;
     path: string;
     filename: string;
-    content_type: string;
-    content_size: number;
-    upload_date: string;
-  };
+    contentType: string;
+    contentSize: string;
+    uploadDate: string;
+};
 
-  export type Message = {
-    chat_id: number;
+export const transformFile = (data: FileDTO): File => {
+    return {
+        id: data.id,
+        userId: data.user_id,
+        path: data.path,
+        filename: data.filename,
+        contentType: data.content_type,
+        contentSize: bytesToString(data.content_size),
+        uploadDate: data.upload_date
+    }
+}
+
+export type Message = {
+    chatId: number;
     time: string;
     type: string;
-    user_id: number;
+    userId: number;
     content: string;
-    file?: File;
-  };
+    file: File;
+};
+
+export const transformMessage = (data: MessageDTO): Message => {
+    return {
+        chatId: data.chat_id,
+        time: data.time,
+        type: data.type,
+        userId: data.user_id,
+        content: data.content,
+        file: transformFile(data.file as FileDTO),
+    };
+}
