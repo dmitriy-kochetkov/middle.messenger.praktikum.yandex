@@ -20,8 +20,9 @@ import { withStore } from '../../hocs/withStore';
 import ChatsController from '../../controllers/ChatsController';
 
 
-interface IChatPageProps {
+export interface IChatPageProps {
     chats: Chats;
+    message: string;
 }
 
 class ChatPage extends Block {
@@ -61,6 +62,8 @@ class ChatPage extends Block {
     }
 
     protected async init() {
+        console.log('message: ', this.props.message);
+        console.log('modal: ', this.props.modal);
 
         this.children.buttonCreateChat = new Button({
             label: 'Создать чат',
@@ -90,72 +93,9 @@ class ChatPage extends Block {
 
         this.children.chats = this.createChats(this.props.chats);
 
-
-        // this.children.conversation = new Conversation(
-        //     this.props.conversation as IConversation,
-        // );
-
         this.children.conversation = new Conversation(
-            {} as IConversation,
+            {setupModal: this.setupModal.bind(this)} as IConversation,
         );
-
-        // this.props.conversation = {
-        //     name: 'Вадим',
-        //     avatar: new Avatar({
-        //         size: 's',
-        //         avatarURL: catAvatar
-        //     }),
-        //     chatFeed: {
-        //         messages: [
-        //             {
-        //                 isText: true,
-        //                 time: '11:55',
-        //                 text: 'Привет!',
-        //                 url: '../../image.png',
-        //                 width: '320',
-        //                 height: '240',
-        //                 isMine: false,
-        //                 readed: true
-        //             },
-        //             {
-        //                 isText: true,
-        //                 time: '12:05',
-        //                 text: 'Привет!',
-        //                 url: '../../image.png',
-        //                 width: '320',
-        //                 height: '240',
-        //                 isMine: true,
-        //                 readed: true
-        //             },
-        //             {
-        //                 isText: true,
-        //                 time: '12:06',
-        //                 text: 'Hello!!!',
-        //                 isMine: false
-        //             },
-        //             {
-        //                 isText: true,
-        //                 time: '12:07',
-        //                 text: 'Hello, my friend!',
-        //                 isMine: true,
-        //                 readed: true
-        //             },
-        //             {
-        //                 isText: true,
-        //                 time: '12:17',
-        //                 text: 'Hello!!!',
-        //                 isMine: false
-        //             },
-        //             {
-        //                 isText: true,
-        //                 time: '12:05',
-        //                 text: 'Hello, my friend!',
-        //                 isMine: true,
-        //                 readed: true
-        //             }
-        //         ],
-        //     }
-        // };
     }
 
     render() {
@@ -239,15 +179,34 @@ class ChatPage extends Block {
         });
     }
 
-    private setupCreateChatModal() {
+    // private setupCreateChatModal_old() {
+    //     (this.children.modal as Block).setProps({
+    //         isOpen: true,
+    //         title: 'Создать чат',
+    //         formItems: [
+    //             this.modalInput,
+    //             this.modalSubmit,
+    //         ],
+    //     });
+    // }
+
+    // experiment
+    private setupModal(options: {isOpen: boolean, title: string, formItems: Block[]}) {
         (this.children.modal as Block).setProps({
+            isOpen: options.isOpen,
+            title: options.title,
+            formItems: options.formItems,
+        });
+    }
+
+    private setupCreateChatModal() {
+        this.setupModal( {
             isOpen: true,
             title: 'Создать чат',
             formItems: [
                 this.modalInput,
                 this.modalSubmit,
-            ],
-        });
+            ]});
     }
 
     private async createChatHandleSubmit() {

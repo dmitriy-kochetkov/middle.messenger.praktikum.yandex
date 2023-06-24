@@ -4,15 +4,14 @@ import ChatFeed from '../chat-feed';
 import { SendMessageForm } from '../send-message-form';
 import { Button } from '../button';
 import { Avatar } from '../avatar/avatar';
-
 import { withStore } from '../../hocs/withStore';
 import { getAvatarLink } from '../../utils/getAvatarLink';
-
 
 export interface IConversation {
     activeChatID: number,
     name: string,
     avatar: string,
+    setupModal: (options: {isOpen: boolean, title: string, formItems: Block[]}) => void,
 }
 
 class Conversation extends Block<IConversation> {
@@ -29,6 +28,12 @@ class Conversation extends Block<IConversation> {
                 click: (evt: PointerEvent) => {
                     evt.preventDefault();
                     console.log(`options click for ${this.props.activeChatID}`);
+                    // only for test:
+                    this.props.setupModal({
+                        isOpen: true,
+                        title: 'TEST',
+                        formItems: [],
+                    });
                 },
             },
         });
@@ -41,7 +46,6 @@ class Conversation extends Block<IConversation> {
         });
 
         this.children.sendMessageForm = new SendMessageForm({});
-
     }
 
     render() {
