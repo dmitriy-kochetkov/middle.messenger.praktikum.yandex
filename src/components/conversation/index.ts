@@ -6,8 +6,10 @@ import { Button } from '../button';
 import { Avatar } from '../avatar/avatar';
 import { withStore } from '../../hocs/withStore';
 import { getAvatarLink } from '../../utils/getAvatarLink';
+import { ButtonsMenu } from '../buttonsMenu';
 
 export interface IConversation {
+    isTopMenuVisible: boolean,
     activeChatID: number,
     name: string,
     avatar: string,
@@ -28,14 +30,58 @@ class Conversation extends Block<IConversation> {
                 click: (evt: PointerEvent) => {
                     evt.preventDefault();
                     console.log(`options click for ${this.props.activeChatID}`);
+                    this.toggleTopMenu();
+
                     // only for test:
-                    this.props.setupModal({
-                        isOpen: true,
-                        title: 'TEST',
-                        formItems: [],
-                    });
+                    // this.props.setupModal({
+                    //     isOpen: true,
+                    //     title: 'TEST',
+                    //     formItems: [],
+                    // });
                 },
             },
+        });
+
+        this.children.buttonsMenuTop = new ButtonsMenu({
+            location: 'top',
+            buttons: [
+                new Button({
+                    label: 'Добавить пользователя',
+                    submit: false,
+                    className: 'menu-button menu-button__add-user',
+                    events: {
+                        click: (evt: PointerEvent) => {
+                            evt.preventDefault();
+                            this.addUserHandler();
+                            this.toggleTopMenu();
+                        }
+                    }
+                }),
+                new Button({
+                    label: 'Удалить пользователя',
+                    submit: false,
+                    className: 'menu-button menu-button__delete-user',
+                    events: {
+                        click: (evt: PointerEvent) => {
+                            evt.preventDefault();
+                            this.removeUserHandler();
+                            this.toggleTopMenu();
+                        }
+                    }
+                }),
+                new Button({
+                    label: 'Покинуть чат',
+                    submit: false,
+                    className: 'menu-button menu-button__leave_chat',
+                    events: {
+                        click: (evt: PointerEvent) => {
+                            evt.preventDefault();
+                            this.leaveChatHandler();
+                            this.toggleTopMenu();
+                        }
+                    }
+                }),
+            ]
         });
 
         this.children.chatFeed = new ChatFeed({});
@@ -61,6 +107,23 @@ class Conversation extends Block<IConversation> {
             });
         }
         return shouldUpdate;
+    }
+
+    private toggleTopMenu() {
+        const visibility = this.props.isTopMenuVisible;
+        this.setProps({...this.props, isTopMenuVisible: !visibility})
+    }
+
+    private addUserHandler() {
+        console.log(`add user click`);
+    }
+
+    private removeUserHandler() {
+        console.log(`delete user click`);
+    }
+
+    private leaveChatHandler() {
+        console.log(`leave chat click`);
     }
 }
 

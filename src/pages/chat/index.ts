@@ -83,13 +83,13 @@ class ChatPage extends Block {
             formItems: [],
         });
 
-        this.props.conversation = {
-            name: '',
-            avatar: {},
-            chatFeed: {
-                messages: [],
-            },
-        }
+        // this.props.conversation = {
+        //     name: '',
+        //     avatar: {},
+        //     chatFeed: {
+        //         messages: [],
+        //     },
+        // }
 
         this.children.chats = this.createChats(this.props.chats);
 
@@ -192,7 +192,7 @@ class ChatPage extends Block {
 
     // experiment
     private setupModal(options: {isOpen: boolean, title: string, formItems: Block[]}) {
-        (this.children.modal as Block).setProps({
+        (this.children.modal as Modal).setProps({
             isOpen: options.isOpen,
             title: options.title,
             formItems: options.formItems,

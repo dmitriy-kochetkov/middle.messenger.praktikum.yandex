@@ -9,6 +9,9 @@
     </div>
 
     <div class="conversation__content">
+        {{#if isTopMenuVisible}}
+            {{{buttonsMenuTop}}}
+        {{/if}}
         {{{chatFeed}}}
     </div>
 
