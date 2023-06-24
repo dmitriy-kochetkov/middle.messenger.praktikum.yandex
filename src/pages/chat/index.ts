@@ -35,28 +35,30 @@ class ChatPage extends Block {
     constructor(props: IChatPageProps) {
         super(props);
 
-        this.modalInput = new Input({
-            name: '',
-            type: 'text',
-            enableErrorMessage: true,
-            errorMessage: '',
-            validationFns: [notEmpty()],
-            events: {
-                focusout: () => { this.handleModalInputChange(); },
-            },
-        })
+        this.initChatModalForm();
 
-        this.modalSubmit = new Button({
-            label: '',
-            submit: true,
-            className: 'button button_primary button_modal',
-            events: {
-                click: (evt: PointerEvent) => {
-                    evt.preventDefault();
-                    console.log('default button click');
-                },
-            },
-        });
+        // this.modalInput = new Input({
+        //     name: '',
+        //     type: 'text',
+        //     enableErrorMessage: true,
+        //     errorMessage: '',
+        //     validationFns: [notEmpty()],
+        //     events: {
+        //         focusout: () => { this.handleModalInputChange(); },
+        //     },
+        // })
+
+        // this.modalSubmit = new Button({
+        //     label: '',
+        //     submit: true,
+        //     className: 'button button_primary button_modal',
+        //     events: {
+        //         click: (evt: PointerEvent) => {
+        //             evt.preventDefault();
+        //             console.log('default button click');
+        //         },
+        //     },
+        // });
 
         this.modalInputValue = '';
     }
@@ -158,11 +160,37 @@ class ChatPage extends Block {
     }
 
     private createChatClick() {
-        this.initCreateChatModalForm();
+        this.initChatModalForm();
+        this.setupChatModalForm();
         this.setupCreateChatModal();
     }
 
-    private initCreateChatModalForm() {
+    private initChatModalForm() {
+        this.modalInput = new Input({
+            name: '',
+            type: 'text',
+            enableErrorMessage: true,
+            errorMessage: '',
+            validationFns: [notEmpty()],
+            events: {
+                focusout: () => { this.handleModalInputChange(); },
+            },
+        })
+
+        this.modalSubmit = new Button({
+            label: '',
+            submit: true,
+            className: 'button button_primary button_modal',
+            events: {
+                click: (evt: PointerEvent) => {
+                    evt.preventDefault();
+                    console.log('default button click');
+                },
+            },
+        });
+    }
+
+    private setupChatModalForm() {
         this.modalInput.setProps({
             label: 'Имя чата',
             name: 'title',
@@ -200,20 +228,25 @@ class ChatPage extends Block {
     }
 
     private setupCreateChatModal() {
-        this.setupModal( {
+        this.setupModal({
             isOpen: true,
             title: 'Создать чат',
             formItems: [
                 this.modalInput,
                 this.modalSubmit,
-            ]});
+            ],
+        });
+        // this.modalInput.setValue('');
     }
 
     private async createChatHandleSubmit() {
         if (!this.isValid()) {
             return;
         }
-        const form = document.getElementById('modal-form') as HTMLFormElement;
+        // const form = document.getElementById('modal__form') as HTMLFormElement;
+        const form = (this.children.modal as Modal).getForm();
+        console.log(form);
+        return;
         if (form) {
             const rawData = getFormData(form as HTMLFormElement);
             const newChatName = this.convertFromToChatName(rawData);

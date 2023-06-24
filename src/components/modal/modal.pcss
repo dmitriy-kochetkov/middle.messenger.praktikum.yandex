@@ -19,13 +19,38 @@
     flex-direction: column;
     justify-content: space-between;
     display: flex;
-}
+    position: relative;
 
-.modal-title {
-    text-align: center;
-    font-size: 15px;
-    margin: 0;
-    flex-grow: 0;
+    &__title {
+        text-align: center;
+        font-size: 15px;
+        margin: 0;
+        flex-grow: 0;
+    }
+
+    &__form {
+        padding: 20px 0 0;
+        min-height: 150px;
+        align-items: center;
+    }
+
+    &__close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+
+    &__close-button {
+        background: url("../../../static/icon-close.svg") 2px 2px no-repeat;
+        width: 20px;
+        height: 20px;
+        border: none;
+        box-sizing: border-box;
+
+        &:hover {
+            background: url("../../../static/icon-close-hover.svg") 2px 2px no-repeat;
+        }
+    }
 }
 
 .button_modal {
@@ -33,27 +58,21 @@
     padding: 12px 0;
 }
 
-.modal-form {
-    padding: 20px 0 0;
-    min-height: 150px;
-    align-items: center;
-}
-
-.modal-form .input__label {
+.modal__form .input__label {
     padding: 3px 0;
 }
 
-.modal-form .input__field {
+.modal__form .input__field {
     width: 100%;
     border-bottom: 1px solid var(--blue-1);
     outline: none;
 }
 
-.modal-form .input__error-message {
+.modal__form .input__error-message {
     padding: 7px 0 0;
 }
 
-.modal-form .input{
+.modal__form .input{
     width: 100%;
     /*padding: 12px 0;*/
 }

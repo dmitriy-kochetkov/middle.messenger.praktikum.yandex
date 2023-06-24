@@ -166,7 +166,7 @@ class ProfilePage extends Block {
     }
 
     private async _confirmModal() {
-        const form = document.getElementById('modal-form') as HTMLFormElement;
+        const form = document.getElementById('modal__form') as HTMLFormElement;
 
         if (form) {
             const rawData = getFormData(form as HTMLFormElement);
