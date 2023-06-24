@@ -1,6 +1,6 @@
 import Block from '../../core/Block';
 import template from './chat.hbs';
-import { Conversation, IConversation } from '../../components/conversation';
+import Conversation, { IConversation } from '../../components/conversation';
 import { ChatItem, IChatItemProps } from '../../components/chat-item';
 import { Avatar } from '../../components/avatar/avatar';
 import { Modal } from '../../components/modal/modal';
@@ -88,6 +88,17 @@ class ChatPage extends Block {
             },
         }
 
+        this.children.chats = this.createChats(this.props.chats);
+
+
+        // this.children.conversation = new Conversation(
+        //     this.props.conversation as IConversation,
+        // );
+
+        this.children.conversation = new Conversation(
+            {} as IConversation,
+        );
+
         // this.props.conversation = {
         //     name: 'Вадим',
         //     avatar: new Avatar({
@@ -145,13 +156,6 @@ class ChatPage extends Block {
         //         ],
         //     }
         // };
-
-        this.children.chats = this.createChats(this.props.chats);
-
-
-        this.children.conversation = new Conversation(
-            this.props.conversation as IConversation,
-        );
     }
 
     render() {

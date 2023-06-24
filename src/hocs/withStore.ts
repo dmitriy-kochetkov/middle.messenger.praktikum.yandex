@@ -4,7 +4,7 @@ import { AppState } from "../store";
 import { store } from "../store";
 
 export function withStore<SP>(mapStateToProps: (state: AppState) => SP) {
-    return function wrap<P>(Component: typeof Block | any){
+    return function wrap<P>(Component: typeof Block<any>){
         return class WithStore extends Component {
             constructor(props: Omit<P, keyof SP>) {
                 let previousState = mapStateToProps(store.getState());

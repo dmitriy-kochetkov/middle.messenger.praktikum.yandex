@@ -5,6 +5,7 @@ import { store } from '../store';
 // import { router } from '../router';
 import { ChatsDTO } from '../api/types';
 import { apiHasToken } from '../utils/apiHasToken';
+import MessageController from './MessageController';
 
 class ChatsController {
     private api: ChatsAPI;
@@ -62,6 +63,7 @@ class ChatsController {
         if (currentActiveChat && currentActiveChat !== id) {
             //  закрываем соединение с текущим чатом
             console.log(`close connection for chat ${currentActiveChat}`);
+            // MessageController.close(currentActiveChat);
         }
         store.dispatch({ activeChat: id });
 
@@ -69,6 +71,7 @@ class ChatsController {
         if (apiHasToken(response)) {
             // тут коннектимся к чату
             console.log(`create connection for chat ${id} with token:${response.token}`);
+            // await MessageController.connect(id, response.token);
         }
 
     }
