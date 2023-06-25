@@ -14,11 +14,11 @@ export interface UserPassword {
     newPassword: string
 }
 
-export interface userID {
+export interface UserID {
     id: number
 }
 
-export interface userLogin {
+export interface UserLogin {
     login: string
 }
 
@@ -39,13 +39,13 @@ export class UsersAPI extends BaseAPI {
         return this.http.put('/profile/avatar', { data, headers: this.uploadFileHeaders });
     }
 
-    getUser(data: userID) {
+    getUser(data: UserID) {
         //
         return this.http.get(`/${data.id}`);
     }
 
-    searchUsers(data: userLogin) {
-        return this.http.post('/search', {data});
+    search(data: UserLogin): Promise<unknown> {
+        return this.http.post('/search', {data, headers: this.defaultHeaders });
     }
 }
 

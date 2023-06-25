@@ -7,7 +7,6 @@ import { Modal } from '../../components/modal/modal';
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
 import { notEmpty } from '../../utils/validation';
-
 import { Chats } from '../../utils/apiTransformers';
 import { getAvatarLink } from '../../utils/getAvatarLink';
 import { extractFirstWords } from '../../utils/extractFirstWords';
@@ -37,29 +36,6 @@ class ChatPage extends Block {
 
         this.initChatModalForm();
 
-        // this.modalInput = new Input({
-        //     name: '',
-        //     type: 'text',
-        //     enableErrorMessage: true,
-        //     errorMessage: '',
-        //     validationFns: [notEmpty()],
-        //     events: {
-        //         focusout: () => { this.handleModalInputChange(); },
-        //     },
-        // })
-
-        // this.modalSubmit = new Button({
-        //     label: '',
-        //     submit: true,
-        //     className: 'button button_primary button_modal',
-        //     events: {
-        //         click: (evt: PointerEvent) => {
-        //             evt.preventDefault();
-        //             console.log('default button click');
-        //         },
-        //     },
-        // });
-
         this.modalInputValue = '';
     }
 
@@ -84,14 +60,6 @@ class ChatPage extends Block {
             title: 'Загрузите файл',
             formItems: [],
         });
-
-        // this.props.conversation = {
-        //     name: '',
-        //     avatar: {},
-        //     chatFeed: {
-        //         messages: [],
-        //     },
-        // }
 
         this.children.chats = this.createChats(this.props.chats);
 
@@ -182,10 +150,7 @@ class ChatPage extends Block {
             submit: true,
             className: 'button button_primary button_modal',
             events: {
-                click: (evt: PointerEvent) => {
-                    evt.preventDefault();
-                    console.log('default button click');
-                },
+                click: () => {},
             },
         });
     }
@@ -245,8 +210,8 @@ class ChatPage extends Block {
         }
         // const form = document.getElementById('modal__form') as HTMLFormElement;
         const form = (this.children.modal as Modal).getForm();
-        console.log(form);
-        return;
+        // console.log(form);
+        // return;
         if (form) {
             const rawData = getFormData(form as HTMLFormElement);
             const newChatName = this.convertFromToChatName(rawData);
@@ -272,7 +237,7 @@ class ChatPage extends Block {
         });
 
         this.modalInput.setValidState(isValid);
-        this.setupCreateChatModal();
+        // this.setupCreateChatModal();
         return isValid;
     }
 

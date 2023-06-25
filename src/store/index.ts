@@ -12,6 +12,7 @@ export interface AppState {
         title: string;
         avatar: string;
     };
+    users: User[]
     messages: Record<number, Message[]>
     appIsInited: boolean;
 }
@@ -27,6 +28,7 @@ export const defaultState: AppState = {
         title: '',
         avatar: '',
     },
+    users: [],
     messages: {},
     appIsInited: false,
   };
