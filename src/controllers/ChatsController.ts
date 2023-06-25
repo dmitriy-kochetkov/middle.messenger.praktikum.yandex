@@ -63,7 +63,7 @@ class ChatsController {
     async getChatUsers(id: number, payload: GetChatUsersData) {
         try {
             let ready = false;
-            const result = [];
+            let result = [];
             let {limit, offset} = payload;
 
             limit = limit || 100;
@@ -82,6 +82,12 @@ class ChatsController {
                 if (users.length < limit) {
                     ready = true;
                 }
+            }
+
+            // уберем из users текущего пользователя
+            const currentUser = store.getState().user;
+            if (currentUser && result) {
+                result = result.filter(user => user.id !== currentUser.id);
             }
 
             store.dispatch({ users: result });

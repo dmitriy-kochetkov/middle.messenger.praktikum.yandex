@@ -85,6 +85,13 @@ export class UsersController {
     resetUsers() {
         store.dispatch({users: []});
     }
+
+    withoutCurrentUser() {
+        const {user: currentUser, users} = store.getState();
+        if (currentUser && users) {
+            store.dispatch({ users: users.filter(user => user.id !== currentUser.id)});
+        }
+    }
 }
 
 export default new UsersController();

@@ -220,7 +220,7 @@ class Conversation extends Block<IConversation> {
         }
 
         const form = document.getElementById('modal__form') as HTMLFormElement;
-        console.log(form);
+        // console.log(form);
 
         if (form) {
             const rawData = getFormData(form as HTMLFormElement);
@@ -235,15 +235,6 @@ class Conversation extends Block<IConversation> {
         const payload = this.convertToActionUsersData(selectedUsers);
         await ChatsController.addUsers(payload);
         this.closeModal();
-    }
-
-    private convertToActionUsersData(
-        users: number[],
-      ): ActionUsersData {
-        return {
-            users: users,
-            chatId: this.props.activeChatID
-        };
     }
 
     private async removeUserHandler() {
@@ -264,7 +255,6 @@ class Conversation extends Block<IConversation> {
         this.setupUserModal('Удалить пользователя');
 
         await ChatsController.getChatUsers(this.props.activeChatID, {});
-        // устанавливаем в список пользователей в сторе - список текущих пользователей чата
     }
 
     private async handleRemoveUserLoginInputChange() {
@@ -279,7 +269,6 @@ class Conversation extends Block<IConversation> {
             const userName = this.convertFromToName(rawData);
             await ChatsController.getChatUsers(this.props.activeChatID, userName);
         }
-
     }
 
     private async removeUserHandleSubmit() {
@@ -296,10 +285,6 @@ class Conversation extends Block<IConversation> {
         // TODO:...
     }
 
-    // private isValid(): boolean {
-    //     return this.handlemodalInputChange()
-    // }
-
     private handlemodalInputChange() {
         this.modalInputValue = this.modalInput.getValue();
         const { isValid, errorMessages } = this.modalInput.validate();
@@ -311,6 +296,15 @@ class Conversation extends Block<IConversation> {
 
         this.modalInput.setValidState(isValid);
         return isValid;
+    }
+
+    private convertToActionUsersData(
+        users: number[],
+      ): ActionUsersData {
+        return {
+            users: users,
+            chatId: this.props.activeChatID
+        };
     }
 
     private convertFromToLogin(
