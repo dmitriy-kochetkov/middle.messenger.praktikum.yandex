@@ -4,6 +4,7 @@ import { getFormData } from '../../utils/getFormData';
 import { notEmpty } from '../../utils/validation';
 import { Button } from '../button';
 import { Input } from '../input';
+import MessageController from '../../controllers/MessageController';
 
 export interface ISendMessageForm {
 }
@@ -62,7 +63,7 @@ export class SendMessageForm extends Block {
         return this.compile(template, this.props);
     }
 
-    private _handleSubmit(): void {
+    private async _handleSubmit() {
         const { isValid } = (this.children.inputMessage as Input).validate();
 
         if (!isValid) {
@@ -72,8 +73,10 @@ export class SendMessageForm extends Block {
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
             console.log(formData);
+            // const msg = { message: formData.message as string}
 
             // send message...
+            // await MessageController.send(formData.message as string);
 
             (this.children.inputMessage as Input).setValue('');
         }

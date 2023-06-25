@@ -106,21 +106,29 @@ export const transformFile = (data: FileDTO): File => {
 }
 
 export type Message = {
+    id: number;
+    isRead: boolean;
     chatId: number;
     time: string;
     type: string;
     userId: number;
     content: string;
-    file: File;
+    file: File | null;
 };
 
 export const transformMessage = (data: MessageDTO): Message => {
     return {
+        id: data.id,
+        isRead: data.is_read,
         chatId: data.chat_id,
         time: data.time,
         type: data.type,
         userId: data.user_id,
         content: data.content,
-        file: transformFile(data.file as FileDTO),
+        file: data.file ? transformFile(data.file as FileDTO) : null,
     };
+}
+
+export const transformMessages = (data: MessageDTO[]): Message[] => {
+    return data.map(message => transformMessage(message));
 }

@@ -126,7 +126,7 @@ class ChatsController {
         if (currentActiveChat.id && currentActiveChat.id !== chat.id) {
             //  закрываем соединение с текущим чатом
             console.log(`close connection for chat ${currentActiveChat.id}`);
-            // MessageController.close(currentActiveChat.id);
+            MessageController.close(currentActiveChat.id);
         }
         store.dispatch({ activeChat: {
             id: chat.id,
@@ -138,7 +138,7 @@ class ChatsController {
         if (apiHasToken(response)) {
             // тут коннектимся к чату
             console.log(`create connection for chat ${chat.id} with token:${response.token}`);
-            // await MessageController.connect(chat.id, response.token);
+            await MessageController.connect(chat.id, response.token);
         }
 
     }

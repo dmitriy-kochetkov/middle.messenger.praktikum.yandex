@@ -1,4 +1,4 @@
-import { isPlainObject } from "../utils/isPlainObject";
+// import { isPlainObject } from "../utils/isPlainObject";
 import { EventBus } from "./EventBus";
 
 export const WS_BASE_URL = `wss://ya-praktikum.tech/ws/chats`;
@@ -54,8 +54,11 @@ export default class wsTransport extends EventBus {
                 return;
             }
 
-            const data = isPlainObject(messages) ? [messages] : messages;
-            this.emit(WSEvents.Message, data);
+            console.warn(messages);
+
+            // const data = isPlainObject(messages) ? [messages] : messages;
+            // const data = messages;
+            this.emit(WSEvents.Message, messages);
         } catch (e) {
             console.error(e);
         }
@@ -98,7 +101,7 @@ export default class wsTransport extends EventBus {
 
     public close() {
         try {
-
+            this.socket.close();
         } catch (e) {
             console.error('Closing socket: ', e);
         }

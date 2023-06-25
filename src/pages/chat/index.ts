@@ -31,12 +31,15 @@ class ChatPage extends Block {
 
     private modalInputValue: string;
 
+    private chatsUpdateInterval: number;
+
     constructor(props: IChatPageProps) {
         super(props);
 
         this.initChatModalForm();
 
         this.modalInputValue = '';
+        this.chatsUpdateInterval = 0;
     }
 
     protected async init() {
@@ -74,7 +77,19 @@ class ChatPage extends Block {
     }
 
     protected async componentDidMount() {
+        await this.updateChats();
+
+        // this.chatsUpdateInterval = setInterval(() => {
+        //     this.updateChats();
+        // }, 5000);
+    }
+
+    private async updateChats() {
         await ChatsController.getAll({});
+    }
+
+    public componentWillUnmount(): void {
+        clearInterval(this.chatsUpdateInterval);
     }
 
     protected componentDidUpdate(oldProps: IChatItemProps, newProps: IChatPageProps) {
@@ -120,7 +135,7 @@ class ChatPage extends Block {
     }
 
     private isChatActive(id: number): boolean {
-        return id === this.props.activeChat;
+        return id === this.props.activeChat.id;
     }
 
     private isMessageMine(login: String) {
@@ -208,10 +223,9 @@ class ChatPage extends Block {
         if (!this.isValid()) {
             return;
         }
-        // const form = document.getElementById('modal__form') as HTMLFormElement;
+
         const form = (this.children.modal as Modal).getForm();
-        // console.log(form);
-        // return;
+
         if (form) {
             const rawData = getFormData(form as HTMLFormElement);
             const newChatName = this.convertFromToChatName(rawData);

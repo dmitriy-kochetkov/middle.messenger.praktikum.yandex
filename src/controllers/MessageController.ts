@@ -1,6 +1,7 @@
+import { MessageDTO } from "../api/types";
 import wsTransport, {WS_BASE_URL, WSEvents} from "../core/wsTransport";
 import { store } from "../store";
-import { Message } from "../utils/apiTransformers";
+import { transformMessages } from "../utils/apiTransformers";
 
 class MessageController {
     private threads: Map<number, wsTransport>;
@@ -10,28 +11,44 @@ class MessageController {
     }
 
     private subscribe(activeChatID: number, ws: wsTransport) {
-        ws.on(WSEvents.Message, (...event) => {
+        ws.on(WSEvents.Message, (event) => {
             this.onMessage(activeChatID, event);
         });
 
         ws.on(WSEvents.Close, () => {this.onClose(activeChatID)});
     }
 
-    private onMessage(activeChatID: number, data: Message | Message[]) {
-        let messages: Message[] = [];
+    private onMessage(activeChatID: number, data: MessageDTO | MessageDTO[]) {
+        console.warn(data);
+        let messages: MessageDTO[] = [];
+
+        // console.log('data =', data);
 
         if (Array.isArray(data)) {
             messages = data.reverse();
         } else {
-            messages.push(data);
+            // messages.push(data);
         }
 
-        const storedMessages = store.getState().messages[activeChatID];
+        // const first = messages[0]
+        // console.log(first[0]);
+        // console.log(Array.isArray(first))
+        // console.log(transformMessage(first));
 
-        store.dispatch({
-            messages: {
-                [activeChatID]: [...(storedMessages || []), ...messages] }
-        });
+        const allMessages = store.getState().messages;
+        // console.log({ allMessages });
+
+        const currentMessages = allMessages[activeChatID] || [];
+        // console.log({ currentMessages });
+
+        const messagesToAdd = [...currentMessages, ...transformMessages(messages)];
+        // console.log({ messagesToAdd });
+
+
+        store.dispatch({ messages: {
+            [activeChatID]: [...messagesToAdd], ...allMessages
+        } })
+
     }
 
     private onClose(activeChatID: number) {
@@ -44,24 +61,41 @@ class MessageController {
 
     async connect(activeChatID: number, token: string) {
         try {
-            if (!this.threads.has(activeChatID)) {
+            console.log('stage - 0');
+            // console.log(this.threads);
+            // console.log(activeChatID);
+            // console.log(token);
+            // console.log(this.threads.has(activeChatID))
+
+            if (this.threads.has(activeChatID)) {
                 return;
             }
 
+            // console.log('stage - 1');
             const userID = store.getState().user?.id;
 
             if (!userID) {
                 throw new Error(`User not found`);
             }
+            // console.log('stage - 2');
 
             const ws = new wsTransport(`${WS_BASE_URL}/${userID}/${activeChatID}/${token}`);
 
+            // console.log('stage - 3');
+
             await ws.connect();
 
+            // console.log('stage - 4');
+
             this.subscribe(activeChatID, ws);
+            // console.log('stage - 5');
             this.threads.set(activeChatID, ws);
 
+            // console.log('stage - 6');
+
             this.fetchOldMessages(activeChatID);
+
+            // console.log('stage - 7');
 
         } catch (e) {
             console.error(e);
@@ -90,7 +124,7 @@ class MessageController {
         if (!socket) {
             throw new Error(`Chat ${activeChat} is not connected`);
         }
-
+        // загружаем старые сообщения
         socket.send({ type: "get old", content: "0" });
     }
 
@@ -99,6 +133,7 @@ class MessageController {
     }
 
     close(chatID: number) {
+        console.log(`closing connection for ${chatID} chat`)
         const socket = this.threads.get(chatID);
         socket?.close();
     }
