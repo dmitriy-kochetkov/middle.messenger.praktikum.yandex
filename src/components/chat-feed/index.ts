@@ -1,8 +1,10 @@
 import Block from '../../core/Block';
 import template from './chat-feed.hbs';
 import { IMessage, Message } from '../message';
+import { Message as MessageType } from '../../utils/apiTransformers';
 import { withStore } from '../../hocs/withStore';
 import { bytesToString } from '../../utils/bytesToString';
+import { getPrettyTime } from '../../utils/getPrettyTime';
 
 export interface IChatFeedProps {
     messages: IMessage[],
@@ -14,19 +16,52 @@ class ChatFeed extends Block {
     }
 
     protected init(): void {
-        this.children.messages = this.props.messages.map((props: IMessage) => new Message(props));
+        this.createMessages()
     }
 
     render() {
         return this.compile(template, this.props);
     }
 
+    private createMessages() {
+        this.children.messages = this.props.messages.map(
+            (message: MessageType) => {
+
+                return new Message(this.convertMessageToProp(message))
+            }
+        );
+
+        // this.children.messages = this.props.messages.map((props: IMessage) => new Message(props));
+    }
+
     protected componentDidUpdate(oldProps: IChatFeedProps, newProps: IChatFeedProps) {
         const shouldUpdate = super.componentDidUpdate(oldProps, newProps);
         if (shouldUpdate) {
-            this.children.messages = this.props.messages.map((props: IMessage) => new Message(props));
+            this.createMessages()
         }
         return shouldUpdate;
+    }
+
+    private convertMessageToProp(message: MessageType): IMessage {
+        if (message) {
+            return {
+                type: message.type,
+                time: getPrettyTime(message.time),
+                content: message.content,
+                isMine: this.props.currentUser.id === message.userId,
+                file: message.file
+                    ? {
+                        path: 'string',
+                        filename: 'string',
+                        contentType: 'string',
+                        contentSize: 'string',
+                        uploadDate: 'string',
+                    }
+                    : null
+            }
+        } else {
+            return {} as IMessage;
+        }
     }
 }
 
@@ -36,7 +71,7 @@ const withMessages = withStore((state)=> ({
     messages: state.activeChat.id
         ? state.messages[state.activeChat.id] || []
         : [],
-
+}))
     /*
     chat_id: 13128
     content: "🍕🍕🍕🍕🍕🍕🍕"
@@ -117,6 +152,6 @@ const withMessages = withStore((state)=> ({
     //             }
     //         },
     //     ],
-}))
+
 
 export default withMessages(ChatFeed);

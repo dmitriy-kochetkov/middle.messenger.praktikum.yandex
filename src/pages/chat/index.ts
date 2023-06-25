@@ -17,6 +17,7 @@ import { CreateChatData } from '../../api/ChatsAPI';
 import { withRouter } from '../../hocs/withRouter';
 import { withStore } from '../../hocs/withStore';
 import ChatsController from '../../controllers/ChatsController';
+import MessageController from '../../controllers/MessageController';
 
 
 export interface IChatPageProps {
@@ -43,8 +44,8 @@ class ChatPage extends Block {
     }
 
     protected async init() {
-        console.log('message: ', this.props.message);
-        console.log('modal: ', this.props.modal);
+        // console.log('message: ', this.props.message);
+        // console.log('modal: ', this.props.modal);
 
         this.children.buttonCreateChat = new Button({
             label: 'Создать чат',
@@ -72,7 +73,7 @@ class ChatPage extends Block {
     }
 
     render() {
-        console.log(this.props.routerParams);
+        // console.log(this.props.routerParams);
         return this.compile(template, {...this.props});
     }
 
@@ -90,6 +91,7 @@ class ChatPage extends Block {
 
     public componentWillUnmount(): void {
         clearInterval(this.chatsUpdateInterval);
+        MessageController.closeAll();
     }
 
     protected componentDidUpdate(oldProps: IChatItemProps, newProps: IChatPageProps) {

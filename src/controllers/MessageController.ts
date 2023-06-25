@@ -1,7 +1,7 @@
 import { MessageDTO } from "../api/types";
 import wsTransport, {WS_BASE_URL, WSEvents} from "../core/wsTransport";
 import { store } from "../store";
-import { transformMessages } from "../utils/apiTransformers";
+import { Message, transformMessages } from "../utils/apiTransformers";
 
 class MessageController {
     private threads: Map<number, wsTransport>;
@@ -19,36 +19,40 @@ class MessageController {
     }
 
     private onMessage(activeChatID: number, data: MessageDTO | MessageDTO[]) {
-        console.warn(data);
+        // console.warn(data);
         let messages: MessageDTO[] = [];
-
-        // console.log('data =', data);
 
         if (Array.isArray(data)) {
             messages = data.reverse();
         } else {
-            // messages.push(data);
+            messages.push(data);
         }
 
-        // const first = messages[0]
-        // console.log(first[0]);
-        // console.log(Array.isArray(first))
-        // console.log(transformMessage(first));
+        console.warn(messages);
 
         const allMessages = store.getState().messages;
-        // console.log({ allMessages });
-
         const currentMessages = allMessages[activeChatID] || [];
-        // console.log({ currentMessages });
-
         const messagesToAdd = [...currentMessages, ...transformMessages(messages)];
-        // console.log({ messagesToAdd });
 
+        console.warn({currentMessages});
+        console.warn({messagesToAdd});
 
-        store.dispatch({ messages: {
-            [activeChatID]: [...messagesToAdd], ...allMessages
-        } })
+        store.dispatch({
+            messages: {
+                [activeChatID]: [...messagesToAdd]
+            },
+            ...allMessages,
+        })
 
+        const lastMessage = messagesToAdd[messagesToAdd.length - 1];
+
+        // обновление "последнего сообщения в чате";
+        this.updateCurentChat(activeChatID, lastMessage);
+
+    }
+
+    private updateCurentChat(id: number, lastMessage: Message) {
+        console.log('update chat item');
     }
 
     private onClose(activeChatID: number) {
@@ -61,7 +65,7 @@ class MessageController {
 
     async connect(activeChatID: number, token: string) {
         try {
-            console.log('stage - 0');
+            // console.log('stage - 0');
             // console.log(this.threads);
             // console.log(activeChatID);
             // console.log(token);
@@ -71,31 +75,21 @@ class MessageController {
                 return;
             }
 
-            // console.log('stage - 1');
             const userID = store.getState().user?.id;
 
             if (!userID) {
                 throw new Error(`User not found`);
             }
-            // console.log('stage - 2');
 
             const ws = new wsTransport(`${WS_BASE_URL}/${userID}/${activeChatID}/${token}`);
 
-            // console.log('stage - 3');
-
             await ws.connect();
 
-            // console.log('stage - 4');
 
             this.subscribe(activeChatID, ws);
-            // console.log('stage - 5');
             this.threads.set(activeChatID, ws);
 
-            // console.log('stage - 6');
-
             this.fetchOldMessages(activeChatID);
-
-            // console.log('stage - 7');
 
         } catch (e) {
             console.error(e);
@@ -116,6 +110,8 @@ class MessageController {
                 content: message.trim(),
             });
         }
+
+        // обновление "последнего сообщения в чате";
     }
 
     fetchOldMessages(activeChat: number) {

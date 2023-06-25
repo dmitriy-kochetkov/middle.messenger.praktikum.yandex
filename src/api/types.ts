@@ -46,10 +46,10 @@ export type FileDTO = {
 
   export type MessageDTO = {
     id: number;
-    is_read: boolean;
-    chat_id: number;
+    is_read: boolean | null;
+    chat_id: number | null;
     time: string;
-    type: string;
+    type: 'message' | 'file';
     user_id: number;
     content: string;
     file: FileDTO | null;

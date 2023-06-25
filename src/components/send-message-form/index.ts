@@ -76,7 +76,7 @@ export class SendMessageForm extends Block {
             // const msg = { message: formData.message as string}
 
             // send message...
-            // await MessageController.send(formData.message as string);
+            await MessageController.send(formData.message as string);
 
             (this.children.inputMessage as Input).setValue('');
         }

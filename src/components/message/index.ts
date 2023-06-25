@@ -6,15 +6,15 @@ export interface IMessage {
     type: 'message' | 'file',
     time: string,
     content: string,
-    url?: string,
+    // url?: string,
     isMine: boolean,
-    file?: {
+    file: {
         path: string,
         filename: string,
         contentType: string,
         contentSize: string,
         uploadDate: string,
-    }
+    } | null,
 }
 
 export class Message extends Block {

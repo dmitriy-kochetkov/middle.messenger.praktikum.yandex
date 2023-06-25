@@ -53,9 +53,6 @@ export default class wsTransport extends EventBus {
             ) {
                 return;
             }
-
-            console.warn(messages);
-
             // const data = isPlainObject(messages) ? [messages] : messages;
             // const data = messages;
             this.emit(WSEvents.Message, messages);

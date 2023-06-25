@@ -107,10 +107,10 @@ export const transformFile = (data: FileDTO): File => {
 
 export type Message = {
     id: number;
-    isRead: boolean;
-    chatId: number;
+    isRead: boolean | null;
+    chatId: number | null;
     time: string;
-    type: string;
+    type: 'message' | 'file';
     userId: number;
     content: string;
     file: File | null;
@@ -119,8 +119,8 @@ export type Message = {
 export const transformMessage = (data: MessageDTO): Message => {
     return {
         id: data.id,
-        isRead: data.is_read,
-        chatId: data.chat_id,
+        isRead: data.is_read || null,
+        chatId: data.chat_id || null,
         time: data.time,
         type: data.type,
         userId: data.user_id,
