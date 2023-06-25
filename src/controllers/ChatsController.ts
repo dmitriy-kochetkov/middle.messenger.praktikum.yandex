@@ -1,9 +1,9 @@
-import chatsAPI, { ChatsAPI, CreateChatData, GetChatsData } from '../api/ChatsAPI';
+import chatsAPI, { ActionUsersData, ChatsAPI, CreateChatData, GetChatUsersData, GetChatsData } from '../api/ChatsAPI';
 import { apiHasError } from "../utils/apiHasError";
-import { Chat, transformChats } from "../utils/apiTransformers";
+import { Chat, transformChats, transformUsers } from "../utils/apiTransformers";
 import { store } from '../store';
 // import { router } from '../router';
-import { ChatsDTO } from '../api/types';
+import { ChatsDTO, UserDTO } from '../api/types';
 import { apiHasToken } from '../utils/apiHasToken';
 import MessageController from './MessageController';
 
@@ -39,6 +39,64 @@ class ChatsController {
                 return;
             }
             store.dispatch({ chatsError: null });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async delete() {
+
+    }
+
+    async addUsers(payload: ActionUsersData) {
+        try {
+            const response = await this.api.addUsers(payload);
+            if (apiHasError(response)) {
+                console.error(response.reason);
+                return;
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async getChatUsers(id: number, payload: GetChatUsersData) {
+        try {
+            let ready = false;
+            const result = [];
+            let {limit, offset} = payload;
+
+            limit = limit || 100;
+            offset = offset || 0;
+
+            while (!ready) {
+                const response = await this.api.getChatUsers(id, { offset, limit, ...payload});
+                if (apiHasError(response)) {
+                    console.error(response.reason);
+                    return;
+                }
+                const users = transformUsers(response as UserDTO[]);
+                result.push(...users)
+                offset += limit;
+
+                if (users.length < limit) {
+                    ready = true;
+                }
+            }
+
+            store.dispatch({ users: result });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async deleteUsers(payload: ActionUsersData) {
+        try {
+            const response = await this.api.deleteUsers(payload);
+            if (apiHasError(response)) {
+                console.error(response.reason);
+                return;
+            }
         } catch (e) {
             console.error(e);
         }

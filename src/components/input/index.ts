@@ -1,7 +1,7 @@
 import Block from '../../core/Block';
 import template from './input.hbs';
 
-type InputValidationFn = (inputValue: string) => string;
+export type InputValidationFn = (inputValue: string) => string;
 
 interface IValidationResult {
     isValid: boolean;

@@ -1,6 +1,7 @@
 import Block from '../../core/Block';
 import { withStore } from '../../hocs/withStore';
 import { User } from '../../utils/apiTransformers';
+import { extractFirstWords } from '../../utils/extractFirstWords';
 import { getAvatarLink } from '../../utils/getAvatarLink';
 import { Avatar } from '../avatar/avatar';
 import { UserItem } from '../user-item';
@@ -33,9 +34,12 @@ export class UsersList extends Block {
 
     private createUsers(users: User[]): UserItem[] {
         return users.map(user => {
-            const name = user.displayName
-                ? user.displayName
-                :`${user.firstName} ${user.secondName}`;
+            let name = `${user.firstName} ${user.secondName}`;
+            if (!name.trim()) {
+                name = user.displayName
+            }
+
+            name = extractFirstWords(name, 20);
 
             return new UserItem({
                 avatar: new Avatar({

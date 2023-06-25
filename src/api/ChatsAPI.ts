@@ -10,6 +10,18 @@ export interface CreateChatData {
     title: string,
 }
 
+export interface ActionUsersData {
+    users: number[],
+    chatId: number,
+}
+
+export interface GetChatUsersData {
+    offset?: number,
+    limit?: number,
+    name?: string,
+    email?: string,
+}
+
 export class ChatsAPI extends BaseAPI {
     constructor() {
         super('/chats');
@@ -24,15 +36,19 @@ export class ChatsAPI extends BaseAPI {
     }
 
     delete(): Promise<unknown> {
-        return this.http.delete('');
+        return this.http.delete('/users');
     }
 
-    addUsers() {
-
+    addUsers(data: ActionUsersData): Promise<unknown> {
+        return this.http.put('/users', { data, headers: this.defaultHeaders })
     }
 
-    deleteUsers() {
+    getChatUsers(id: number, data: GetChatUsersData): Promise<unknown> {
+        return this.http.get(`/${id}/users`, {data, headers: this.defaultHeaders});
+    }
 
+    deleteUsers(data: ActionUsersData): Promise<unknown> {
+        return this.http.delete('/users', { data, headers: this.defaultHeaders })
     }
 
     token(id: number) {

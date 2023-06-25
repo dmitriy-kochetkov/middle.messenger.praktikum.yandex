@@ -9,6 +9,7 @@ import {
     maxLength,
     minLength,
     name,
+    capital,
     notOnlyDigits,
     password,
     phone,
@@ -77,7 +78,7 @@ class SigninPage extends Block {
             danger: false,
             enableErrorMessage: true,
             errorMessage: '',
-            validationFns: [name()],
+            validationFns: [capital(), name()],
             events: {
                 focusout: () => { this._handleFirstNameChange(); },
             },
@@ -92,7 +93,7 @@ class SigninPage extends Block {
             danger: false,
             enableErrorMessage: true,
             errorMessage: '',
-            validationFns: [name()],
+            validationFns: [capital(), name()],
             events: {
                 focusout: () => { this._handleSecondNameChange(); },
             },

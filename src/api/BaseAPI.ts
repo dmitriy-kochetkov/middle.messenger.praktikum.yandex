@@ -1,4 +1,4 @@
-import { HttpTransport } from "../core/HttpTransport";
+import { HttpTransport } from "../core/httpTransport";
 
 export default class BaseAPI {
     protected http: HttpTransport;

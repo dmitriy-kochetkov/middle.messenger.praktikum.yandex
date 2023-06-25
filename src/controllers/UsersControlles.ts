@@ -77,21 +77,13 @@ export class UsersController {
             store.dispatch({
                 users: transformUsers(response as UserDTO[]),
             });
-            // store.dispatch( {activeChat: {
-            //     title: '',
-            //     avatar: '',
-            //     id: 100,
-            // }})
-
-            // const result: User[] = (response as UserDTO[]).map(
-            //     (user)=>{transformUser(user as UserDTO)}
-            //     );
-            // return result;
-
-            // return response
         } catch (e) {
             console.error(e);
         }
+    }
+
+    resetUsers() {
+        store.dispatch({users: []});
     }
 }
 

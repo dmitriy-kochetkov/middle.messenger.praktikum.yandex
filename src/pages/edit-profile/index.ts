@@ -10,6 +10,7 @@ import {
     maxLength,
     minLength,
     name,
+    capital,
     notOnlyDigits,
     phone,
 } from '../../utils/validation';
@@ -82,7 +83,7 @@ class EditProfilePage extends Block {
             danger: false,
             enableErrorMessage: true,
             errorMessage: '',
-            validationFns: [name()],
+            validationFns: [capital(), name()],
             events: {
                 focusout: () => { this._handleFirstNameChange(); },
             },
@@ -97,7 +98,7 @@ class EditProfilePage extends Block {
             danger: false,
             enableErrorMessage: true,
             errorMessage: '',
-            validationFns: [name()],
+            validationFns: [capital(), name()],
             events: {
                 focusout: () => { this._handleSecondNameChange(); },
             },
