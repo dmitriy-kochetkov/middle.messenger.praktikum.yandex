@@ -1,4 +1,4 @@
-import { ChatDTO, ChatsDTO, ChatMessageDTO, UserDTO, MessageDTO, FileDTO } from '../api/types';
+import { ChatDTO, ChatsDTO, UserDTO, MessageDTO, FileDTO } from '../api/types';
 import { bytesToString } from './bytesToString';
 
 export type User = {

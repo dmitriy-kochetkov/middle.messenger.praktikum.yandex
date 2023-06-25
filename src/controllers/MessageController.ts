@@ -52,7 +52,7 @@ class MessageController {
     }
 
     private updateCurentChat(id: number, lastMessage: Message) {
-        console.log('update chat item');
+        console.log(`update chat item ${id} ${lastMessage}`);
     }
 
     private onClose(activeChatID: number) {

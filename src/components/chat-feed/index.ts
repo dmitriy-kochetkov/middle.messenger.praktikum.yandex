@@ -3,7 +3,7 @@ import template from './chat-feed.hbs';
 import { IMessage, Message } from '../message';
 import { Message as MessageType } from '../../utils/apiTransformers';
 import { withStore } from '../../hocs/withStore';
-import { bytesToString } from '../../utils/bytesToString';
+// import { bytesToString } from '../../utils/bytesToString';
 import { getPrettyTime } from '../../utils/getPrettyTime';
 
 export interface IChatFeedProps {
@@ -51,11 +51,11 @@ class ChatFeed extends Block {
                 isMine: this.props.currentUser.id === message.userId,
                 file: message.file
                     ? {
-                        path: 'string',
-                        filename: 'string',
-                        contentType: 'string',
-                        contentSize: 'string',
-                        uploadDate: 'string',
+                        path: message.file.path,
+                        filename: message.file.filename,
+                        contentType: message.file.contentType,
+                        contentSize: message.file.contentSize,
+                        uploadDate: message.file.uploadDate,
                     }
                     : null
             }
