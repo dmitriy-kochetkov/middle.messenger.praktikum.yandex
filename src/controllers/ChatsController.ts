@@ -2,7 +2,6 @@ import chatsAPI, { ActionUsersData, ChatsAPI, CreateChatData, GetChatUsersData, 
 import { apiHasError } from "../utils/apiHasError";
 import { Chat, transformChats, transformUsers } from "../utils/apiTransformers";
 import { store } from '../store';
-// import { router } from '../router';
 import { ChatsDTO, UserDTO } from '../api/types';
 import { apiHasToken } from '../utils/apiHasToken';
 import MessageController from './MessageController';

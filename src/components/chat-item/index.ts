@@ -22,7 +22,6 @@ export class ChatItem extends Block {
     }
 
     init() {
-
     }
 
     render() {

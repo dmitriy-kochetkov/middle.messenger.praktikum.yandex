@@ -11,7 +11,7 @@ import { IInputProps, Input, InputValidationFn } from '../input';
 import { login, maxLength, minLength, notOnlyDigits, name } from '../../utils/validation';
 import { getFormData } from '../../utils/getFormData';
 import { UserLogin } from '../../api/UsersAPI';
-// import { User } from '../../utils/apiTransformers';
+//import { User } from '../../utils/apiTransformers';
 import UsersList, { UsersList as UsersListType } from '../users-list';
 import { ActionUsersData, GetChatUsersData } from '../../api/ChatsAPI';
 import UsersController from '../../controllers/UsersControlles';
@@ -20,6 +20,7 @@ import ChatsController from '../../controllers/ChatsController';
 export interface IConversation {
     isTopMenuVisible: boolean,
     activeChatID: number,
+    currentUserID: number,
     name: string,
     avatar: string,
     setupModal: (options: {isOpen: boolean, title: string, formItems: Block[]}) => void,
@@ -135,16 +136,22 @@ class Conversation extends Block<IConversation> {
         });
     }
 
-    private initUserLoginModalForm() {
+    private initModalInput() {
         this.modalInput = new Input({
             name: '',
             type: 'text',
             enableErrorMessage: true,
             errorMessage: '',
         });
+    }
 
+    private initModalUsersList() {
         this.children.modalUsersList = new UsersList({});
+        // Обнуляем список пользователей в store
+        UsersController.resetUsers();
+    }
 
+    private innitModalButton() {
         this.modalSubmit = new Button({
             label: '',
             submit: true,
@@ -155,33 +162,38 @@ class Conversation extends Block<IConversation> {
         });
     }
 
-    private setupUserModalForm(
+    private setupModalInput(
         options: {
             inputLabel: string,
             inputName: string,
             inputValidationFns: InputValidationFn[],
             changeHandler: ()=>void,
+        }) {
+            this.modalInput.setProps({
+                label: options.inputLabel,
+                name: options.inputName,
+                events: {
+                    focusout: () => { options.changeHandler(); },
+                },
+                validationFns: options.inputValidationFns,
+            });
+
+    }
+
+    private setupModalButton(
+        options: {
             buttonLabel: string,
             clickHandler: ()=>void,
         }) {
-        this.modalInput.setProps({
-            label: options.inputLabel,
-            name: options.inputName,
-            events: {
-                focusout: () => { options.changeHandler(); },
-            },
-            validationFns: options.inputValidationFns,
-        });
-
-        this.modalSubmit.setProps({
-            label: options.buttonLabel,
-            events: {
-                click: (evt: PointerEvent) => {
-                    evt.preventDefault();
-                    options.clickHandler();
+            this.modalSubmit.setProps({
+                label: options.buttonLabel,
+                events: {
+                    click: (evt: PointerEvent) => {
+                        evt.preventDefault();
+                        options.clickHandler();
+                    },
                 },
-            },
-        });
+            });
     }
 
     private setupUserModal(modalTitle: string) {
@@ -196,16 +208,29 @@ class Conversation extends Block<IConversation> {
         });
     }
 
+    private setupQuestionModal(modalTitle: string) {
+        this.props.setupModal({
+            isOpen: true,
+            title: modalTitle,
+            formItems: [
+                this.modalSubmit,
+            ],
+        });
+    }
+
     private addUserHandler() {
-        UsersController.resetUsers();
+        this.initModalInput();
+        this.initModalUsersList();
+        this.innitModalButton();
 
-        this.initUserLoginModalForm();
-
-        this.setupUserModalForm({
+        this.setupModalInput({
             inputLabel: 'Логин',
             inputName: 'login',
             changeHandler: this.handleAddUserLoginInputChange.bind(this),
             inputValidationFns: [minLength(3), maxLength(20), notOnlyDigits(), login()],
+        });
+
+        this.setupModalButton({
             buttonLabel: 'Добавить',
             clickHandler: this.addUserHandleSubmit.bind(this),
         });
@@ -238,16 +263,18 @@ class Conversation extends Block<IConversation> {
     }
 
     private async removeUserHandler() {
-        // Обнуляем список пользователей в store
-        UsersController.resetUsers();
+        this.initModalInput();
+        this.initModalUsersList();
+        this.innitModalButton();
 
-        this.initUserLoginModalForm();
-
-        this.setupUserModalForm({
+        this.setupModalInput({
             inputLabel: 'Имя ',
             inputName: 'name',
             changeHandler: this.handleRemoveUserLoginInputChange.bind(this),
             inputValidationFns: [maxLength(20), name()],
+        });
+
+        this.setupModalButton({
             buttonLabel: 'Удалить',
             clickHandler: this.removeUserHandleSubmit.bind(this),
         });
@@ -279,12 +306,6 @@ class Conversation extends Block<IConversation> {
         this.closeModal();
     }
 
-
-    private leaveChatHandler() {
-        console.log(`leave chat click`);
-        // TODO:...
-    }
-
     private handlemodalInputChange() {
         this.modalInputValue = this.modalInput.getValue();
         const { isValid, errorMessages } = this.modalInput.validate();
@@ -296,6 +317,28 @@ class Conversation extends Block<IConversation> {
 
         this.modalInput.setValidState(isValid);
         return isValid;
+    }
+
+    private leaveChatHandler() {
+        this.innitModalButton();
+
+        this.setupModalButton({
+            buttonLabel: 'Принять',
+            clickHandler: this.leaveChatHandleSubmit.bind(this),
+        });
+
+        this.setupQuestionModal('Покинуть чат?');
+    }
+
+    private async leaveChatHandleSubmit() {
+        console.log('leaveChatHandleSubmit()');
+        const currentUserID = this.props.currentUserID;
+
+        if (currentUserID) {
+            const payload = this.convertToActionUsersData([currentUserID]);
+            await ChatsController.deleteUsers(payload);
+            this.closeModal();
+        }
     }
 
     private convertToActionUsersData(
@@ -325,6 +368,7 @@ class Conversation extends Block<IConversation> {
 }
 
 const withConversation = withStore((state)=> ({
+    currentUserID: state.user?.id,
     name: state.activeChat.title,
     avatar: state.activeChat.avatar,
     activeChatID: state.activeChat.id,

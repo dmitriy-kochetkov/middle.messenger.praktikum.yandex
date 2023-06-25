@@ -40,7 +40,6 @@ export class UsersAPI extends BaseAPI {
     }
 
     getUser(data: UserID) {
-        //
         return this.http.get(`/${data.id}`);
     }
 

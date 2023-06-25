@@ -1,7 +1,7 @@
 import usersAPI, { UserData, UserLogin, UserPassword, UsersAPI } from "../api/UsersAPI";
 import { apiHasError } from "../utils/apiHasError";
 import { UserDTO } from "../api/types";
-import { User, transformUser, transformUsers } from "../utils/apiTransformers";
+import { transformUser, transformUsers } from "../utils/apiTransformers";
 import { store } from '../store';
 import { router } from '../router';
 
@@ -63,10 +63,6 @@ export class UsersController {
         }
     }
 
-    async user() {
-
-    }
-
     async search(payload: UserLogin) {
         try {
             const response = await this.api.search(payload);
@@ -84,13 +80,6 @@ export class UsersController {
 
     resetUsers() {
         store.dispatch({users: []});
-    }
-
-    withoutCurrentUser() {
-        const {user: currentUser, users} = store.getState();
-        if (currentUser && users) {
-            store.dispatch({ users: users.filter(user => user.id !== currentUser.id)});
-        }
     }
 }
 

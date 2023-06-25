@@ -33,8 +33,6 @@ export class Modal extends Block {
                 const backdrop = document.querySelector('.backdrop');
                 if (evt.target === backdrop) {
                     this.closeModal();
-                    // this.setProps({ isOpen: false });
-                    // this.closeModal();
                 }
             }
         }});
