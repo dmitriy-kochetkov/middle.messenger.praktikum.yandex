@@ -1,7 +1,7 @@
-import usersAPI, { UserData, UserID, UserLogin, UserPassword, UsersAPI } from "../api/UsersAPI";
+import usersAPI, { UserData, UserLogin, UserPassword, UsersAPI } from "../api/UsersAPI";
 import { apiHasError } from "../utils/apiHasError";
 import { UserDTO } from "../api/types";
-import { User, transformUser, transformUsers } from "../utils/apiTransformers";
+import { transformUser, transformUsers } from "../utils/apiTransformers";
 import { store } from '../store';
 import { router } from '../router';
 

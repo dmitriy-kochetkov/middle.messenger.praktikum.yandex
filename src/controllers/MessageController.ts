@@ -1,8 +1,8 @@
 import { MessageDTO } from "../api/types";
 import wsTransport, {WS_BASE_URL, WSEvents} from "../core/wsTransport";
 import { store } from "../store";
-import { Message, transformMessages } from "../utils/apiTransformers";
-import ChatsController from "./ChatsController";
+import { transformMessages } from "../utils/apiTransformers";
+// import ChatsController from "./ChatsController";
 
 class MessageController {
     private threads: Map<number, wsTransport>;

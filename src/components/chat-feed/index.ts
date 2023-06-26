@@ -25,7 +25,6 @@ class ChatFeed extends Block {
     // private scrollMessages() {
     //     const messagesContainer = document.querySelector('.conversation__content');
     //     if (messagesContainer) {
-    //         console.log(messagesContainer);
     //         messagesContainer.scroll(0, messagesContainer.scrollHeight);
     //     }
     // }
