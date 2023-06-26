@@ -2,6 +2,7 @@ import { MessageDTO } from "../api/types";
 import wsTransport, {WS_BASE_URL, WSEvents} from "../core/wsTransport";
 import { store } from "../store";
 import { Message, transformMessages } from "../utils/apiTransformers";
+import ChatsController from "./ChatsController";
 
 class MessageController {
     private threads: Map<number, wsTransport>;
@@ -18,7 +19,7 @@ class MessageController {
         ws.on(WSEvents.Close, () => {this.onClose(activeChatID)});
     }
 
-    private onMessage(activeChatID: number, data: MessageDTO | MessageDTO[]) {
+    private async onMessage(activeChatID: number, data: MessageDTO | MessageDTO[]) {
         // console.warn(data);
         let messages: MessageDTO[] = [];
 
@@ -28,14 +29,9 @@ class MessageController {
             messages.push(data);
         }
 
-        console.warn(messages);
-
         const allMessages = store.getState().messages;
         const currentMessages = allMessages[activeChatID] || [];
         const messagesToAdd = [...currentMessages, ...transformMessages(messages)];
-
-        console.warn({currentMessages});
-        console.warn({messagesToAdd});
 
         store.dispatch({
             messages: {
@@ -44,16 +40,14 @@ class MessageController {
             ...allMessages,
         })
 
-        const lastMessage = messagesToAdd[messagesToAdd.length - 1];
+        // const lastMessage = messagesToAdd[messagesToAdd.length - 1];
 
         // обновление "последнего сообщения в чате";
-        this.updateCurentChat(activeChatID, lastMessage);
-
+        // if (lastMessage) {
+        //     await ChatsController.setChatLastMessage(activeChatID, lastMessage)
+        // }
     }
 
-    private updateCurentChat(id: number, lastMessage: Message) {
-        console.log(`update chat item ${id} ${lastMessage}`);
-    }
 
     private onClose(activeChatID: number) {
         try {
@@ -65,12 +59,6 @@ class MessageController {
 
     async connect(activeChatID: number, token: string) {
         try {
-            // console.log('stage - 0');
-            // console.log(this.threads);
-            // console.log(activeChatID);
-            // console.log(token);
-            // console.log(this.threads.has(activeChatID))
-
             if (this.threads.has(activeChatID)) {
                 return;
             }
@@ -129,7 +117,6 @@ class MessageController {
     }
 
     close(chatID: number) {
-        console.log(`closing connection for ${chatID} chat`)
         const socket = this.threads.get(chatID);
         socket?.close();
     }

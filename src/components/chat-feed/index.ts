@@ -3,7 +3,6 @@ import template from './chat-feed.hbs';
 import { IMessage, Message } from '../message';
 import { Message as MessageType } from '../../utils/apiTransformers';
 import { withStore } from '../../hocs/withStore';
-// import { bytesToString } from '../../utils/bytesToString';
 import { getPrettyTime } from '../../utils/getPrettyTime';
 
 export interface IChatFeedProps {
@@ -23,6 +22,14 @@ class ChatFeed extends Block {
         return this.compile(template, this.props);
     }
 
+    // private scrollMessages() {
+    //     const messagesContainer = document.querySelector('.conversation__content');
+    //     if (messagesContainer) {
+    //         console.log(messagesContainer);
+    //         messagesContainer.scroll(0, messagesContainer.scrollHeight);
+    //     }
+    // }
+
     private createMessages() {
         this.children.messages = this.props.messages.map(
             (message: MessageType) => {
@@ -31,13 +38,13 @@ class ChatFeed extends Block {
             }
         );
 
-        // this.children.messages = this.props.messages.map((props: IMessage) => new Message(props));
+        // this.scrollMessages();
     }
 
     protected componentDidUpdate(oldProps: IChatFeedProps, newProps: IChatFeedProps) {
         const shouldUpdate = super.componentDidUpdate(oldProps, newProps);
         if (shouldUpdate) {
-            this.createMessages()
+            this.createMessages();
         }
         return shouldUpdate;
     }

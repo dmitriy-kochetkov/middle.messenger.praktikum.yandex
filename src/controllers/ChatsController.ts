@@ -1,10 +1,11 @@
 import chatsAPI, { ActionUsersData, ChatsAPI, CreateChatData, GetChatUsersData, GetChatsData } from '../api/ChatsAPI';
 import { apiHasError } from "../utils/apiHasError";
-import { Chat, transformChats, transformUsers } from "../utils/apiTransformers";
+import { Chat, Message, transformChats, transformUsers } from "../utils/apiTransformers";
 import { store } from '../store';
 import { ChatsDTO, UserDTO } from '../api/types';
 import { apiHasToken } from '../utils/apiHasToken';
 import MessageController from './MessageController';
+import UsersController from './UsersControlles';
 
 class ChatsController {
     private api: ChatsAPI;
@@ -124,10 +125,9 @@ class ChatsController {
         const currentActiveChat = store.getState().activeChat;
 
         if (currentActiveChat.id && currentActiveChat.id !== chat.id) {
-            //  закрываем соединение с текущим чатом
-            // console.log(`close connection for chat ${currentActiveChat.id}`);
             MessageController.close(currentActiveChat.id);
         }
+
         store.dispatch({ activeChat: {
             id: chat.id,
             title: chat.title,
@@ -135,14 +135,35 @@ class ChatsController {
         } });
 
         const response = await this.token(chat.id);
+
         if (apiHasToken(response)) {
-            // тут коннектимся к чату
-            // console.log(`create connection for chat ${chat.id} with token:${response.token}`);
             await MessageController.connect(chat.id, response.token);
         }
 
     }
 
+    async setChatLastMessage(chatID: number, message: Message) {
+        const messageUser = await UsersController.getUser(message.userId);
+
+        if (messageUser) {
+            let allChats = store.getState().chats;
+            const updChats = allChats.map(chat => {
+                const newChat = chat;
+                if (newChat.id === chatID) {
+                    const chatMessage = {
+                        id: message.id,
+                        time: message.time,
+                        content: message.content,
+                        user: messageUser,
+                    }
+                    newChat.lastMessage = chatMessage;
+                }
+                return newChat;
+            });
+
+            store.dispatch({ chats: updChats});
+        }
+    }
 }
 
 export default new ChatsController();

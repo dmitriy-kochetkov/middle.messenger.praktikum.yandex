@@ -39,8 +39,8 @@ export class UsersAPI extends BaseAPI {
         return this.http.put('/profile/avatar', { data, headers: this.uploadFileHeaders });
     }
 
-    getUser(data: UserID) {
-        return this.http.get(`/${data.id}`);
+    getUser(id: number,) {
+        return this.http.get(`/${id}`,  { headers: this.defaultHeaders });
     }
 
     search(data: UserLogin): Promise<unknown> {

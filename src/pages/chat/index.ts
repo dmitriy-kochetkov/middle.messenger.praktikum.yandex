@@ -44,9 +44,6 @@ class ChatPage extends Block {
     }
 
     protected async init() {
-        // console.log('message: ', this.props.message);
-        // console.log('modal: ', this.props.modal);
-
         this.children.buttonCreateChat = new Button({
             label: 'Создать чат',
             submit: false,
@@ -73,7 +70,6 @@ class ChatPage extends Block {
     }
 
     render() {
-        // console.log(this.props.routerParams);
         return this.compile(template, {...this.props});
     }
 
@@ -143,6 +139,7 @@ class ChatPage extends Block {
     private isMessageMine(login: String) {
         return login === this.props.userLogin;
     }
+
 
     private createChatClick() {
         this.initChatModalForm();

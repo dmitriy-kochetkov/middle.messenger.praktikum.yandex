@@ -1,7 +1,7 @@
-import usersAPI, { UserData, UserLogin, UserPassword, UsersAPI } from "../api/UsersAPI";
+import usersAPI, { UserData, UserID, UserLogin, UserPassword, UsersAPI } from "../api/UsersAPI";
 import { apiHasError } from "../utils/apiHasError";
 import { UserDTO } from "../api/types";
-import { transformUser, transformUsers } from "../utils/apiTransformers";
+import { User, transformUser, transformUsers } from "../utils/apiTransformers";
 import { store } from '../store';
 import { router } from '../router';
 
@@ -73,6 +73,19 @@ export class UsersController {
             store.dispatch({
                 users: transformUsers(response as UserDTO[]),
             });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async getUser(payload: number) {
+        try {
+            const response = await this.api.getUser(payload);
+            if (apiHasError(response)) {
+                console.error(response.reason)
+                return;
+            }
+            return transformUser(response as unknown as UserDTO);
         } catch (e) {
             console.error(e);
         }

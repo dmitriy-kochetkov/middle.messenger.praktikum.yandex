@@ -48,7 +48,6 @@ class Conversation extends Block<IConversation> {
             events: {
                 click: (evt: PointerEvent) => {
                     evt.preventDefault();
-                    console.log(`options click for ${this.props.activeChatID}`);
                     this.toggleTopMenu();
                 },
             },
@@ -113,15 +112,19 @@ class Conversation extends Block<IConversation> {
     }
 
     protected componentDidUpdate(oldProps: IConversation, newProps: IConversation) {
+
         const shouldUpdate = super.componentDidUpdate(oldProps, newProps);
         if (shouldUpdate) {
+
             this.children.avatar = new Avatar({
                 size: 's',
                 avatarURL: getAvatarLink(this.props.avatar),
             });
+
         }
         return shouldUpdate;
     }
+
 
     private toggleTopMenu() {
         const visibility = this.props.isTopMenuVisible;
@@ -239,13 +242,11 @@ class Conversation extends Block<IConversation> {
     }
 
     private async handleAddUserLoginInputChange() {
-        console.log('handleAddUserLoginInputChange()');
         if (!this.handlemodalInputChange()) {
             return;
         }
 
         const form = document.getElementById('modal__form') as HTMLFormElement;
-        // console.log(form);
 
         if (form) {
             const rawData = getFormData(form as HTMLFormElement);
@@ -299,7 +300,6 @@ class Conversation extends Block<IConversation> {
     }
 
     private async removeUserHandleSubmit() {
-        console.log('removeUserHandleSubmit()');
         const selectedUsers = (this.children.modalUsersList as UsersListType).getSelectedUsers();
         const payload = this.convertToActionUsersData(selectedUsers);
         await ChatsController.deleteUsers(payload);
@@ -331,7 +331,6 @@ class Conversation extends Block<IConversation> {
     }
 
     private async leaveChatHandleSubmit() {
-        console.log('leaveChatHandleSubmit()');
         const currentUserID = this.props.currentUserID;
 
         if (currentUserID) {

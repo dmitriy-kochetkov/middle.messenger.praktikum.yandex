@@ -72,22 +72,9 @@ export class SendMessageForm extends Block {
         const form = document.getElementById('send-message-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
-            console.log(formData);
-            // const msg = { message: formData.message as string}
-
-            // send message...
             await MessageController.send(formData.message as string);
 
             (this.children.inputMessage as Input).setValue('');
         }
     }
-
-    // private convertFormToCredentials(
-    //     formData: Record<string, FormDataEntryValue>,
-    //   ): SigninData {
-    //     return {
-    //       login: formData.login as string,
-    //       password: formData.password as string,
-    //     }
-    // }
 }
