@@ -91,11 +91,13 @@ class ChatPage extends Block {
     }
 
     protected componentDidUpdate(oldProps: IChatItemProps, newProps: IChatPageProps) {
-        const shouldUpdate = super.componentDidUpdate(oldProps, newProps);
-        if (shouldUpdate) {
-            this.children.chats = this.createChats(newProps.chats);
-        }
-        return shouldUpdate;
+        this.children.chats = this.createChats(newProps.chats);
+        return true;
+        // const shouldUpdate = super.componentDidUpdate(oldProps, newProps);
+        // if (shouldUpdate) {
+        //     this.children.chats = this.createChats(newProps.chats);
+        // }
+        // return shouldUpdate;
     }
 
     private createChats(chats: Chats): ChatItem[] {
@@ -139,7 +141,6 @@ class ChatPage extends Block {
     private isMessageMine(login: String) {
         return login === this.props.userLogin;
     }
-
 
     private createChatClick() {
         this.initChatModalForm();

@@ -172,6 +172,19 @@ class ChatsController {
             store.dispatch({ chats: updChats });
         }
     }
+
+    async resetChatUnreadCounter(chatID: number) {
+        const allChats = store.getState().chats;
+        const updChats = allChats.map((chat) => {
+            const newChat = chat;
+            if (newChat.id === chatID) {
+                newChat.unreadCount = 0;
+            }
+            return newChat;
+        });
+
+        store.dispatch({ chats: updChats });
+    }
 }
 
 export default new ChatsController();

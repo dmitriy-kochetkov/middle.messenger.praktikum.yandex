@@ -5,7 +5,7 @@ import WSTransport, {
 } from '../core/WSTransport';
 import { store } from '../store';
 import { transformMessages } from '../utils/apiTransformers';
-// import ChatsController from './ChatsController';
+import ChatsController from './ChatsController';
 
 class MessageController {
     private threads: Map<number, WSTransport>;
@@ -43,12 +43,13 @@ class MessageController {
             ...allMessages,
         });
 
-        // const lastMessage = messagesToAdd[messagesToAdd.length - 1];
+        const lastMessage = messagesToAdd[messagesToAdd.length - 1];
 
         // обновление 'последнего сообщения в чате';
-        // if (lastMessage) {
-        //     await ChatsController.setChatLastMessage(activeChatID, lastMessage)
-        // }
+        if (lastMessage) {
+            await ChatsController.setChatLastMessage(activeChatID, lastMessage);
+            ChatsController.resetChatUnreadCounter(activeChatID);
+        }
     }
 
     private onClose(activeChatID: number) {
