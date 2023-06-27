@@ -1,16 +1,16 @@
 // import { AppState, defaultState } from "../store";
-import { EventBus } from "./EventBus";
+import { EventBus } from './EventBus';
 
 export type Dispatch<State> = (
-        nextStateOrAction: Partial<State> | Action<State>,
-        payload?: any,
-    ) => void;
+    nextStateOrAction: Partial<State> | Action<State>,
+    payload?: any,
+) => void;
 
 export type Action<State> = (
-        dispatch: Dispatch<State>,
-        state: State,
-        payload: any,
-    ) => void;
+    dispatch: Dispatch<State>,
+    state: State,
+    payload: any,
+) => void;
 
 export enum StoreEvents {
     Updated = 'updated',
@@ -24,10 +24,10 @@ export class Store<State extends Record<string, any>> extends EventBus {
 
         this.state = defaultState;
         this.set(defaultState);
-      }
+    }
 
     public getState() {
-      return this.state;
+        return this.state;
     }
 
     public set(nextState: Partial<State>) {

@@ -1,23 +1,24 @@
-// import { isPlainObject } from "../utils/isPlainObject";
-import { EventBus } from "./EventBus";
+// import { isPlainObject } from '../utils/isPlainObject';
+import { EventBus } from './EventBus';
 
-export const WS_BASE_URL = `wss://ya-praktikum.tech/ws/chats`;
+export const WS_BASE_URL = 'wss://ya-praktikum.tech/ws/chats';
 
 export enum WSEvents {
-    Open = "open",
-    Connected = "connected",
-    Message = "message",
-    Error = "error",
-    Close = "close",
+    Open = 'open',
+    Connected = 'connected',
+    Message = 'message',
+    Error = 'error',
+    Close = 'close',
 }
 
 export enum ServiceTypes {
-    UserConnected = "user connected",
-    Pong = "pong",
+    UserConnected = 'user connected',
+    Pong = 'pong',
 }
 
-export default class wsTransport extends EventBus {
+export default class WSTransport extends EventBus {
     private socket: WebSocket;
+
     private pingInterval: number;
 
     constructor(url: string) {
@@ -34,7 +35,7 @@ export default class wsTransport extends EventBus {
         this.on(WSEvents.Close, () => {
             clearInterval(this.pingInterval);
             this.pingInterval = 0;
-        })
+        });
     }
 
     private subscribe(socket: WebSocket) {
@@ -48,8 +49,8 @@ export default class wsTransport extends EventBus {
         try {
             const messages = JSON.parse(event.data);
             if (
-                messages?.type === ServiceTypes.Pong ||
-                messages?.type === ServiceTypes.UserConnected
+                messages?.type === ServiceTypes.Pong
+                || messages?.type === ServiceTypes.UserConnected
             ) {
                 return;
             }
@@ -85,7 +86,6 @@ export default class wsTransport extends EventBus {
         try {
             this.subscribe(this.socket);
             this.setupPing();
-
         } catch (e) {
             console.error('Connecting socket: ', e);
         }

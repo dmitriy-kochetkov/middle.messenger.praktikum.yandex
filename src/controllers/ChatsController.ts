@@ -1,6 +1,17 @@
-import chatsAPI, { ActionUsersData, ChatsAPI, CreateChatData, GetChatUsersData, GetChatsData } from '../api/ChatsAPI';
-import { apiHasError } from "../utils/apiHasError";
-import { Chat, Message, transformChats, transformUsers } from "../utils/apiTransformers";
+import chatsAPI, {
+    ActionUsersData,
+    ChatsAPI,
+    CreateChatData,
+    GetChatUsersData,
+    GetChatsData,
+} from '../api/ChatsAPI';
+import { apiHasError } from '../utils/apiHasError';
+import {
+    Chat,
+    Message,
+    transformChats,
+    transformUsers,
+} from '../utils/apiTransformers';
 import { store } from '../store';
 import { ChatsDTO, UserDTO } from '../api/types';
 import { apiHasToken } from '../utils/apiHasToken';
@@ -44,10 +55,6 @@ class ChatsController {
         }
     }
 
-    async delete() {
-
-    }
-
     async addUsers(payload: ActionUsersData) {
         try {
             const response = await this.api.addUsers(payload);
@@ -64,19 +71,19 @@ class ChatsController {
         try {
             let ready = false;
             let result = [];
-            let {limit, offset} = payload;
+            let { limit, offset } = payload;
 
             limit = limit || 100;
             offset = offset || 0;
 
             while (!ready) {
-                const response = await this.api.getChatUsers(id, { offset, limit, ...payload});
+                const response = await this.api.getChatUsers(id, { offset, limit, ...payload });
                 if (apiHasError(response)) {
                     console.error(response.reason);
                     return;
                 }
                 const users = transformUsers(response as UserDTO[]);
-                result.push(...users)
+                result.push(...users);
                 offset += limit;
 
                 if (users.length < limit) {
@@ -87,7 +94,7 @@ class ChatsController {
             // уберем из users текущего пользователя
             const currentUser = store.getState().user;
             if (currentUser && result) {
-                result = result.filter(user => user.id !== currentUser.id);
+                result = result.filter((user) => user.id !== currentUser.id);
             }
 
             store.dispatch({ users: result });
@@ -128,26 +135,27 @@ class ChatsController {
             MessageController.close(currentActiveChat.id);
         }
 
-        store.dispatch({ activeChat: {
-            id: chat.id,
-            title: chat.title,
-            avatar: chat.avatar
-        } });
+        store.dispatch({
+            activeChat: {
+                id: chat.id,
+                title: chat.title,
+                avatar: chat.avatar,
+            },
+        });
 
         const response = await this.token(chat.id);
 
         if (apiHasToken(response)) {
             await MessageController.connect(chat.id, response.token);
         }
-
     }
 
     async setChatLastMessage(chatID: number, message: Message) {
         const messageUser = await UsersController.getUser(message.userId);
 
         if (messageUser) {
-            let allChats = store.getState().chats;
-            const updChats = allChats.map(chat => {
+            const allChats = store.getState().chats;
+            const updChats = allChats.map((chat) => {
                 const newChat = chat;
                 if (newChat.id === chatID) {
                     const chatMessage = {
@@ -155,13 +163,13 @@ class ChatsController {
                         time: message.time,
                         content: message.content,
                         user: messageUser,
-                    }
+                    };
                     newChat.lastMessage = chatMessage;
                 }
                 return newChat;
             });
 
-            store.dispatch({ chats: updChats});
+            store.dispatch({ chats: updChats });
         }
     }
 }

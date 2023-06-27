@@ -14,7 +14,7 @@ import { getPrettyTime } from '../../utils/getPrettyTime';
 import { getFormData } from '../../utils/getFormData';
 import { CreateChatData } from '../../api/ChatsAPI';
 
-import { withRouter } from '../../hocs/withRouter';
+// import { withRouter } from '../../hocs/withRouter';
 import { withStore } from '../../hocs/withStore';
 import ChatsController from '../../controllers/ChatsController';
 import MessageController from '../../controllers/MessageController';
@@ -271,4 +271,5 @@ const withChats = withStore((state)=> ({
     activeChat: state.activeChat,
 }))
 
-export default withChats(withRouter(ChatPage));
+//export default withChats(withRouter(ChatPage));
+export default withChats(ChatPage);

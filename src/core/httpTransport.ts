@@ -18,35 +18,36 @@ type TOptionsWithoutMethod = Omit<TOptions, 'method'>;
 type HTTPMethod = (url: string, options?: TOptionsWithoutMethod) => Promise<XMLHttpRequest>;
 
 export class HttpTransport {
-    static API_ENDPOINT = "https://ya-praktikum.tech/api/v2"
+    static API_ENDPOINT = 'https://ya-praktikum.tech/api/v2';
+
     protected path: string;
 
     constructor(endpoint: string) {
-        this.path = `${HttpTransport.API_ENDPOINT}${endpoint}`
+        this.path = `${HttpTransport.API_ENDPOINT}${endpoint}`;
     }
 
     public get: HTTPMethod = (url, options = {}) => this
         .request(
             this.path + url,
-            { ...options, method: METHODS.GET }
+            { ...options, method: METHODS.GET },
         );
 
     public post: HTTPMethod = (url, options = {}) => this
         .request(
             this.path + url,
-            { ...options, method: METHODS.POST }
+            { ...options, method: METHODS.POST },
         );
 
     public put: HTTPMethod = (url, options = {}) => this
         .request(
             this.path + url,
-            { ...options, method: METHODS.PUT }
+            { ...options, method: METHODS.PUT },
         );
 
     public delete: HTTPMethod = (url, options = {}) => this
         .request(
             this.path + url,
-            { ...options, method: METHODS.DELETE }
+            { ...options, method: METHODS.DELETE },
         );
 
     private request<T extends unknown>(
@@ -57,7 +58,7 @@ export class HttpTransport {
 
         return new Promise((resolve, reject) => {
             if (!method) {
-                reject('No method');
+                reject(new Error('No method'));
                 return;
             }
 
@@ -65,7 +66,7 @@ export class HttpTransport {
             const isGetMethod = method === METHODS.GET;
 
             xhr.open(method, isGetMethod && !!data ? `${url}${queryStringify(data)}` : url);
-            xhr.responseType = "json"
+            xhr.responseType = 'json';
             xhr.withCredentials = true;
 
             if (headers) {
@@ -79,31 +80,21 @@ export class HttpTransport {
             }
 
             try {
-                // xhr.onload = () => {
-                //     if (xhr.readyState === XMLHttpRequest.DONE) {
-                //         if (xhr.status < 400) {
-                //             resolve(xhr.response);
-                //         } else {
-                //             reject(xhr.response);
-                //         }
-                //     }
-                // };
-
                 xhr.onload = () => resolve(xhr.response);
 
-                xhr.onabort = () =>  reject; // ({reason: "abort"});
-                xhr.onerror = () => reject; //({reason: "network error"})
-                xhr.ontimeout = () => reject; //({reason: "timeout"});
+                xhr.onabort = () => reject;
+                xhr.onerror = () => reject;
+                xhr.ontimeout = () => reject;
 
                 if (isGetMethod || !data) {
                     xhr.send();
-                    console.log('xhr.send()')
+                    // console.log('xhr.send()');
                 } else if (data instanceof FormData) {
                     xhr.send(data);
-                    console.log('xhr.send(data: FormData)');
+                    // console.log('xhr.send(data: FormData)');
                 } else {
                     xhr.send(JSON.stringify(data));
-                    console.log('xhr.send(JSON.stringify(data))')
+                    // console.log('xhr.send(JSON.stringify(data))');
                 }
             } catch (e) {
                 console.log(e);

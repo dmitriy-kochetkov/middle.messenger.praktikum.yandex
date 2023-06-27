@@ -3,8 +3,8 @@ export type Listener<T extends unknown[] = any[]> = (...args: T) => void;
 export class EventBus<
     E extends string = string,
     M extends { [K in E]: unknown[] } = Record<E, any[]>,
-    > {
-    public listeners: { [key in E]?: Listener<M[E]>[] } = {};;
+> {
+    public listeners: { [key in E]?: Listener<M[E]>[] } = {};
 
     constructor() {
         this.listeners = {};
@@ -41,5 +41,5 @@ export class EventBus<
 
     destroy() {
         this.listeners = {};
-      }
+    }
 }

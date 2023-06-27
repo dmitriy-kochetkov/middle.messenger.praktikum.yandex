@@ -4,7 +4,7 @@ export type APIError = {
 
 export type Token = {
     token: string;
-}
+};
 
 export type UserDTO = {
     id: number;
@@ -22,7 +22,7 @@ export type ChatMessageDTO = {
     time: string;
     content: string;
     user: UserDTO;
-}
+};
 
 export type ChatDTO = {
     id: number;
@@ -30,7 +30,7 @@ export type ChatDTO = {
     avatar: string;
     unread_count: number;
     last_message?: ChatMessageDTO;
-}
+};
 
 export type ChatsDTO = ChatDTO[] | [];
 
@@ -42,9 +42,9 @@ export type FileDTO = {
     content_type: string;
     content_size: number;
     upload_date: string;
-  };
+};
 
-  export type MessageDTO = {
+export type MessageDTO = {
     id: number;
     is_read: boolean | null;
     chat_id: number | null;
@@ -53,4 +53,4 @@ export type FileDTO = {
     user_id: number;
     content: string;
     file: FileDTO | null;
-  };
+};

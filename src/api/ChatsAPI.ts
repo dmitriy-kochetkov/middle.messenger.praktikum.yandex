@@ -28,7 +28,7 @@ export class ChatsAPI extends BaseAPI {
     }
 
     getAll(data: GetChatsData): Promise<unknown> {
-        return this.http.get('', {data, headers: this.defaultHeaders});
+        return this.http.get('', { data, headers: this.defaultHeaders });
     }
 
     create(data: CreateChatData): Promise<unknown> {
@@ -40,15 +40,15 @@ export class ChatsAPI extends BaseAPI {
     }
 
     addUsers(data: ActionUsersData): Promise<unknown> {
-        return this.http.put('/users', { data, headers: this.defaultHeaders })
+        return this.http.put('/users', { data, headers: this.defaultHeaders });
     }
 
     getChatUsers(id: number, data: GetChatUsersData): Promise<unknown> {
-        return this.http.get(`/${id}/users`, {data, headers: this.defaultHeaders});
+        return this.http.get(`/${id}/users`, { data, headers: this.defaultHeaders });
     }
 
     deleteUsers(data: ActionUsersData): Promise<unknown> {
-        return this.http.delete('/users', { data, headers: this.defaultHeaders })
+        return this.http.delete('/users', { data, headers: this.defaultHeaders });
     }
 
     token(id: number) {

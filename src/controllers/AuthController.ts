@@ -1,7 +1,7 @@
 import authAPI, { AuthAPI, SigninData, SignupData } from '../api/AuthAPI';
 import { apiHasError } from '../utils/apiHasError';
-import { UserDTO } from "../api/types";
-import { transformUser } from "../utils/apiTransformers";
+import { UserDTO } from '../api/types';
+import { transformUser } from '../utils/apiTransformers';
 import { store } from '../store';
 import { router } from '../router';
 
@@ -33,7 +33,7 @@ export class AuthController {
             const response = await this.api.signup(payload);
 
             if (apiHasError(response)) {
-                store.dispatch({ authError: response.reason })
+                store.dispatch({ authError: response.reason });
                 return;
             }
 
@@ -66,7 +66,7 @@ export class AuthController {
                 authError: null,
             });
             // return response;
-            router.go('/messenger')
+            router.go('/messenger');
         } catch (e) {
             console.error(e);
         }

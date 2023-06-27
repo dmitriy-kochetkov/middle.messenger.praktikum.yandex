@@ -118,11 +118,11 @@ class Block<P extends Record<string, any> = any> {
     public dispatchComponentDidMount() {
         this.eventBus().emit(EVENTS.FLOW_CDM);
 
-        Object.values(this.children).forEach(child => {
+        Object.values(this.children).forEach((child) => {
             if (Array.isArray(child)) {
-                child.forEach(ch => ch.dispatchComponentDidMount());
+                child.forEach((ch) => ch.dispatchComponentDidMount());
             } else {
-                child.dispatchComponentDidMount()
+                child.dispatchComponentDidMount();
             }
         });
     }

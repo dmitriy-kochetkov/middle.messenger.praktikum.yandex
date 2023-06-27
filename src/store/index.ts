@@ -31,6 +31,6 @@ export const defaultState: AppState = {
     users: [],
     messages: {},
     appIsInited: false,
-  };
+};
 
- export const store = new Store<AppState>(defaultState);
+export const store = new Store<AppState>(defaultState);
