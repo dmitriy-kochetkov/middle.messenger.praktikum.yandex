@@ -3,6 +3,7 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/4c02c591-ad1e-438f-84d4-2042213020b9/deploy-status)](https://app.netlify.com/sites/yet-another-chat-application/deploys)
 
+[PR (Sprint 3 -> main)](https://github.com/dmitriy-kochetkov/middle.messenger.praktikum.yandex/pull/9)
 
 Приложение разрабатывается в рамках курса [«Мидл фронтенд-разработчик»](https://practicum.yandex.ru/middle-frontend/ "Курс «Мидл фронтенд-разработчик»").
 С дизайн-макетом можно ознакомиться [тут](https://www.figma.com/file/IhQa6vJwmuLtUY53Nt4m5l/Chat-(Ya.Prct)?node-id=0-1&t=qGMi4BNXC334ELW1-0 "прототип в Figma").
