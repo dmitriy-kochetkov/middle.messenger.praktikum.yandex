@@ -15,7 +15,7 @@ class ChatFeed extends Block {
     }
 
     protected init(): void {
-        this.createMessages()
+        this.createMessages();
     }
 
     render() {
@@ -25,6 +25,7 @@ class ChatFeed extends Block {
     // private scrollMessages() {
     //     const messagesContainer = document.querySelector('.conversation__content');
     //     if (messagesContainer) {
+    //         console.log(`scroll height: ${messagesContainer.scrollHeight}`);
     //         messagesContainer.scroll(0, messagesContainer.scrollHeight);
     //     }
     // }
@@ -32,12 +33,9 @@ class ChatFeed extends Block {
     private createMessages() {
         this.children.messages = this.props.messages.map(
             (message: MessageType) => {
-
                 return new Message(this.convertMessageToProp(message))
             }
         );
-
-        // this.scrollMessages();
     }
 
     protected componentDidUpdate(oldProps: IChatFeedProps, newProps: IChatFeedProps) {
@@ -78,16 +76,6 @@ const withMessages = withStore((state)=> ({
         ? state.messages[state.activeChat.id] || []
         : [],
 }))
-    /*
-    chat_id: 13128
-    content: "🍕🍕🍕🍕🍕🍕🍕"
-    file: null
-    id: 1
-    is_read: true
-    time: "2023-06-20T20:28:26+00:00"
-    type: "message"
-    user_id: 1045886
-    */
 
     // messages: [
     //         {
@@ -158,6 +146,5 @@ const withMessages = withStore((state)=> ({
     //             }
     //         },
     //     ],
-
 
 export default withMessages(ChatFeed);

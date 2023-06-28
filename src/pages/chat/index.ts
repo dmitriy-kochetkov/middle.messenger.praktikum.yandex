@@ -13,12 +13,9 @@ import { extractFirstWords } from '../../utils/extractFirstWords';
 import { getPrettyTime } from '../../utils/getPrettyTime';
 import { getFormData } from '../../utils/getFormData';
 import { CreateChatData } from '../../api/ChatsAPI';
-
-// import { withRouter } from '../../hocs/withRouter';
 import { withStore } from '../../hocs/withStore';
 import ChatsController from '../../controllers/ChatsController';
 import MessageController from '../../controllers/MessageController';
-
 
 export interface IChatPageProps {
     chats: Chats;
@@ -187,18 +184,6 @@ class ChatPage extends Block {
         });
     }
 
-    // private setupCreateChatModal_old() {
-    //     (this.children.modal as Block).setProps({
-    //         isOpen: true,
-    //         title: 'Создать чат',
-    //         formItems: [
-    //             this.modalInput,
-    //             this.modalSubmit,
-    //         ],
-    //     });
-    // }
-
-    // experiment
     private setupModal(options: {isOpen: boolean, title: string, formItems: Block[]}) {
         (this.children.modal as Modal).setProps({
             isOpen: options.isOpen,
@@ -216,7 +201,6 @@ class ChatPage extends Block {
                 this.modalSubmit,
             ],
         });
-        // this.modalInput.setValue('');
     }
 
     private async createChatHandleSubmit() {
@@ -251,7 +235,6 @@ class ChatPage extends Block {
         });
 
         this.modalInput.setValidState(isValid);
-        // this.setupCreateChatModal();
         return isValid;
     }
 
@@ -272,5 +255,4 @@ const withChats = withStore((state)=> ({
     activeChat: state.activeChat,
 }))
 
-//export default withChats(withRouter(ChatPage));
 export default withChats(ChatPage);

@@ -12,7 +12,7 @@ import {
     transformChats,
     transformUsers,
 } from '../utils/apiTransformers';
-import { store } from '../store';
+import { defaultState, store } from '../store';
 import { ChatsDTO, UserDTO } from '../api/types';
 import { apiHasToken } from '../utils/apiHasToken';
 import MessageController from './MessageController';
@@ -184,6 +184,12 @@ class ChatsController {
         });
 
         store.dispatch({ chats: updChats });
+    }
+
+    resetActiveChat() {
+        store.dispatch({
+            activeChat: defaultState.activeChat,
+        })
     }
 }
 

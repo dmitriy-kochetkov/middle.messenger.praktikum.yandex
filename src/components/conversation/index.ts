@@ -16,6 +16,7 @@ import UsersList, { UsersList as UsersListType } from '../users-list';
 import { ActionUsersData, GetChatUsersData } from '../../api/ChatsAPI';
 import UsersController from '../../controllers/UsersControlles';
 import ChatsController from '../../controllers/ChatsController';
+import { withRouter } from '../../hocs/withRouter';
 
 export interface IConversation {
     isTopMenuVisible: boolean,
@@ -336,6 +337,8 @@ class Conversation extends Block<IConversation> {
         if (currentUserID) {
             const payload = this.convertToActionUsersData([currentUserID]);
             await ChatsController.deleteUsers(payload);
+            await ChatsController.getAll({});
+            ChatsController.resetActiveChat();
             this.closeModal();
         }
     }
@@ -373,4 +376,4 @@ const withConversation = withStore((state)=> ({
     activeChatID: state.activeChat.id,
 }))
 
-export default withConversation(Conversation);
+export default withRouter(withConversation(Conversation));
