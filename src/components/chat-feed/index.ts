@@ -3,7 +3,8 @@ import template from './chat-feed.hbs';
 import { IMessage, Message } from '../message';
 import { Message as MessageType } from '../../utils/apiTransformers';
 import { withStore } from '../../hocs/withStore';
-import { getPrettyTime } from '../../utils/getPrettyTime';
+import { getPrettyTime, getPrettyDate, isDifferentDays } from '../../utils/getPrettyTime';
+import { InfoMessage } from '../info-message';
 
 export interface IChatFeedProps {
     messages: IMessage[],
@@ -31,11 +32,37 @@ class ChatFeed extends Block {
     // }
 
     private createMessages() {
-        this.children.messages = this.props.messages.map(
-            (message: MessageType) => {
-                return new Message(this.convertMessageToProp(message))
+        // this.children.messages = this.props.messages.map(
+        //     (message: MessageType) => {
+        //         return new Message(this.convertMessageToProp(message))
+        //     }
+        // );
+
+        const storedMessages = this.props.messages as MessageType[];
+        const messages: Block[] = [];
+
+        if (storedMessages.length > 0) {
+            messages.push(new InfoMessage({
+                content: getPrettyDate(storedMessages[0].time),
+            }));
+
+            messages.push(new Message(this.convertMessageToProp(storedMessages[0])));
+        }
+
+        for (let i = 1; i < storedMessages.length; i++) {
+            console.log(storedMessages[i].time);
+
+            if (isDifferentDays(storedMessages[i - 1].time, storedMessages[i].time)) {
+                console.log(getPrettyDate(storedMessages[i].time));
+
+                messages.push(new InfoMessage({
+                    content: getPrettyDate(storedMessages[i].time),
+                }));
             }
-        );
+            messages.push(new Message(this.convertMessageToProp(storedMessages[i])));
+        }
+
+        this.children.messages = messages;
     }
 
     protected componentDidUpdate(oldProps: IChatFeedProps, newProps: IChatFeedProps) {
