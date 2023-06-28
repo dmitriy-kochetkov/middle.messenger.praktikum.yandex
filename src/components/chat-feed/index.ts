@@ -23,14 +23,6 @@ class ChatFeed extends Block {
         return this.compile(template, this.props);
     }
 
-    // private scrollMessages() {
-    //     const messagesContainer = document.querySelector('.conversation__content');
-    //     if (messagesContainer) {
-    //         console.log(`scroll height: ${messagesContainer.scrollHeight}`);
-    //         messagesContainer.scroll(0, messagesContainer.scrollHeight);
-    //     }
-    // }
-
     private createMessages() {
         // this.children.messages = this.props.messages.map(
         //     (message: MessageType) => {
@@ -50,11 +42,7 @@ class ChatFeed extends Block {
         }
 
         for (let i = 1; i < storedMessages.length; i++) {
-            console.log(storedMessages[i].time);
-
             if (isDifferentDays(storedMessages[i - 1].time, storedMessages[i].time)) {
-                console.log(getPrettyDate(storedMessages[i].time));
-
                 messages.push(new InfoMessage({
                     content: getPrettyDate(storedMessages[i].time),
                 }));
