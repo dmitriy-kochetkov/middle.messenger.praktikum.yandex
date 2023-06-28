@@ -1,0 +1,32 @@
+.profile-image-wrap {
+    padding-bottom: 21px;
+    cursor: pointer;
+}
+
+.profile-avatar {
+    border-radius: 50%;
+    display: block;
+}
+
+.avatar-l {
+    width: 130px;
+    height: 130px;
+    background: var(--grey-4) url("../../../static/default-avatar-f.svg") 45px 45px no-repeat;
+}
+
+.change-image-msg {
+    position: absolute;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0 0 0 / 50%);
+    border-radius: 50%;
+    color: var(--white);
+    visibility: hidden;
+    text-align: center;
+}
+
+.profile-image-wrap:hover .change-image-msg {
+    visibility: visible;
+}

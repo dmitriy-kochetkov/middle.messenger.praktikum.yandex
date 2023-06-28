@@ -1,19 +1,27 @@
-import Block from '../../utils/Block';
+import Block from '../../core/Block';
 import template from './chat-item.hbs';
+import { Avatar } from '../avatar/avatar';
 
 export interface IChatItemProps {
-    avatarURL?: string,
-    defualtAvatarURL: string,
-    name: string,
-    lastActivity: string,
+    id: number,
+    title: string,
+    avatar: Avatar,
+    unreadCount?: string,
+    messageTime: string,
     isMine: boolean,
-    text: string,
-    counter?: string,
+    selected?: boolean,
+    content: string,
+    events: {
+        click: (evt: PointerEvent | null) => void
+    },
 }
 
 export class ChatItem extends Block {
     constructor(props: IChatItemProps) {
         super(props);
+    }
+
+    init() {
     }
 
     render() {

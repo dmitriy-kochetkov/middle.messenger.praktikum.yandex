@@ -52,7 +52,10 @@
     &__content {
         height: calc(100vh - 108px);
         width: 100%;
-        overflow: scroll;
+        /*overflow: scroll;*/
+        overflow: auto;
+        display: flex;
+        flex-direction: column-reverse;
     }
 
     &__footer {
@@ -68,6 +71,15 @@
       flex-grow: 1;
       display: flex;
       justify-content: space-between;
+    }
+
+    &__empty {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
     }
 
 }

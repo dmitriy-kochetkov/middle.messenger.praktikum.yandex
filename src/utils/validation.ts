@@ -38,13 +38,33 @@ export function login() {
     };
 }
 
+// export function name() {
+//     return function fn(inputValue: string): string {
+//         const testingValue = inputValue || '';
+//         if (/(^[A-Z][A-Za-z-]*$)|(^[А-ЯЁ][А-Яа-яёЁ-]*$)/.test(testingValue)) {
+//             return '';
+//         }
+//         return 'С заглавной буквы, допустимы латиница или кириллица, дефис';
+//     };
+// }
+
 export function name() {
     return function fn(inputValue: string): string {
         const testingValue = inputValue || '';
-        if (/(^[A-Z][A-Za-z-]*$)|(^[А-ЯЁ][А-Яа-яёЁ-]*$)/.test(testingValue)) {
+        if (/(^[A-Za-z-]*$)|(^[А-Яа-яёЁ-]*$)/.test(testingValue)) {
             return '';
         }
-        return 'С заглавной буквы, допустимы латиница или кириллица, дефис';
+        return 'Допустимы латиница или кириллица, дефис';
+    };
+}
+
+export function capital() {
+    return function fn(inputValue: string): string {
+        const testingValue = inputValue || '';
+        if (/(^[A-Z])|(^[А-ЯЁ])/.test(testingValue)) {
+            return '';
+        }
+        return 'С заглавной буквы';
     };
 }
 

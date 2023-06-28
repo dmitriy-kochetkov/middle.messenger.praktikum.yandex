@@ -1,22 +1,17 @@
 <div class="conversation">
-    {{#if name}}
+    {{#if activeChatID}}
     <div class="conversation__header">
-        <div class="conversation__avatar">
-            {{#if avatarURL}}
-            <img class="conversation__avatar_image" src="{{avatarURL}}" alt="avatar for {{name}}"/>
-            {{else}}
-            <img class="conversation__avatar_image" src="{{defualtAvatarURL}}" alt="no image avatar"/>
-            {{/if}}
-        </div>
-
+        {{{avatar}}}
         <div class="conversation__name">
             {{name}}
         </div>
-
         {{{buttonOptions}}}
     </div>
 
     <div class="conversation__content">
+        {{#if isTopMenuVisible}}
+            {{{buttonsMenuTop}}}
+        {{/if}}
         {{{chatFeed}}}
     </div>
 
@@ -24,6 +19,8 @@
         {{{sendMessageForm}}}
     </div>
     {{else}}
-    <span>Выберите чат чтобы отправить сообщение</span>
+    <div class="conversation__empty">
+        <span>Выберите чат чтобы отправить сообщение</span>
+    </div>
     {{/if}}
 </div>
