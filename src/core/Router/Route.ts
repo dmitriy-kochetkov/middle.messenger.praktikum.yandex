@@ -27,7 +27,7 @@ export default class Route {
         props: IRouterProps,
         componentProps: any,
         needAuth: boolean,
-        onUnautorized: boolean,
+        onUnautorized: () => boolean,
         redirect: () => void,
     ) {
         this._pathname = pathname;
