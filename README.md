@@ -17,3 +17,4 @@
 - `npm run dev` - Запуск dev-сервера на порту `1234`
 - `npm run eslint` - Запуск ESLint
 - `npm run stylelint` - Запуск StyleLint
+- `npm run test` - Запуск Unit тестов

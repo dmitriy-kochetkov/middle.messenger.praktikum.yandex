@@ -7,7 +7,8 @@
     "build": "parcel build ./src/index.html",
     "start": "npm run build && node server.js",
     "eslint": "eslint src/**/*.ts",
-    "stylelint": "stylelint src/**/*.{pcss,css}"
+    "stylelint": "stylelint src/**/*.{pcss,css}",
+    "test": "mocha --require ts-node/register --require ./mochaSetup.js './src/**/*.test.ts'"
   },
   "repository": {
     "type": "git",
