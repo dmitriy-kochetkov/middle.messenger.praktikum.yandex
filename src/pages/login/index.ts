@@ -1,7 +1,7 @@
-import Block from '../../utils/Block';
+import Block from '../../core/Block';
 import template from './login.hbs';
 import { Button } from '../../components/button';
-import { Input, IInputProps } from '../../components/input';
+import { Input } from '../../components/input';
 import { getFormData } from '../../utils/getFormData';
 import {
     login,
@@ -10,26 +10,31 @@ import {
     notOnlyDigits,
     password,
 } from '../../utils/validation';
+import { withStore } from '../../hocs/withStore';
+import { withRouter } from '../../hocs/withRouter';
+import AuthController from '../../controllers/AuthController';
+import { SigninData } from '../../api/AuthAPI';
 
-export interface ILogin {
-    inputs: IInputProps[]
-}
-
-export class LoginPage extends Block {
+class LoginPage extends Block {
     private _loginValue: string = '';
 
     private _passwordValue: string = '';
 
-    constructor(props: ILogin) {
+    constructor(props: {}) {
         super(props);
+        if (this.props.user) {
+            this.props.router.go('/messenger');
+        }
     }
 
     protected init(): void {
+        console.log('LoginPage.init');
+
         this.children.inputLogin = new Input({
             label: 'Логин',
             name: 'login',
             type: 'text',
-            value: 'ivanivanov',
+            value: '',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -44,7 +49,7 @@ export class LoginPage extends Block {
             label: 'Пароль',
             name: 'password',
             type: 'password',
-            value: 'ivanivanov',
+            value: '',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -72,37 +77,68 @@ export class LoginPage extends Block {
         return this.compile(template, this.props);
     }
 
-    private _handleLoginChange(): void {
+    private _handleLoginChange(): boolean {
         this._loginValue = (this.children.inputLogin as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputLogin as Input).validate();
-        this.children.inputLogin.setProps({
+        (this.children.inputLogin as Input).setProps({
             value: this._loginValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
 
         (this.children.inputLogin as Input).setValidState(isValid);
+
+        return isValid;
     }
 
-    private _handlePasswordChange(): void {
+    private _handlePasswordChange(): boolean {
         this._passwordValue = (this.children.inputPassword as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputPassword as Input).validate();
-        this.children.inputPassword.setProps({
+        (this.children.inputPassword as Input).setProps({
             value: this._passwordValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
 
         (this.children.inputPassword as Input).setValidState(isValid);
+
+        return isValid;
     }
 
-    private _handleSubmit(): void {
-        this._handleLoginChange();
-        this._handlePasswordChange();
+    private isValid(): boolean {
+        const validationResult = []
+        validationResult.push(this._handleLoginChange());
+        validationResult.push(this._handlePasswordChange());
+        return validationResult.every(Boolean);
+    }
+
+    private async _handleSubmit() {
+        if (!this.isValid()) {
+            return;
+        }
         const form = document.getElementById('login-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
-            console.log(formData);
+            const payload = this.convertFormToCredentials(formData)
+
+            await AuthController.signin(payload);
+            await AuthController.user();
+        }
+    }
+
+    private convertFormToCredentials(
+        formData: Record<string, FormDataEntryValue>,
+      ): SigninData {
+        return {
+          login: formData.login as string,
+          password: formData.password as string,
         }
     }
 }
+
+const withAuthError = withStore((state)=> ({
+    user: state.user,
+    authError: state.authError,
+}))
+
+export default withAuthError(withRouter(LoginPage));

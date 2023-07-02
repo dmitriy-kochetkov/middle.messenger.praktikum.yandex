@@ -2,18 +2,25 @@
 
     <div class="message__row">
         {{#if isText}}
-            <div class="message__text">{{text}}</div>
+            <div class="message__text">{{content}}</div>
         {{else}}
-            <img class="message__image" src="{{url}}" width="{{width}}" height="{{height}}" alt="attached image"/>
+            {{#if isImage}}
+            <img class="message__image" src="{{file.path}}" alt="attached image"/>
+            {{else}}
+            <div class="message__file">
+                {{{buttonDownloadFile}}}
+                <div class="message__description">
+                    <div class="message__filename">{{file.filename}}</div>
+                    <div class="message__size">{{file.contentSize}}</div>
+                </div>
+            </div>
+            {{/if}}
         {{/if}}
     </div>
 
     <div class="message__footer">
-      <div class="message__info{{#unless isText}}-cover{{/unless}} message__info{{#unless isText}}-cover{{/unless}}{{#if isMine}}-mine{{/if}}">
-        {{#if isMine}}
-          <div class="message__status message__status-{{#if readed}}readed{{else}}sended{{/if}}"></div>
-        {{/if}}
-          <div {{#if isMine}}class="message__info_colored"{{/if}}> {{time}} </div>
+      <div class="message__info{{#if isImage}}-cover{{/if}} message__info{{#if isImage}}-cover{{/if}}{{#if isMine}}-mine{{/if}}">
+            <div {{#if isMine}}class="message__info_colored"{{/if}}>{{time}}</div>
         </div>
     </div>
 

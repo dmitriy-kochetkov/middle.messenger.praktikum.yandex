@@ -1,0 +1,19 @@
+<div>
+    {{#if isOpen}}
+    <div class="backdrop">
+        <div class="modal">
+            <div class="modal__close">
+                {{{buttonClose}}}
+            </div>
+            <h1 class="modal__title">
+                {{title}}
+            </h1>
+            <form action="" id="modal__form" class="form modal__form">
+            {{#each items}}
+                {{{this}}}
+            {{/each}}
+            </form>
+        </div>
+    </div>
+    {{/if}}
+</div>

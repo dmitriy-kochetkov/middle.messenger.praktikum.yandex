@@ -1,21 +1,26 @@
 import { v4 as uuidv4 } from 'uuid';
 import { EventBus } from './EventBus';
-import { TProps } from './types';
 import { EVENTS } from './constants';
-import { deepEqual } from './utils';
+import isEqual from '../utils/isEqual';
+// import { deepEqual } from '../utils/deepEqual';
 
-class Block {
+export interface BlockClass<P extends Record<string, any>> extends Function {
+    new (props: P): Block<P>;
+    componentName?: string;
+}
+
+class Block<P extends Record<string, any> = any> {
     private id: string;
 
-    protected props: TProps;
+    protected readonly props: P;
 
-    protected children: Record<string, Block>;
+    protected children: Record<string, Block | Block[]>;
 
     private eventBus: () => EventBus;
 
     private _element!: HTMLElement;
 
-    constructor(propsWithChildren: TProps) {
+    constructor(propsWithChildren: P) {
         const eventBus = new EventBus();
 
         const { props, children } = this._getChildrenAndProps(propsWithChildren);
@@ -31,8 +36,9 @@ class Block {
         eventBus.emit(EVENTS.INIT);
     }
 
-    private _getChildrenAndProps(childrenAndProps: TProps) {
-        const props: TProps = {} as TProps;
+    private _getChildrenAndProps(childrenAndProps: P):
+    { props: P, children: Record<string, Block | Block[]> } {
+        const props: Record<string, unknown> = {};
         const children: Record<string, Block> = {};
 
         Object.entries(childrenAndProps).forEach(([key, value]) => {
@@ -43,13 +49,14 @@ class Block {
             }
         });
 
-        return { props, children };
+        return { props: props as P, children };
     }
 
     private _registerEvents(eventBus: EventBus): void {
         eventBus.on(EVENTS.INIT, this._init.bind(this));
         eventBus.on(EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+        eventBus.on(EVENTS.FLOW_CWU, this._componentWillUnmount.bind(this));
         eventBus.on(EVENTS.FLOW_RENDER, this._render.bind(this));
     }
 
@@ -62,6 +69,17 @@ class Block {
                     this._element.addEventListener(eventName, callback);
                 });
         }
+    }
+
+    private _checkInDOM(): void {
+        const elementInDOM = document.body.contains(this._element);
+
+        if (elementInDOM) {
+            setTimeout(() => this._checkInDOM(), 1000);
+            return;
+        }
+
+        this.eventBus().emit(EVENTS.FLOW_CWU, this.props);
     }
 
     private _removeEvents(): void {
@@ -88,35 +106,45 @@ class Block {
         this.eventBus().emit(EVENTS.FLOW_RENDER);
     }
 
-    protected init(): void {
-    }
+    protected init(): void {}
 
     private _componentDidMount(): void {
+        this._checkInDOM();
         this.componentDidMount();
     }
 
-    protected componentDidMount(): boolean {
-        return true;
-    }
+    protected componentDidMount(): void {}
 
     public dispatchComponentDidMount() {
         this.eventBus().emit(EVENTS.FLOW_CDM);
 
-        Object.values(this.children)
-            .forEach((child) => child.dispatchComponentDidMount());
+        Object.values(this.children).forEach((child) => {
+            if (Array.isArray(child)) {
+                child.forEach((ch) => ch.dispatchComponentDidMount());
+            } else {
+                child.dispatchComponentDidMount();
+            }
+        });
     }
 
-    private _componentDidUpdate(oldProps: any, newProps: any): void {
+    private _componentDidUpdate(oldProps: P, newProps: P): void {
         if (this.componentDidUpdate(oldProps, newProps)) {
             this.eventBus().emit(EVENTS.FLOW_RENDER);
         }
     }
 
-    protected componentDidUpdate(oldProps: TProps, newProps: TProps): boolean {
-        return !deepEqual(oldProps, newProps);
+    protected componentDidUpdate(oldProps: P, newProps: P): boolean {
+        return !isEqual(oldProps, newProps);
     }
 
-    public setProps = (nextProps: TProps) => {
+    private _componentWillUnmount(): void {
+        this.eventBus().destroy();
+        this.componentWillUnmount();
+    }
+
+    public componentWillUnmount(): void {}
+
+    public setProps = (nextProps: P) => {
         if (!nextProps) {
             return;
         }
@@ -140,7 +168,7 @@ class Block {
         this._addEvents();
     }
 
-    protected compile(template: (contex: any) => string, contex: TProps) {
+    protected compile(template: (contex: any) => string, contex: any) {
         const contextAndStubs = { ...contex };
 
         Object.entries(this.children).forEach(([name, component]) => {
@@ -184,20 +212,31 @@ class Block {
     }
 
     getContent(): HTMLElement {
+        // Хак, чтобы вызвать CDM только после добавления в DOM
+        if (this.element?.parentNode?.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+            setTimeout(() => {
+                if (
+                    this.element?.parentNode?.nodeType !== Node.DOCUMENT_FRAGMENT_NODE
+                ) {
+                    this.eventBus().emit(EVENTS.FLOW_CDM);
+                }
+            }, 100);
+        }
+
         return this.element!;
     }
 
-    _makePropsProxy(props: TProps) {
+    _makePropsProxy(props: P) {
         const self = this;
 
         return new Proxy(props, {
-            get(target: TProps, prop: string) {
+            get(target: P, prop: string) {
                 const value = target[prop];
                 return typeof value === 'function' ? value.bind(target) : value;
             },
-            set(target: TProps, prop: string, value) {
+            set(target: P, prop: string, value) {
                 const oldTarget = { ...target };
-                target[prop] = value;
+                target[prop as keyof P] = value;
 
                 self.eventBus().emit(EVENTS.FLOW_CDU, oldTarget, target);
                 return true;
@@ -208,16 +247,20 @@ class Block {
         });
     }
 
-    _createDocumentElement(tagName: string) {
+    private _createDocumentElement(tagName: string) {
         return document.createElement(tagName);
     }
 
-    show(): void {
+    public show(): void {
         this.getContent()!.style.display = 'block';
     }
 
-    hide(): void {
+    public hide(): void {
         this.getContent()!.style.display = 'none';
+    }
+
+    public destroy() {
+        this._element.remove();
     }
 }
 

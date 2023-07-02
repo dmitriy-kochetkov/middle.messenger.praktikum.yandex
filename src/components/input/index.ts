@@ -1,7 +1,7 @@
-import Block from '../../utils/Block';
+import Block from '../../core/Block';
 import template from './input.hbs';
 
-type InputValidationFn = (inputValue: string) => string;
+export type InputValidationFn = (inputValue: string) => string;
 
 interface IValidationResult {
     isValid: boolean;
@@ -9,17 +9,18 @@ interface IValidationResult {
 }
 
 export interface IInputProps {
-    label: string,
+    label?: string,
     name: string,
-    type: 'text' | 'password',
-    value: string,
-    disabled: boolean,
-    danger: boolean,
+    type: 'text' | 'password' | 'file',
+    value?: string,
+    disabled?: boolean,
+    danger?: boolean,
     enableErrorMessage: boolean,
     errorMessage: string,
     placeholder?:string,
-    events: {
-        focusout: (evt: FocusEvent) => void
+    events?: {
+        focusout?: (evt: FocusEvent) => void,
+        change?: (evt: Event) => void,
     },
     validationFns?: InputValidationFn[];
 }
@@ -53,6 +54,10 @@ export class Input extends Block {
 
     public getValue(): string {
         return this._getHTMLInputElement().value;
+    }
+
+    public setValue(value: string) {
+        this._getHTMLInputElement().value = value;
     }
 
     private _getHTMLInputElement(): HTMLInputElement {

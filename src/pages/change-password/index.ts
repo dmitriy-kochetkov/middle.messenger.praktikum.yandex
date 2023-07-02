@@ -1,6 +1,6 @@
-import Block from '../../utils/Block';
+import Block from '../../core/Block';
 import template from './change-password.hbs';
-import { Input, IInputProps } from '../../components/input';
+import { Input } from '../../components/input';
 import { BackPanel } from '../../components/back-panel';
 import { Button } from '../../components/button';
 import { getFormData } from '../../utils/getFormData';
@@ -10,30 +10,36 @@ import {
     password,
     repeatPasswordValidationMessage,
 } from '../../utils/validation';
+import { withStore } from '../../hocs/withStore';
+import { UserPassword } from '../../api/UsersAPI';
+import { Avatar } from '../../components/avatar/avatar';
+import UsersController from '../../controllers/UsersControlles';
+import { getAvatarLink } from '../../utils/getAvatarLink';
 
-export interface IChangePasswordPage {
-    inputs: IInputProps[]
-}
-
-export class ChangePasswordPage extends Block {
+class ChangePasswordPage extends Block {
     private _oldPasswordValue: string = '';
 
     private _newPasswordValue: string = '';
 
     private _newPasswordRepeatValue = '';
 
-    constructor(props: IChangePasswordPage) {
+    constructor(props: {}) {
         super(props);
     }
 
     protected init(): void {
-        this.children.backPanel = new BackPanel({ backURL: '../profile' });
+        this.children.backPanel = new BackPanel({ backURL: '../settings' });
+
+        this.children.avatar = new Avatar({
+            size: 'l',
+            avatarURL: getAvatarLink(this.props.avatar),
+        })
 
         this.children.inputOldPassword = new Input({
             label: 'Старый пароль',
             name: 'oldPassword',
             type: 'password',
-            value: 'myOldPassword',
+            value: '',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -48,7 +54,7 @@ export class ChangePasswordPage extends Block {
             label: 'Новый пароль',
             name: 'newPassword',
             type: 'password',
-            value: 'myNewSuperPassword',
+            value: '',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -63,7 +69,7 @@ export class ChangePasswordPage extends Block {
             label: 'Повторите новый пароль',
             name: 'newPassword2',
             type: 'password',
-            value: 'myNewSuperPassword$',
+            value: '',
             disabled: false,
             danger: false,
             enableErrorMessage: true,
@@ -90,52 +96,81 @@ export class ChangePasswordPage extends Block {
         return this.compile(template, this.props);
     }
 
-    private _handleOldPasswordChange(): void {
+    private _handleOldPasswordChange(): boolean {
         this._oldPasswordValue = (this.children.inputOldPassword as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputOldPassword as Input).validate();
-        this.children.inputOldPassword.setProps({
+        (this.children.inputOldPassword as Input).setProps({
             value: this._oldPasswordValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
 
         (this.children.inputOldPassword as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleNewPasswordChange(): void {
+    private _handleNewPasswordChange(): boolean {
         this._newPasswordValue = (this.children.inputNewPassword as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputNewPassword as Input).validate();
-        this.children.inputNewPassword.setProps({
+        (this.children.inputNewPassword as Input).setProps({
             value: this._newPasswordValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
 
         (this.children.inputNewPassword as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleRepeatPasswordChange(): void {
+    private _handleRepeatPasswordChange(): boolean {
         this._newPasswordRepeatValue = (this.children.inputNewPasswordRepeat as Input).getValue();
         this._newPasswordValue = (this.children.inputNewPassword as Input).getValue();
 
         const isValid = this._newPasswordValue === this._newPasswordRepeatValue;
         const errorMessage = isValid ? undefined : repeatPasswordValidationMessage;
-        this.children.inputNewPasswordRepeat.setProps({
+        (this.children.inputNewPasswordRepeat as Input).setProps({
             value: this._newPasswordRepeatValue,
             errorMessage: errorMessage ?? undefined,
         });
 
         (this.children.inputNewPasswordRepeat as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleSubmit(): void {
-        this._handleOldPasswordChange();
-        this._handleNewPasswordChange();
-        this._handleRepeatPasswordChange();
+    private isValid(): boolean {
+        const validationResult = []
+        validationResult.push(this._handleOldPasswordChange());
+        validationResult.push(this._handleNewPasswordChange());
+        validationResult.push(this._handleRepeatPasswordChange());
+        return validationResult.every(Boolean);
+    }
+
+    private async _handleSubmit() {
+        if (!this.isValid()) {
+            return;
+        }
         const form = document.getElementById('edit-profile-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
-            console.log(formData);
+            const userPassword = this._convertFormToPassword(formData);
+
+            await UsersController.password(userPassword)
+        }
+    }
+
+    private _convertFormToPassword(
+        formData: Record<string, FormDataEntryValue>,
+      ): UserPassword {
+        return {
+          oldPassword: formData.oldPassword as string,
+          newPassword: formData.newPassword as string
         }
     }
 }
+
+const withUser = withStore((state)=> ({
+    ...state.user,
+    profileError: state.profileError,
+}))
+
+export default withUser(ChangePasswordPage);

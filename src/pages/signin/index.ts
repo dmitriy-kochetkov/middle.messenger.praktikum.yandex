@@ -1,7 +1,7 @@
-import Block from '../../utils/Block';
+import Block from '../../core/Block';
 import template from './signin.hbs';
 import { Button } from '../../components/button';
-import { Input, IInputProps } from '../../components/input';
+import { Input } from '../../components/input';
 import { getFormData } from '../../utils/getFormData';
 import {
     email,
@@ -9,17 +9,17 @@ import {
     maxLength,
     minLength,
     name,
+    capital,
     notOnlyDigits,
     password,
     phone,
     repeatPasswordValidationMessage,
 } from '../../utils/validation';
+import { withStore } from '../../hocs/withStore';
+import AuthController from '../../controllers/AuthController';
+import { SignupData } from '../../api/AuthAPI';
 
-export interface ISignin {
-    inputs: IInputProps[]
-}
-
-export class SigninPage extends Block {
+class SigninPage extends Block {
     private _emailValue: string = '';
 
     private _loginValue: string = '';
@@ -34,7 +34,7 @@ export class SigninPage extends Block {
 
     private _passwordRepeatValue: string = '';
 
-    constructor(props: ISignin) {
+    constructor(props: {}) {
         super(props);
     }
 
@@ -78,7 +78,7 @@ export class SigninPage extends Block {
             danger: false,
             enableErrorMessage: true,
             errorMessage: '',
-            validationFns: [name()],
+            validationFns: [capital(), name()],
             events: {
                 focusout: () => { this._handleFirstNameChange(); },
             },
@@ -93,7 +93,7 @@ export class SigninPage extends Block {
             danger: false,
             enableErrorMessage: true,
             errorMessage: '',
-            validationFns: [name()],
+            validationFns: [capital(), name()],
             events: {
                 focusout: () => { this._handleSecondNameChange(); },
             },
@@ -160,79 +160,85 @@ export class SigninPage extends Block {
         return this.compile(template, this.props);
     }
 
-    private _handleEmailChange(): void {
+    private _handleEmailChange(): boolean {
         this._emailValue = (this.children.inputEmail as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputEmail as Input).validate();
-        this.children.inputEmail.setProps({
+        (this.children.inputEmail as Input).setProps({
             value: this._emailValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
 
         (this.children.inputEmail as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleLoginChange(): void {
+    private _handleLoginChange(): boolean {
         this._loginValue = (this.children.inputLogin as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputLogin as Input).validate();
-        this.children.inputLogin.setProps({
+        (this.children.inputLogin as Input).setProps({
             value: this._loginValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
 
         (this.children.inputLogin as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleFirstNameChange(): void {
+    private _handleFirstNameChange(): boolean {
         this._firstNameValue = (this.children.inputFirstName as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputFirstName as Input).validate();
-        this.children.inputFirstName.setProps({
+        (this.children.inputFirstName as Input).setProps({
             value: this._firstNameValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
 
         (this.children.inputFirstName as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleSecondNameChange(): void {
+    private _handleSecondNameChange(): boolean {
         this._secondNameValue = (this.children.inputSecondName as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputSecondName as Input).validate();
-        this.children.inputSecondName.setProps({
+        (this.children.inputSecondName as Input).setProps({
             value: this._secondNameValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
 
         (this.children.inputSecondName as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handlePhoneChange(): void {
+    private _handlePhoneChange(): boolean {
         this._phoneValue = (this.children.inputPhone as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputPhone as Input).validate();
-        this.children.inputPhone.setProps({
+        (this.children.inputPhone as Input).setProps({
             value: this._phoneValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
 
         (this.children.inputPhone as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handlePasswordChange(): void {
+    private _handlePasswordChange(): boolean {
         this._passwordValue = (this.children.inputPassword as Input).getValue();
 
         const { isValid, errorMessages } = (this.children.inputPassword as Input).validate();
-        this.children.inputPassword.setProps({
+        (this.children.inputPassword as Input).setProps({
             value: this._passwordValue,
             errorMessage: errorMessages![0] ?? undefined,
         });
 
         (this.children.inputPassword as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleRepeatPasswordChange(): void {
+    private _handleRepeatPasswordChange(): boolean {
         this._passwordRepeatValue = (this.children.inputPasswordRepeat as Input).getValue();
         this._passwordValue = (this.children.inputPassword as Input).getValue();
 
@@ -240,27 +246,58 @@ export class SigninPage extends Block {
         const errorMessage = isValid
             ? undefined
             : repeatPasswordValidationMessage;
-        this.children.inputPasswordRepeat.setProps({
+        (this.children.inputPasswordRepeat as Input).setProps({
             value: this._passwordRepeatValue,
             errorMessage: errorMessage ?? undefined,
         });
 
         (this.children.inputPasswordRepeat as Input).setValidState(isValid);
+        return isValid;
     }
 
-    private _handleSubmit(): void {
-        this._handleEmailChange();
-        this._handleLoginChange();
-        this._handleFirstNameChange();
-        this._handleSecondNameChange();
-        this._handlePhoneChange();
-        this._handlePasswordChange();
-        this._handleRepeatPasswordChange();
+    private isValid(): boolean {
+        const validationResult = []
+        validationResult.push(this._handleEmailChange());
+        validationResult.push(this._handleLoginChange());
+        validationResult.push(this._handleFirstNameChange());
+        validationResult.push(this._handleSecondNameChange());
+        validationResult.push(this._handlePhoneChange());
+        validationResult.push(this._handlePasswordChange());
+        validationResult.push(this._handleRepeatPasswordChange());
+        return validationResult.every(Boolean);
+    }
+
+    private async _handleSubmit() {
+        if (!this.isValid()) {
+            return;
+        }
 
         const form = document.getElementById('signin-form');
         if (form) {
             const formData = getFormData(form as HTMLFormElement);
-            console.log(formData);
+            const payload = this.convertFormToSUP(formData);
+
+            await AuthController.signup(payload);
+            await AuthController.user();
+        }
+    }
+
+    private convertFormToSUP(
+        formData: Record<string, FormDataEntryValue>,
+      ): SignupData {
+        return {
+            first_name: formData.first_name as string,
+            second_name: formData.second_name as string,
+            login: formData.login as string,
+            email: formData.email as string,
+            password: formData.password as string,
+            phone: formData.phone as string,
         }
     }
 }
+
+const withAuthError = withStore((state)=> (
+    { authError: state.authError, }
+))
+
+export default withAuthError(SigninPage);

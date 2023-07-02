@@ -1,0 +1,43 @@
+.buttons-menu {
+    position: absolute;
+    display:flex;
+    flex-direction: column;
+    padding: 10px 15px 10px 10px;
+    gap: 16px;
+    background: var(--white);
+    border-radius: var(--widnow-border-radius);
+    box-shadow: var(--window-shadow);
+    z-index: 100;
+}
+
+.location-top {
+    top: 65px;
+    right: 10px;
+}
+
+.location-bottom {
+    bottom: 10px;
+    left: 10px;
+}
+
+.menu-button {
+    color: var(--grey-1);
+    border: none;
+    padding: 5px 0 5px 30px;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: left;
+
+    &__add-user {
+        background: transparent url("../../../static/icon-add.svg") 0 1px no-repeat;
+    }
+
+    &__delete-user {
+        background: transparent url("../../../static/icon-delete.svg") 0 1px no-repeat;
+    }
+
+    &__leave_chat {
+        color: var(--red);
+        background: transparent url("../../../static/icon-leave.svg") 4px 2px no-repeat;
+    }
+}
