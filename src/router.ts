@@ -7,6 +7,8 @@ import SigninPage from './pages/signin';
 import EditProfilePage from './pages/edit-profile';
 import ChangePasswordPage from './pages/change-password';
 import ChatPage from './pages/chat';
+import Page404  from './pages/404';
+import { ROUTES } from "./core/constants";
 
 export const router = new Router('#app')
 
@@ -22,36 +24,40 @@ enum Routes {
 export function initRouter(store: Store<AppState>) {
     router
       .use({
-        pathname: '/',
+        pathname: ROUTES.Index,
         block: LoginPage,
       })
       .use({
-        pathname: '/sign-up',
+        pathname: ROUTES.Signup,
         block: SigninPage,
       })
       .use({
-        pathname: '/settings',
+        pathname: ROUTES.Page404,
+        block: Page404,
+      })
+      .use({
+        pathname: ROUTES.Profile,
         block: ProfilePage,
         needAuth: true,
         redirectPath: Routes.Index,
         onUnautorized: () => Boolean(store.getState().user),
       })
       .use({
-        pathname: '/settings/changeData',
+        pathname: ROUTES.EditProfile,
         block: EditProfilePage,
         needAuth: true,
         redirectPath: Routes.Index,
         onUnautorized: () => Boolean(store.getState().user),
       })
       .use({
-        pathname: '/settings/changePassword',
+        pathname: ROUTES.ChangePassword,
         block: ChangePasswordPage,
         needAuth: true,
         redirectPath: Routes.Index,
         onUnautorized: () => Boolean(store.getState().user),
       })
       .use({
-        pathname: '/messenger',
+        pathname: ROUTES.Chat,
         block: ChatPage,
         needAuth: true,
         redirectPath: Routes.Index,
