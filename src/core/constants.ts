@@ -14,5 +14,5 @@ export enum ROUTES {
     Signup = '/sign-up',
     Chat = '/messenger',
     Page404 = '/404',
-    Page500 = '/500'
+    Page500 = '/500',
 }

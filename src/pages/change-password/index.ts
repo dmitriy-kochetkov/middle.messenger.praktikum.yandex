@@ -15,6 +15,7 @@ import { UserPassword } from '../../api/UsersAPI';
 import { Avatar } from '../../components/avatar/avatar';
 import UsersController from '../../controllers/UsersControlles';
 import { getAvatarLink } from '../../utils/getAvatarLink';
+import { ROUTES } from '../../core/constants';
 
 class ChangePasswordPage extends Block {
     private _oldPasswordValue: string = '';
@@ -28,7 +29,7 @@ class ChangePasswordPage extends Block {
     }
 
     protected init(): void {
-        this.children.backPanel = new BackPanel({ backURL: '../settings' });
+        this.children.backPanel = new BackPanel({ backURL: ROUTES.Profile });
 
         this.children.avatar = new Avatar({
             size: 'l',

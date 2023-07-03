@@ -14,6 +14,13 @@ import { withStore } from '../../hocs/withStore';
 import { withRouter } from '../../hocs/withRouter';
 import AuthController from '../../controllers/AuthController';
 import { SigninData } from '../../api/AuthAPI';
+import { User } from '../../utils/apiTransformers';
+import { ROUTES } from '../../core/constants';
+
+export interface ILoginPageProps {
+    user: User | null;
+    authError: string | null;
+}
 
 class LoginPage extends Block {
     private _loginValue: string = '';
@@ -23,7 +30,7 @@ class LoginPage extends Block {
     constructor(props: {}) {
         super(props);
         if (this.props.user) {
-            this.props.router.go('/messenger');
+            this.props.router.go(ROUTES.Chat);
         }
     }
 
@@ -71,6 +78,13 @@ class LoginPage extends Block {
                 },
             },
         });
+    }
+
+    protected componentDidUpdate(oldProps: ILoginPageProps, newProps: ILoginPageProps) {
+        if (this.props.user) {
+            this.props.router.go(ROUTES.Chat);
+        }
+        return super.componentDidUpdate(oldProps, newProps);
     }
 
     protected render(): DocumentFragment {

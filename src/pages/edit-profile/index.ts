@@ -19,6 +19,7 @@ import { UserData } from '../../api/UsersAPI';
 import UsersController from '../../controllers/UsersControlles';
 import { Avatar } from '../../components/avatar/avatar';
 import { getAvatarLink } from '../../utils/getAvatarLink';
+import { ROUTES } from '../../core/constants';
 
 
 class EditProfilePage extends Block {
@@ -37,7 +38,7 @@ class EditProfilePage extends Block {
     }
 
     protected init(): void {
-        this.children.backPanel = new BackPanel({ backURL: '../settings' });
+        this.children.backPanel = new BackPanel({ backURL: ROUTES.Profile });
 
         this.children.avatar = new Avatar({
                         size: 'l',

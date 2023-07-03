@@ -54,10 +54,10 @@ export class Router {
             this._currentRoute = route;
             route.render();
         } else {
-            this.go(ROUTES.Page404);
-            return;
+            if (this.getRoute(ROUTES.Page404)) {
+                this.go(ROUTES.Page404);
+            }
         }
-
     }
 
     go(pathname: string) {
@@ -66,11 +66,11 @@ export class Router {
     }
 
     back() {
-        this.history.go(-1);
+        this.history.back(); // .go(-1);
     }
 
     forward() {
-        this.history.go(1);
+        this.history.forward(); // .go(1);
     }
 
     getRoute(pathname: string) {

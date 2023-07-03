@@ -15,7 +15,9 @@ import {
 import { defaultState, store } from '../store';
 import { ChatsDTO, UserDTO } from '../api/types';
 import { apiHasToken } from '../utils/apiHasToken';
+// eslint-disable-next-line import/no-cycle
 import MessageController from './MessageController';
+// eslint-disable-next-line import/no-cycle
 import UsersController from './UsersControlles';
 
 class ChatsController {
@@ -189,7 +191,7 @@ class ChatsController {
     resetActiveChat() {
         store.dispatch({
             activeChat: defaultState.activeChat,
-        })
+        });
     }
 }
 
