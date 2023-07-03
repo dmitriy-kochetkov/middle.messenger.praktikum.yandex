@@ -1,4 +1,4 @@
-import { BlockClass } from '../core/Block';
+import { BlockClass } from '../core/Block/Block';
 import { Router } from '../core/Router/Router';
 // eslint-disable-next-line import/no-cycle
 import { router } from '../router';

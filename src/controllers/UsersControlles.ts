@@ -11,7 +11,7 @@ import { store } from '../store';
 // eslint-disable-next-line import/no-cycle
 import { router } from '../router';
 
-export class UsersController {
+class UsersController {
     private api: UsersAPI;
 
     constructor() {
