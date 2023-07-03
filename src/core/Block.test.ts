@@ -60,7 +60,7 @@ describe('Block', () => {
         });
     });
 
-    describe('Изменение пропсов через setProps', () => {
+    describe('Метод setProps()', () => {
         it('Должен изменить props', () => {
             blockMock.setProps(newProps);
             expect((blockMock as any).props).to.eql(newProps);

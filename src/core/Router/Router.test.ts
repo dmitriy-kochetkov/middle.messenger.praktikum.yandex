@@ -35,7 +35,7 @@ describe('Router', () => {
         }
     })
 
-    it('Метод use должен вернуть инстанс роутера', () => {
+    it('Метод use() должен вернуть инстанс роутера', () => {
         const router = routerFactory();
 
         const result = router.use(routeParams);
@@ -51,7 +51,7 @@ describe('Router', () => {
         assert.equal(getContentFake.callCount, 1);
     });
 
-    it('Метод back должен осуществить возврат на предыдущую страницу с помощью History API', () => {
+    it('Метод back() должен осуществить возврат на предыдущую страницу с помощью History API', () => {
         const backFake = sinon.fake();
         window.history.back = backFake;
         const router = routerFactory();
@@ -71,7 +71,7 @@ describe('Router', () => {
         assert.equal(getContentFake.callCount, 1);
     });
 
-    it('Метод forward должен осуществить возврат на предыдущую страницу с помощью History API', () => {
+    it('Метод forward() должен осуществить возврат на предыдущую страницу с помощью History API', () => {
         const forwardFake = sinon.fake();
         window.history.forward = forwardFake;
         const router = routerFactory();
@@ -91,7 +91,7 @@ describe('Router', () => {
         assert.equal(getContentFake.callCount, 1);
     });
 
-    it('Должен перенаправлять пользователя со страницы, требующей авторизации', () => {
+    it('Должен перенаправлять пользователя со страницы, требующей авторизации если пользователь не авторизован', () => {
         const router = routerFactory();
         const onUnautorizedFalse = () => false;
 
@@ -111,7 +111,7 @@ describe('Router', () => {
         assert.equal(window.location.pathname, '/');
     });
 
-    describe('Метод getRoute', () => {
+    describe('Метод getRoute()', () => {
         it('Должен возвращать инстант Route по зарегистрированному пути', () => {
             const router = routerFactory();
 
@@ -133,7 +133,7 @@ describe('Router', () => {
         });
     })
 
-    describe('Метод go', () => {
+    describe('Метод go()', () => {
         it('Должен добавить новую страницу в History', () => {
             const pushStateFake = sinon.fake();
             window.history.pushState = pushStateFake;
