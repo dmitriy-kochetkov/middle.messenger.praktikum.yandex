@@ -1,5 +1,5 @@
 import sinon, { SinonFakeXMLHttpRequest, SinonFakeXMLHttpRequestStatic } from 'sinon';
-import { HttpTransport } from './httpTransport';
+import { HttpTransport } from './HttpTransport';
 import { expect } from 'chai';
 
 describe('HttpTransport', () => {

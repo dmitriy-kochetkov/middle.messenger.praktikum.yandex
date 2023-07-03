@@ -1,4 +1,4 @@
-import Block from '../../core/Block';
+import Block from '../../core/Block/Block';
 import template from './conversation.hbs';
 import ChatFeed from '../chat-feed';
 import { SendMessageForm } from '../send-message-form';

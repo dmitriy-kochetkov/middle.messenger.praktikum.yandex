@@ -1,4 +1,4 @@
-import Block from "../Block";
+import Block from "../Block/Block";
 import { ROUTES } from "../constants";
 import Route from "./Route";
 

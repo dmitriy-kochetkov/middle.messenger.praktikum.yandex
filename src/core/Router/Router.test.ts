@@ -1,6 +1,6 @@
 import sinon from "sinon";
 import { assert } from "chai";
-import Block from "../Block";
+import Block from "../Block/Block";
 import { Router, TRouteConstructor } from "./Router";
 import Route from "./Route";
 

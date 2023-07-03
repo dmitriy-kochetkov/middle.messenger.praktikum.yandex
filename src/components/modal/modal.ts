@@ -1,4 +1,4 @@
-import Block from '../../core/Block';
+import Block from '../../core/Block/Block';
 import { Button } from '../button';
 import template from './modal.hbs';
 

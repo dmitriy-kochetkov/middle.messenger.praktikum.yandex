@@ -1,4 +1,4 @@
-import Block from '../../core/Block';
+import Block from '../../core/Block/Block';
 import template from './change-password.hbs';
 import { Input } from '../../components/input';
 import { BackPanel } from '../../components/back-panel';

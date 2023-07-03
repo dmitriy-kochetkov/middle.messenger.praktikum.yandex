@@ -1,4 +1,4 @@
-import Block from '../../core/Block';
+import Block from '../../core/Block/Block';
 import template from './edit-profile.hbs';
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
