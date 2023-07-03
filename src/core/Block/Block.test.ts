@@ -1,7 +1,7 @@
 import proxyquire from 'proxyquire';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { EVENTS } from './constants';
+import { EVENTS } from '../constants';
 import type BlockType from './Block';
 
 const eventBusMock = {
@@ -10,7 +10,7 @@ const eventBusMock = {
 };
 
 const { default: Block } = proxyquire('./Block', {
-    './EventBus': {
+    '../EventBus': {
         EventBus: class {
             emit = eventBusMock.emit;
 
