@@ -66,11 +66,11 @@ export class Router {
     }
 
     back() {
-        this.history.back(); // .go(-1);
+        this.history.back();
     }
 
     forward() {
-        this.history.forward(); // .go(1);
+        this.history.forward();
     }
 
     getRoute(pathname: string) {
