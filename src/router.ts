@@ -12,55 +12,62 @@ import { ROUTES } from "./core/constants";
 
 export const router = new Router('#app')
 
-enum Routes {
-    Index = "/",
-    SignUp = "/sign-up",
-    Messenger = "/messenger",
-    Profile = "/settings",
-    EditProfile = '/settings/changeData',
-    ChangePassword = '/settings/changePassword' // ChangePasswordPage
-}
+// enum Routes {
+//     Index = "/",
+//     SignUp = "/sign-up",
+//     Messenger = "/messenger",
+//     Profile = "/settings",
+//     EditProfile = '/settings/changeData',
+//     ChangePassword = '/settings/changePassword' // ChangePasswordPage
+// }
 
 export function initRouter(store: Store<AppState>) {
     router
       .use({
         pathname: ROUTES.Index,
+        // @ts-expect-error
         block: LoginPage,
       })
       .use({
         pathname: ROUTES.Signup,
+        // @ts-expect-error
         block: SigninPage,
       })
       .use({
         pathname: ROUTES.Page404,
+        // @ts-expect-error
         block: Page404,
       })
       .use({
         pathname: ROUTES.Profile,
+        // @ts-expect-error
         block: ProfilePage,
         needAuth: true,
-        redirectPath: Routes.Index,
+        redirectPath: ROUTES.Index,
         onUnautorized: () => Boolean(store.getState().user),
       })
       .use({
         pathname: ROUTES.EditProfile,
+        // @ts-expect-error
         block: EditProfilePage,
         needAuth: true,
-        redirectPath: Routes.Index,
+        redirectPath: ROUTES.Index,
         onUnautorized: () => Boolean(store.getState().user),
       })
       .use({
         pathname: ROUTES.ChangePassword,
+        // @ts-expect-error
         block: ChangePasswordPage,
         needAuth: true,
-        redirectPath: Routes.Index,
+        redirectPath: ROUTES.Index,
         onUnautorized: () => Boolean(store.getState().user),
       })
       .use({
         pathname: ROUTES.Chat,
+        // @ts-expect-error
         block: ChatPage,
         needAuth: true,
-        redirectPath: Routes.Index,
+        redirectPath: ROUTES.Index,
         onUnautorized: () => Boolean(store.getState().user),
       })
       .start();

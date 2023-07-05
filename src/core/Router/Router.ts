@@ -9,7 +9,7 @@ export type TRouteConstructor = {
     exact: true,
     needAuth: boolean,
     redirectPath: string,
-    onUnautorized: () => boolean
+    onUnautorized: () => void
 }
 
 export class Router {

@@ -18,7 +18,7 @@ export default class Route {
     private _componentProps: any;
     // private _params: {};
     private _needAuth: boolean;
-    private _onUnautorized: any;
+    private _onUnautorized: ((pathname: string) => void) | undefined;
     private _redirect: () => void;
 
     constructor(
@@ -27,7 +27,7 @@ export default class Route {
         props: IRouterProps,
         componentProps: any,
         needAuth: boolean,
-        onUnautorized: () => boolean,
+        onUnautorized: (() => void) | undefined,
         redirect: () => void,
     ) {
         this._pathname = pathname;

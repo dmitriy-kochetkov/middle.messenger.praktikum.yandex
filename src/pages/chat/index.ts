@@ -89,7 +89,9 @@ class ChatPage extends Block {
 
     protected componentDidUpdate(oldProps: IChatItemProps, newProps: IChatPageProps) {
         this.children.chats = this.createChats(newProps.chats);
-        return true;
+        return super.componentDidUpdate(oldProps, newProps);
+        // return true;
+
         // const shouldUpdate = super.componentDidUpdate(oldProps, newProps);
         // if (shouldUpdate) {
         //     this.children.chats = this.createChats(newProps.chats);
