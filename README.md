@@ -7,8 +7,8 @@
 Приложение разрабатывается в рамках курса [«Мидл фронтенд-разработчик»](https://practicum.yandex.ru/middle-frontend/ "Курс «Мидл фронтенд-разработчик»").
 С дизайн-макетом можно ознакомиться [тут](https://www.figma.com/file/IhQa6vJwmuLtUY53Nt4m5l/Chat-(Ya.Prct)?node-id=0-1&t=qGMi4BNXC334ELW1-0 "прототип в Figma").
 Приложение развернуто на нескольких ресурсах:
-- [Netlify.com](https://yet-another-chat-application.netlify.app/ "Netlify").
-- [Render.com](https://my-chat-application-iuly.onrender.com/ "Render").
+- [Netlify.com](https://yet-another-chat-application.netlify.app/ "Netlify")
+- [Render.com](https://my-chat-application-iuly.onrender.com/ "Render")
 
 
 
