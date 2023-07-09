@@ -23,6 +23,7 @@ export class AuthController {
             }
 
             store.dispatch({ authError: null });
+            // eslint-disable-next-line consistent-return
             return response;
         } catch (e) {
             console.error(e);

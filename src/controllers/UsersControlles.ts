@@ -88,6 +88,7 @@ class UsersController {
                 console.error(response.reason);
                 return;
             }
+            // eslint-disable-next-line consistent-return
             return transformUser(response as unknown as UserDTO);
         } catch (e) {
             console.error(e);
