@@ -4,7 +4,6 @@
   "description": "**Typescript JS chat web-application**",
   "scripts": {
     "dev": "webpack serve --config webpack.dev.js --open",
-    "devParcel": "parcel --no-cache ./src/index.html",
     "build": "webpack --config webpack.prod.js --stats-children",
     "start": "npm run build && node server.js",
     "eslint": "eslint src/**/*.ts",
