@@ -11,7 +11,8 @@
     "eslint": "eslint src/**/*.ts",
     "stylelint": "stylelint src/**/*.{pcss,css}",
     "test": "mocha --require ts-node/register --require ./mochaSetup.js './src/**/*.test.ts'",
-    "validate": "npm-run-all --parallel test lint"
+    "validate": "npm-run-all --parallel test lint",
+    "precommit": "npm run validate"
   },
   "husky": {
     "hooks": {
