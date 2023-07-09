@@ -1,7 +1,7 @@
 import Block from '../../core/Block/Block';
 import template from './chat.hbs';
 import Conversation, { IConversation } from '../../components/conversation';
-import { ChatItem, IChatItemProps } from '../../components/chat-item';
+import { ChatItem } from '../../components/chat-item';
 import { Avatar } from '../../components/avatar/avatar';
 import { Modal } from '../../components/modal/modal';
 import { Input } from '../../components/input';
@@ -87,16 +87,10 @@ class ChatPage extends Block {
         MessageController.closeAll();
     }
 
-    protected componentDidUpdate(oldProps: IChatItemProps, newProps: IChatPageProps) {
+    protected componentDidUpdate(newProps: IChatPageProps) {
         this.children.chats = this.createChats(newProps.chats);
-        return super.componentDidUpdate(oldProps, newProps);
-        // return true;
-
-        // const shouldUpdate = super.componentDidUpdate(oldProps, newProps);
-        // if (shouldUpdate) {
-        //     this.children.chats = this.createChats(newProps.chats);
-        // }
-        // return shouldUpdate;
+        // return super.componentDidUpdate(oldProps, newProps);
+        return true;
     }
 
     private createChats(chats: Chats): ChatItem[] {
