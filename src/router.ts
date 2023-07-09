@@ -12,15 +12,6 @@ import { ROUTES } from "./core/constants";
 
 export const router = new Router('#app')
 
-// enum Routes {
-//     Index = "/",
-//     SignUp = "/sign-up",
-//     Messenger = "/messenger",
-//     Profile = "/settings",
-//     EditProfile = '/settings/changeData',
-//     ChangePassword = '/settings/changePassword' // ChangePasswordPage
-// }
-
 export function initRouter(store: Store<AppState>) {
     router
       .use({

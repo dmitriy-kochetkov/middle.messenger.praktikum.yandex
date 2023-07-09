@@ -6,7 +6,6 @@ import isEqual from '../../utils/isEqual';
 
 export interface BlockClass<P extends Record<string, any>> extends Function {
     new (props: P): Block<P>;
-    componentName?: string;
 }
 
 class Block<P extends Record<string, any> = any> {

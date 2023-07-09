@@ -16,7 +16,6 @@ export default class Route {
     private _block!: Block;
     private _props: IRouterProps;
     private _componentProps: any;
-    // private _params: {};
     private _needAuth: boolean;
     private _onUnautorized: ((pathname: string) => void) | undefined;
     private _redirect: () => void;
@@ -36,7 +35,6 @@ export default class Route {
         this._needAuth = needAuth;
         this._onUnautorized = onUnautorized;
         this._componentProps = componentProps;
-        // this._params = this.getParams();
         this._redirect = redirect
     }
 
