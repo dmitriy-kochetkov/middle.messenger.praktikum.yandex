@@ -11,7 +11,6 @@
 - [Render.com](https://my-chat-application-iuly.onrender.com/ "Render")
 
 
-
 ## Команды
 
 - `npm install` - Установка зависимостей
