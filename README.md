@@ -1,4 +1,4 @@
-# Yet Another Messanger 💬
+# Yet Another Chat Application 💬
 **Typescript chat web-application**
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/4c02c591-ad1e-438f-84d4-2042213020b9/deploy-status)](https://app.netlify.com/sites/yet-another-chat-application/deploys)
