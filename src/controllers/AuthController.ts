@@ -3,6 +3,7 @@ import { apiHasError } from '../utils/apiHasError';
 import { UserDTO } from '../api/types';
 import { transformUser } from '../utils/apiTransformers';
 import { store } from '../store';
+// eslint-disable-next-line import/no-cycle
 import { router } from '../router';
 
 export class AuthController {
@@ -22,6 +23,7 @@ export class AuthController {
             }
 
             store.dispatch({ authError: null });
+            // eslint-disable-next-line consistent-return
             return response;
         } catch (e) {
             console.error(e);

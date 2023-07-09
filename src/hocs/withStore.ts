@@ -1,4 +1,4 @@
-import Block from '../core/Block';
+import Block from '../core/Block/Block';
 import { StoreEvents } from '../core/Store';
 import { AppState, store } from '../store';
 

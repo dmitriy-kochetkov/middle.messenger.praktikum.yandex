@@ -1,38 +1,28 @@
-import Block from "../Block";
+import Block from "../Block/Block";
+import { ROUTES } from "../constants";
 import Route from "./Route";
 
-type TRouteConstructor = {
+export type TRouteConstructor = {
     pathname: string,
     block: Block,
     props: any,
     exact: true,
     needAuth: boolean,
     redirectPath: string,
-    onUnautorized: () => boolean
+    onUnautorized: () => void
 }
 
 export class Router {
-    // private static __instance: Router;
     public history: History;
     private routes: Route[];
     private _currentRoute!: Route;
     private _rootQuery: string;
 
     constructor(rootQuery: string) {
-        // if (PathRouter.__instance) {
-        //     return PathRouter.__instance;
-        // }
-
         this.routes = [];
         this.history = window.history;
         this._rootQuery = rootQuery;
-
-        // PathRouter.__instance = this;
     }
-
-    // static getInstance() {
-    //     return this.__instance;
-    // }
 
     use({pathname, block, props = {}, exact = true, needAuth = false, onUnautorized, redirectPath}: TRouteConstructor) {
         const redirect = () => this.go(redirectPath);
@@ -58,12 +48,16 @@ export class Router {
 
     _onRoute(pathname: string) {
         const route = this.getRoute(pathname);
-        if (!route) {
-            return;
+
+        if (route) {
+            this._currentRoute?.leave();
+            this._currentRoute = route;
+            route.render();
+        } else {
+            if (this.getRoute(ROUTES.Page404)) {
+                this.go(ROUTES.Page404);
+            }
         }
-        this._currentRoute?.leave();
-        this._currentRoute = route;
-        route.render();
     }
 
     go(pathname: string) {
@@ -72,11 +66,11 @@ export class Router {
     }
 
     back() {
-        this.history.go(-1);
+        this.history.back();
     }
 
     forward() {
-        this.history.go(1);
+        this.history.forward();
     }
 
     getRoute(pathname: string) {

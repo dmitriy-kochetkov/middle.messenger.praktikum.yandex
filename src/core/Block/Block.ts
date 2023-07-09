@@ -1,12 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
-import { EventBus } from './EventBus';
-import { EVENTS } from './constants';
-import isEqual from '../utils/isEqual';
+import { EventBus } from '../EventBus';
+import { EVENTS } from '../constants';
+import isEqual from '../../utils/isEqual';
 // import { deepEqual } from '../utils/deepEqual';
 
 export interface BlockClass<P extends Record<string, any>> extends Function {
     new (props: P): Block<P>;
-    componentName?: string;
 }
 
 class Block<P extends Record<string, any> = any> {

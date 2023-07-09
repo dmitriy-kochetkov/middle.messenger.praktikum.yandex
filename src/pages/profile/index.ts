@@ -1,4 +1,4 @@
-import Block from '../../core/Block';
+import Block from '../../core/Block/Block';
 import template from './profile.hbs';
 import { Input } from '../../components/input';
 import { BackPanel } from '../../components/back-panel';
@@ -11,6 +11,7 @@ import { getFormData } from '../../utils/getFormData';
 import AuthController from '../../controllers/AuthController';
 import UsersController from '../../controllers/UsersControlles';
 import { getAvatarLink } from '../../utils/getAvatarLink';
+import { ROUTES } from '../../core/constants';
 
 class ProfilePage extends Block {
     constructor(props: {}) {
@@ -20,7 +21,7 @@ class ProfilePage extends Block {
     protected init(): void {
         this.props.userName = this.props.displayName;
 
-        this.children.backPanel = new BackPanel({ backURL: '../messenger' });
+        this.children.backPanel = new BackPanel({ backURL: ROUTES.Chat });
 
         this.children.modal = new Modal({
             isOpen: false,
@@ -134,7 +135,7 @@ class ProfilePage extends Block {
             events: {
                 click: (evt: PointerEvent) => {
                     evt.preventDefault();
-                    this.props.router.go('/settings/changeData');
+                    this.props.router.go(ROUTES.EditProfile);
                 },
             },
         });
@@ -146,7 +147,7 @@ class ProfilePage extends Block {
             events: {
                 click: (evt: PointerEvent) => {
                     evt.preventDefault();
-                    this.props.router.go('/settings/changePassword');
+                    this.props.router.go(ROUTES.ChangePassword);
                 },
             },
         });

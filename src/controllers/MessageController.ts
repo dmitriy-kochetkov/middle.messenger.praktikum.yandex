@@ -5,6 +5,7 @@ import WSTransport, {
 } from '../core/WSTransport';
 import { store } from '../store';
 import { transformMessages } from '../utils/apiTransformers';
+// eslint-disable-next-line import/no-cycle
 import ChatsController from './ChatsController';
 
 class MessageController {

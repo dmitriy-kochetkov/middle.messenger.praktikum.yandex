@@ -1,4 +1,4 @@
-import Block from '../../core/Block';
+import Block from '../../core/Block/Block';
 import { withStore } from '../../hocs/withStore';
 import { User } from '../../utils/apiTransformers';
 import { extractFirstWords } from '../../utils/extractFirstWords';

@@ -1,4 +1,4 @@
-import Block from "../Block";
+import Block from "../Block/Block";
 import renderDOM from "../renderDOM";
 
 function isEqual(lhs: any, rhs: any) {
@@ -16,9 +16,8 @@ export default class Route {
     private _block!: Block;
     private _props: IRouterProps;
     private _componentProps: any;
-    // private _params: {};
     private _needAuth: boolean;
-    private _onUnautorized: any;
+    private _onUnautorized: ((pathname: string) => void) | undefined;
     private _redirect: () => void;
 
     constructor(
@@ -27,7 +26,7 @@ export default class Route {
         props: IRouterProps,
         componentProps: any,
         needAuth: boolean,
-        onUnautorized: boolean,
+        onUnautorized: (() => void) | undefined,
         redirect: () => void,
     ) {
         this._pathname = pathname;
@@ -36,7 +35,6 @@ export default class Route {
         this._needAuth = needAuth;
         this._onUnautorized = onUnautorized;
         this._componentProps = componentProps;
-        // this._params = this.getParams();
         this._redirect = redirect
     }
 

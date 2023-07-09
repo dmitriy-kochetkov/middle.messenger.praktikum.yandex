@@ -1,4 +1,4 @@
-import Block from '../../core/Block';
+import Block from '../../core/Block/Block';
 import template from './send-message-form.hbs';
 import { getFormData } from '../../utils/getFormData';
 import { notEmpty } from '../../utils/validation';

@@ -1,4 +1,4 @@
-import Block from '../../core/Block';
+import Block from '../../core/Block/Block';
 import template from './signin.hbs';
 import { Button } from '../../components/button';
 import { Input } from '../../components/input';
