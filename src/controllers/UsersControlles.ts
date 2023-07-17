@@ -8,9 +8,10 @@ import { apiHasError } from '../utils/apiHasError';
 import { UserDTO } from '../api/types';
 import { transformUser, transformUsers } from '../utils/apiTransformers';
 import { store } from '../store';
+// eslint-disable-next-line import/no-cycle
 import { router } from '../router';
 
-export class UsersController {
+class UsersController {
     private api: UsersAPI;
 
     constructor() {
@@ -87,6 +88,7 @@ export class UsersController {
                 console.error(response.reason);
                 return;
             }
+            // eslint-disable-next-line consistent-return
             return transformUser(response as unknown as UserDTO);
         } catch (e) {
             console.error(e);

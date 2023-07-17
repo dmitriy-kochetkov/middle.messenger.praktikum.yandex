@@ -15,7 +15,9 @@ import {
 import { defaultState, store } from '../store';
 import { ChatsDTO, UserDTO } from '../api/types';
 import { apiHasToken } from '../utils/apiHasToken';
+// eslint-disable-next-line import/no-cycle
 import MessageController from './MessageController';
+// eslint-disable-next-line import/no-cycle
 import UsersController from './UsersControlles';
 
 class ChatsController {
@@ -77,6 +79,7 @@ class ChatsController {
             offset = offset || 0;
 
             while (!ready) {
+                // eslint-disable-next-line no-await-in-loop
                 const response = await this.api.getChatUsers(id, { offset, limit, ...payload });
                 if (apiHasError(response)) {
                     console.error(response.reason);
@@ -117,11 +120,12 @@ class ChatsController {
 
     async token(id: number) {
         try {
-            const response = this.api.token(id);
+            const response = await this.api.token(id);
             if (apiHasError(response)) {
                 console.error(response.reason);
                 return;
             }
+            // eslint-disable-next-line consistent-return
             return response;
         } catch (e) {
             console.error(e);
@@ -189,7 +193,7 @@ class ChatsController {
     resetActiveChat() {
         store.dispatch({
             activeChat: defaultState.activeChat,
-        })
+        });
     }
 }
 

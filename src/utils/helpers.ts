@@ -3,8 +3,11 @@ type Indexed<T = unknown> = {
 };
 
 export function merge(lhs: Indexed, rhs: Indexed): Indexed {
+    // eslint-disable-next-line no-restricted-syntax
     for (const p in rhs) {
+        // eslint-disable-next-line no-prototype-builtins
         if (!rhs.hasOwnProperty(p)) {
+            // eslint-disable-next-line no-continue
             continue;
         }
 

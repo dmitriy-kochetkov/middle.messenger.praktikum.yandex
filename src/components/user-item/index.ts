@@ -1,4 +1,4 @@
-import Block from '../../core/Block';
+import Block from '../../core/Block/Block';
 // import { getAvatarLink } from '../../utils/getAvatarLink';
 import { Avatar } from '../avatar/avatar';
 import template from './user-item.hbs';

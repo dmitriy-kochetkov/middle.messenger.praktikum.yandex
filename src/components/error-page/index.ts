@@ -1,11 +1,9 @@
-import Block from '../../core/Block';
-import template from './error.hbs';
+import Block from '../../core/Block/Block';
+import template from './error-page.hbs';
 
 export interface IErrorPage {
     errorCode: string,
     messageText: string,
-    link: string,
-    linkLabel: string,
 }
 
 export class ErrorPage extends Block {
